@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Professional Visiting Card Generator</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:linear-gradient(135deg,#eef5ff,#dcecff);
+    color:#17233c;
+}
+
+header{
+    background:linear-gradient(135deg,#073b78,#0b63c7);
+    color:white;
+    padding:22px 30px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+header h1{
+    margin:0;
+    font-size:30px;
+}
+
+header p{
+    margin:8px 0 0;
+    opacity:.9;
+}
+
+.container{
+    max-width:1400px;
+    margin:25px auto;
+    padding:0 20px;
+}
+
+.main{
+    display:grid;
+    grid-template-columns:420px 1fr;
+    gap:25px;
+}
+
+.panel{
+    background:white;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+}
+
+.panel h2{
+    margin-top:0;
+    color:#0b4f9c;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+input,textarea,select{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    font-size:14px;
+    outline:none;
+}
+
+input:focus,textarea:focus{
+    border-color:#1677d2;
+    box-shadow:0 0 0 3px rgba(22,119,210,.12);
+}
+
+textarea{
+    resize:vertical;
+    min-height:65px;
+}
+
+.photo-preview{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-top:10px;
+    display:none;
+    border:3px solid #1677d2;
+}
+
+.design-title{
+    margin-top:25px;
+    font-weight:bold;
+    color:#0b4f9c;
+}
+
+.design-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.design{
+    height:55px;
+    border-radius:8px;
+    cursor:pointer;
+    border:3px solid transparent;
+    position:relative;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.design:hover{
+    transform:scale(1.05);
+}
+
+.design.active{
+    border-color:#ff9800;
+    box-shadow:0 0 0 2px #fff;
+}
+
+.design span{
+    position:absolute;
+    bottom:4px;
+    right:5px;
+    color:white;
+    font-size:10px;
+    font-weight:bold;
+}
+
+button{
+    border:0;
+    border-radius:10px;
+    padding:12px 18px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.generate{
+    width:100%;
+    background:linear-gradient(135deg,#ff8a00,#ffb300);
+    color:white;
+    margin-top:20px;
+    font-size:16px;
+}
+
+.output{
+    min-height:600px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.card-wrapper{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.business-card{
+    width:700px;
+    height:400px;
+    max-width:100%;
+    position:relative;
+    overflow:hidden;
+    border-radius:16px;
+    box-shadow:0 15px 45px rgba(0,0,0,.25);
+    padding:35px;
+    color:white;
+    background:#123;
+}
+
+.card-content{
+    position:relative;
+    z-index:3;
+    height:100%;
+}
+
+.card-name{
+    font-size:36px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.card-profession{
+    font-size:18px;
+    opacity:.9;
+    margin-bottom:25px;
+}
+
+.card-company{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.contact{
+    line-height:1.9;
+    font-size:15px;
+}
+
+.card-photo{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,.9);
+    right:35px;
+    top:35px;
+    z-index:4;
+    display:none;
+}
+
+.card-address{
+    position:absolute;
+    bottom:25px;
+    left:35px;
+    right:35px;
+    font-size:12px;
+    opacity:.85;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:30px;
+    justify-content:center;
+}
+
+.action-share{background:#1677d2;color:white}
+.action-email{background:#d93025;color:white}
+.action-print{background:#344054;color:white}
+.action-download{background:#16803c;color:white}
+
+.hint{
+    color:#667085;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* ===============================
+   20 DESIGNS
+================================ */
+
+/* 1 */
+.theme1{
+    background:linear-gradient(135deg,#071e3d,#1f5f8b);
+}
+
+/* 2 */
+.theme2{
+    background:linear-gradient(135deg,#111,#444);
+}
+
+/* 3 */
+.theme3{
+    background:linear-gradient(135deg,#4b0082,#8a2be2);
+}
+
+/* 4 */
+.theme4{
+    background:linear-gradient(135deg,#00695c,#26a69a);
+}
+
+/* 5 */
+.theme5{
+    background:linear-gradient(135deg,#7b1fa2,#e91e63);
+}
+
+/* 6 */
+.theme6{
+    background:linear-gradient(135deg,#263238,#607d8b);
+}
+
+/* 7 */
+.theme7{
+    background:linear-gradient(135deg,#0d47a1,#42a5f5);
+}
+
+/* 8 */
+.theme8{
+    background:linear-gradient(135deg,#bf360c,#ff7043);
+}
+
+/* 9 */
+.theme9{
+    background:linear-gradient(135deg,#004d40,#00897b);
+}
+
+/* 10 */
+.theme10{
+    background:linear-gradient(135deg,#212121,#f57c00);
+}
+
+/* 11 */
+.theme11{
+    background:linear-gradient(135deg,#880e4f,#ad1457);
+}
+
+/* 12 */
+.theme12{
+    background:linear-gradient(135deg,#1a237e,#3949ab);
+}
+
+/* 13 */
+.theme13{
+    background:linear-gradient(135deg,#33691e,#689f38);
+}
+
+/* 14 */
+.theme14{
+    background:linear-gradient(135deg,#37474f,#90a4ae);
+}
+
+/* 15 */
+.theme15{
+    background:linear-gradient(135deg,#311b92,#512da8);
+}
+
+/* 16 */
+.theme16{
+    background:linear-gradient(135deg,#004d40,#00695c);
+}
+
+/* 17 */
+.theme17{
+    background:linear-gradient(135deg,#3e2723,#795548);
+}
+
+/* 18 */
+.theme18{
+    background:linear-gradient(135deg,#0d1b2a,#1b263b);
+}
+
+/* 19 */
+.theme19{
+    background:linear-gradient(135deg,#b71c1c,#ef5350);
+}
+
+/* 20 */
+.theme20{
+    background:linear-gradient(135deg,#1b5e20,#43a047);
+}
+
+/* Decorative shapes */
+
+.business-card::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    right:-100px;
+    bottom:-120px;
+}
+
+.business-card::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:rgba(255,255,255,.05);
+    left:-100px;
+    top:-100px;
+}
+
+@media(max-width:1000px){
+    .main{
+        grid-template-columns:1fr;
+    }
+
+    .business-card{
+        width:600px;
+        height:343px;
+    }
+}
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:23px;
+    }
+
+    .panel{
+        padding:16px;
+    }
+
+    .design-grid{
+        grid-template-columns:repeat(5,1fr);
+    }
+
+    .business-card{
+        height:auto;
+        min-height:340px;
+        padding:25px;
+    }
+
+    .card-name{
+        font-size:27px;
+    }
+
+    .card-photo{
+        width:85px;
+        height:85px;
+        right:20px;
+        top:20px;
+    }
+
+    .card-address{
+        left:25px;
+        right:25px;
+    }
+}
+
+@media print{
+
+    body *{
+        visibility:hidden;
+    }
+
+    #card{
+        visibility:visible;
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform:translate(-50%,-50%);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>💼 Professional Visiting Card Generator</h1>
+    <p>Create your professional digital visiting card in seconds</p>
+    <p>Created by Ashutosh Pujari. Email: ashutoshvpujari@rediffmail.com  Mobile: 9860985354</p>
+</header>
+
+<div class="container">
+
+<div class="main">
+
+<!-- ================= FORM ================= -->
+
+<div class="panel">
+
+<h2>Enter Your Details</h2>
+
+<div class="form-group">
+<label>Full Name *</label>
+<input type="text" id="name" placeholder="e.g. Ashutosh Pujari">
+</div>
+
+<div class="form-group">
+<label>Professional Details</label>
+<input type="text" id="profession"
+placeholder="e.g. Senior Java Developer | Spring Boot Expert">
+</div>
+
+<div class="form-group">
+<label>Company / Organization</label>
+<input type="text" id="company"
+placeholder="e.g. Pujari Technologies">
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" id="phone"
+placeholder="+91 98765 43210">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="email"
+placeholder="name@example.com">
+</div>
+
+<div class="form-group">
+<label>Website</label>
+<input type="text" id="website"
+placeholder="www.example.com">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<textarea id="address"
+placeholder="City, State, Country"></textarea>
+</div>
+
+<div class="form-group">
+<label>Upload Photo</label>
+<input type="file" id="photo" accept="image/*">
+<img id="photoPreview" class="photo-preview">
+</div>
+
+<div class="design-title">
+Choose Visiting Card Design
+</div>
+
+<div class="design-grid">
+
+<div class="design theme1 active" data-theme="theme1"><span>1</span></div>
+<div class="design theme2" data-theme="theme2"><span>2</span></div>
+<div class="design theme3" data-theme="theme3"><span>3</span></div>
+<div class="design theme4" data-theme="theme4"><span>4</span></div>
+<div class="design theme5" data-theme="theme5"><span>5</span></div>
+<div class="design theme6" data-theme="theme6"><span>6</span></div>
+<div class="design theme7" data-theme="theme7"><span>7</span></div>
+<div class="design theme8" data-theme="theme8"><span>8</span></div>
+<div class="design theme9" data-theme="theme9"><span>9</span></div>
+<div class="design theme10" data-theme="theme10"><span>10</span></div>
+<div class="design theme11" data-theme="theme11"><span>11</span></div>
+<div class="design theme12" data-theme="theme12"><span>12</span></div>
+<div class="design theme13" data-theme="theme13"><span>13</span></div>
+<div class="design theme14" data-theme="theme14"><span>14</span></div>
+<div class="design theme15" data-theme="theme15"><span>15</span></div>
+<div class="design theme16" data-theme="theme16"><span>16</span></div>
+<div class="design theme17" data-theme="theme17"><span>17</span></div>
+<div class="design theme18" data-theme="theme18"><span>18</span></div>
+<div class="design theme19" data-theme="theme19"><span>19</span></div>
+<div class="design theme20" data-theme="theme20"><span>20</span></div>
+
+</div>
+
+<button class="generate" onclick="generateCard()">
+✨ Generate Visiting Card
+</button>
+
+</div>
+
+
+<!-- ================= OUTPUT ================= -->
+
+<div class="panel output">
+
+<h2>Final Visiting Card</h2>
+
+<p class="hint">
+Your generated card will appear below
+</p>
+
+<div class="card-wrapper">
+
+<div id="card" class="business-card theme1">
+
+<img id="cardPhoto" class="card-photo">
+
+<div class="card-content">
+
+<div id="cardName" class="card-name">
+Your Name
+</div>
+
+<div id="cardProfession" class="card-profession">
+Your Professional Details
+</div>
+
+<div id="cardCompany" class="card-company">
+Your Company
+</div>
+
+<div class="contact">
+
+<div id="cardPhone">📞 Phone</div>
+
+<div id="cardEmail">✉ Email</div>
+
+<div id="cardWebsite">🌐 Website</div>
+
+</div>
+
+<div id="cardAddress" class="card-address">
+Your Address
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="action-share" onclick="shareCard()">
+📤 Share
+</button>
+
+<button class="action-email" onclick="emailCard()">
+✉ Email
+</button>
+
+<button class="action-print" onclick="printCard()">
+🖨 Print
+</button>
+
+<button class="action-download" onclick="downloadCard()">
+⬇ Download
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let selectedTheme = "theme1";
+let photoData = "";
+
+
+/* ===============================
+   DESIGN SELECTION
+================================ */
+
+document.querySelectorAll(".design").forEach(design => {
+
+    design.addEventListener("click", function(){
+
+        document.querySelectorAll(".design")
+        .forEach(d => d.classList.remove("active"));
+
+        this.classList.add("active");
+
+        selectedTheme = this.dataset.theme;
+
+        document.getElementById("card").className =
+            "business-card " + selectedTheme;
+
+        generateCard();
+
+    });
+
+});
+
+
+/* ===============================
+   PHOTO UPLOAD
+================================ */
+
+document.getElementById("photo").addEventListener("change",function(){
+
+    const file = this.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        photoData = e.target.result;
+
+        document.getElementById("photoPreview").src =
+            photoData;
+
+        document.getElementById("photoPreview").style.display =
+            "block";
+
+        document.getElementById("cardPhoto").src =
+            photoData;
+
+        document.getElementById("cardPhoto").style.display =
+            "block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* ===============================
+   GENERATE CARD
+================================ */
+
+function generateCard(){
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const profession =
+        document.getElementById("profession").value.trim();
+
+    const company =
+        document.getElementById("company").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const website =
+        document.getElementById("website").value.trim();
+
+    const address =
+        document.getElementById("address").value.trim();
+
+
+    document.getElementById("cardName").innerText =
+        name || "Your Name";
+
+    document.getElementById("cardProfession").innerText =
+        profession || "Your Professional Details";
+
+    document.getElementById("cardCompany").innerText =
+        company || "Your Company";
+
+    document.getElementById("cardPhone").innerText =
+        phone ? "📞 " + phone : "📞 Phone";
+
+    document.getElementById("cardEmail").innerText =
+        email ? "✉ " + email : "✉ Email";
+
+    document.getElementById("cardWebsite").innerText =
+        website ? "🌐 " + website : "🌐 Website";
+
+    document.getElementById("cardAddress").innerText =
+        address || "Your Address";
+
+
+    document.getElementById("card").className =
+        "business-card " + selectedTheme;
+
+}
+
+
+/* ===============================
+   DOWNLOAD
+================================ */
+
+async function downloadCard(){
+
+    generateCard();
+
+    const card =
+        document.getElementById("card");
+
+    const canvas =
+        await html2canvas(card,{
+            scale:3,
+            backgroundColor:null
+        });
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "my-visiting-card.png";
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+
+}
+
+
+/* ===============================
+   SHARE
+================================ */
+
+async function shareCard(){
+
+    generateCard();
+
+    const card =
+        document.getElementById("card");
+
+    const canvas =
+        await html2canvas(card,{
+            scale:3
+        });
+
+    canvas.toBlob(async function(blob){
+
+        const file =
+            new File(
+                [blob],
+                "visiting-card.png",
+                {type:"image/png"}
+            );
+
+        if(
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({files:[file]})
+        ){
+
+            try{
+
+                await navigator.share({
+                    title:"My Visiting Card",
+                    text:"Here is my professional visiting card.",
+                    files:[file]
+                });
+
+            }catch(error){
+
+                console.log("Share cancelled");
+
+            }
+
+        }else{
+
+            alert(
+                "File sharing is not supported by this browser. " +
+                "Please use Download and share the image manually."
+            );
+
+        }
+
+    },"image/png");
+
+}
+
+
+/* ===============================
+   EMAIL
+================================ */
+
+async function emailCard(){
+
+    generateCard();
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const subject =
+        encodeURIComponent(
+            "Visiting Card - " + (name || "My Contact Details")
+        );
+
+    const body =
+        encodeURIComponent(
+`Hello,
+
+Please find my visiting card attached.
+
+Name: ${name}
+Phone: ${document.getElementById("phone").value}
+Email: ${email}
+Website: ${document.getElementById("website").value}
+
+Please note: The generated card image needs to be downloaded and attached manually to the email because browsers cannot automatically attach local files to a mailto link.`
+        );
+
+    window.location.href =
+        `mailto:${email}?subject=${subject}&body=${body}`;
+
+}
+
+
+/* ===============================
+   PRINT
+================================ */
+
+function printCard(){
+
+    generateCard();
+
+    window.print();
+
+}
+
+
+/* ===============================
+   LIVE PREVIEW
+================================ */
+
+[
+    "name",
+    "profession",
+    "company",
+    "phone",
+    "email",
+    "website",
+    "address"
+].forEach(id => {
+
+    document.getElementById(id)
+    .addEventListener("input",generateCard);
+
+});
+
+
+/* Initial card */
+
+generateCard();
+
+</script>
+
+</body>
+</html>
