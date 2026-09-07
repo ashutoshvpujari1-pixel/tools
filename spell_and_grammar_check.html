@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar & Spell Checker</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        p.description {
+            color: #666;
+            text-align: center;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #3498db;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .btn-check {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-check:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-check:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            margin-top: 25px;
+        }
+
+        .status-msg {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .success-box {
+            padding: 15px;
+            background-color: #e8f8f5;
+            color: #27ae60;
+            border: 1px solid #a3e4d7;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .issue-card {
+            background-color: #fcfcfc;
+            border-left: 4px solid #e74c3c;
+            border-top: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .issue-word {
+            font-weight: bold;
+            color: #c0392b;
+            background: #fdf2e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .issue-type {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .issue-message {
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .suggestions label {
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .suggestion-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        .suggestion-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Grammar & Spell Checker</h2>
+        <p class="description">Type or paste your text below and click the button to check for grammar, spelling, and style errors.</p>
+        
+        <textarea id="textInput" placeholder="Enter your text here... (e.g., 'He go to the store yesterday and buyed a apple.')" spellcheck="true"></textarea>
+        
+        <div class="controls">
+            <span id="charCount" style="color: #888; font-size: 0.9rem;">0 characters</span>
+            <button id="checkBtn" class="btn-check" onclick="checkGrammar()">Check Text</button>
+        </div>
+
+        <div id="results" class="results-container"></div>
+    </div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const charCount = document.getElementById('charCount');
+
+        // Character count listener
+        textInput.addEventListener('input', () => {
+            charCount.textContent = `${textInput.value.length} characters`;
+        });
+
+        async function checkGrammar() {
+            const resultsDiv = document.getElementById('results');
+            const checkBtn = document.getElementById('checkBtn');
+            const text = textInput.value.trim();
+
+            if (!text) {
+                resultsDiv.innerHTML = '<div class="status-msg">Please enter some text to check.</div>';
+                return;
+            }
+
+            // Disable button during loading
+            checkBtn.disabled = true;
+            checkBtn.innerText = 'Checking...';
+            resultsDiv.innerHTML = '<div class="status-msg">Analyzing text for spelling and grammar issues...</div>';
+
+            try {
+                // Call LanguageTool free API
+                const response = await fetch('https://api.languagetool.org/v2/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'text': text,
+                        'language': 'en-US'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                displayResults(data.matches);
+            } catch (error) {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = '<div class="status-msg" style="color: red;">Failed to check text. Please make sure you are connected to the internet and try again.</div>';
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.innerText = 'Check Text';
+            }
+        }
+
+        function displayResults(matches) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (!matches || matches.length === 0) {
+                resultsDiv.innerHTML = '<div class="success-box">🎉 Great job! No grammar or spelling errors were found.</div>';
+                return;
+            }
+
+            const header = document.createElement('div');
+            header.className = 'status-msg';
+            header.innerHTML = `Found <strong>${matches.length}</strong> potential issue${matches.length > 1 ? 's' : ''}:`;
+            resultsDiv.appendChild(header);
+
+            // Display issues
+            matches.forEach((match) => {
+                const issueDiv = document.createElement('div');
+                issueDiv.className = 'issue-card';
+
+                const wrongText = textInput.value.substring(match.offset, match.offset + match.length);
+                const issueType = match.rule.issueType || 'Suggestion';
+
+                let suggestionsHtml = '';
+                if (match.replacements && match.replacements.length > 0) {
+                    const topSuggestions = match.replacements.slice(0, 4); // show top 4 suggestions
+                    
+                    suggestionsHtml = `
+                        <div class="suggestions">
+                            <label>Fix with:</label>
+                            ${topSuggestions.map(rep => 
+                                `<button class="suggestion-btn" onclick="applyFix(${match.offset}, ${match.length}, '${escapeQuotes(rep.value)}')">${escapeHtml(rep.value)}</button>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+
+                issueDiv.innerHTML = `
+                    <div class="issue-header">
+                        <span class="issue-word">"${escapeHtml(wrongText)}"</span>
+                        <span class="issue-type">${escapeHtml(issueType)}</span>
+                    </div>
+                    <div class="issue-message">${escapeHtml(match.message)}</div>
+                    ${suggestionsHtml}
+                `;
+
+                resultsDiv.appendChild(issueDiv);
+            });
+        }
+
+        function applyFix(offset, length, replacement) {
+            const currentText = textInput.value;
+            // Replace the error segment with the selected suggestion
+            const newText = currentText.substring(0, offset) + replacement + currentText.substring(offset + length);
+            textInput.value = newText;
+            
+            // Re-check after applying the fix
+            checkGrammar();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+
+        function escapeQuotes(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+    </script>
+</body>
+</html>
