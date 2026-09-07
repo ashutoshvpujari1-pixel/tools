@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Page Student Digital Notebook</title>
+    <!-- Google Fonts for UI and Handwritten style -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #dce3e9;
+            --sidebar-bg: #2c3e50;
+            --paper-bg: #fffdfa;
+            --line-color: #b5d2e8;
+            --margin-color: #ff8585;
+            --text-color: #2c3e50;
+            --primary-color: #3498db;
+            --primary-hover: #2980b9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 15px;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 20;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-add-page {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-add-page:hover {
+            background-color: #219150;
+        }
+
+        .page-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .page-item {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+
+        .page-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .page-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .page-item-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 170px;
+        }
+
+        .btn-delete-page {
+            color: #e74c3c;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0.7;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .btn-delete-page:hover {
+            opacity: 1;
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* --- Formatting Toolbar --- */
+        .toolbar {
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 850px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            border-right: 2px solid #f0f0f0;
+            padding-right: 10px;
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+            padding-right: 0;
+            margin-left: auto;
+        }
+
+        .btn-tool {
+            background: #f4f6f8;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #333;
+        }
+
+        .btn-tool:hover {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        .btn-download {
+            background: #27ae60;
+            color: white;
+            border: none;
+        }
+        .btn-download:hover { background: #219150; }
+
+        .btn-pdf {
+            background: #e74c3c;
+            color: white;
+            border: none;
+        }
+        .btn-pdf:hover { background: #c0392b; }
+
+        /* --- Notebook Paper Styling --- */
+        .notebook-container {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 30px;
+        }
+
+        /* Spiral Ring Binding Effect */
+        .spiral-rings {
+            position: absolute;
+            left: 18px;
+            top: 25px;
+            bottom: 25px;
+            width: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .ring {
+            width: 26px;
+            height: 10px;
+            background: linear-gradient(90deg, #555, #ccc, #555);
+            border-radius: 5px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-left: -8px;
+        }
+
+        .paper {
+            background-color: var(--paper-bg);
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 31px,
+                var(--line-color) 31px,
+                var(--line-color) 32px
+            );
+            background-size: 100% 32px;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px 40px 40px 80px;
+            min-height: 800px;
+            position: relative;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        /* Red Left Margin */
+        .paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 65px;
+            width: 2px;
+            background-color: var(--margin-color);
+        }
+
+        /* Notebook Paper Header */
+        .notebook-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--margin-color);
+            padding-bottom: 8px;
+            margin-bottom: 31px;
+            line-height: 32px;
+        }
+
+        .header-input {
+            border: none;
+            background: transparent;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #444;
+            outline: none;
+        }
+
+        .header-input.title-input {
+            font-size: 22px;
+            width: 50%;
+            font-weight: 700;
+            color: #1a252f;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-meta input {
+            width: 130px;
+            font-size: 14px;
+        }
+
+        /* Rich Text Editor */
+        .page-editor {
+            width: 100%;
+            min-height: 650px;
+            outline: none;
+            font-size: 18px;
+            line-height: 32px; /* Perfectly aligns with background lines */
+            color: #2c3e50;
+            font-family: 'Poppins', sans-serif;
+            word-break: break-word;
+        }
+
+        /* Handwritten Font Mode */
+        .font-handwritten {
+            font-family: 'Caveat', cursive !important;
+            font-size: 24px !important;
+        }
+
+        /* Page Navigation Footer */
+        .page-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 20px;
+        }
+
+        .page-indicator {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .save-status {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            text-align: right;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* --- PDF Print Styles --- */
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+            }
+            .sidebar, .toolbar, .page-navigation, .save-status, .spiral-rings {
+                display: none !important;
+            }
+            .main-content {
+                padding: 0;
+                overflow: visible;
+            }
+            .notebook-container {
+                max-width: 100%;
+                margin: 0;
+            }
+            .paper {
+                box-shadow: none;
+                border: none;
+                padding: 20px 20px 20px 50px;
+                min-height: auto;
+            }
+            .paper::before {
+                left: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Page Manager -->
+    <aside class="sidebar">
+        <div class="sidebar-title">
+            <span>📓 My Notebook</span>
+        </div>
+        <button class="btn-add-page" onclick="addNewPage()">➕ Add New Page</button>
+        <ul class="page-list" id="pageList">
+            <!-- Pages will be generated dynamically -->
+        </ul>
+    </aside>
+
+    <!-- Main Notebook Interface -->
+    <main class="main-content">
+
+        <!-- Top Formatting Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <button class="btn-tool" onclick="formatDoc('bold')" title="Bold"><b>B</b></button>
+                <button class="btn-tool" onclick="formatDoc('italic')" title="Italic"><i>I</i></button>
+                <button class="btn-tool" onclick="formatDoc('underline')" title="Underline"><u>U</u></button>
+                <button class="btn-tool" onclick="formatDoc('strikeThrough')" title="Strikethrough"><s>S</s></button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="btn-tool" onclick="formatDoc('insertUnorderedList')" title="Bullet List">• List</button>
+                <button class="btn-tool" onclick="formatDoc('insertOrderedList')" title="Numbered List">1. List</button>
+            </div>
+
+            <div class="toolbar-group">
+                <select class="btn-tool" onchange="changeFont(this.value)">
+                    <option value="standard">Standard Font</option>
+                    <option value="handwritten">Handwritten Font</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="btn-tool btn-download" onclick="downloadCurrentPageTXT()" title="Download current page text">📄 Download Page</button>
+                <button class="btn-tool btn-download" onclick="downloadAllPagesTXT()" style="background:#16a085;" title="Download all notebook pages text">📚 Download All</button>
+                <button class="btn-tool btn-pdf" onclick="exportPDF()" title="Save as PDF">🖨️ PDF</button>
+            </div>
+        </div>
+
+        <!-- Notebook Paper Container -->
+        <div class="notebook-container">
+            <!-- Binder Rings -->
+            <div class="spiral-rings">
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+                <div class="ring"></div><div class="ring"></div>
+            </div>
+
+            <!-- Paper Sheet -->
+            <div class="paper">
+                <div class="notebook-header">
+                    <input type="text" id="noteTitle" class="header-input title-input" placeholder="Page Title / Topic..." oninput="updateCurrentPageData()">
+                    <div class="header-meta">
+                        <input type="text" id="noteSubject" class="header-input" placeholder="Subject..." oninput="updateCurrentPageData()">
+                        <input type="date" id="noteDate" class="header-input" oninput="updateCurrentPageData()">
+                    </div>
+                </div>
+
+                <!-- Text Content Editor -->
+                <div id="editor" class="page-editor" contenteditable="true" placeholder="Start typing your notes here..." oninput="updateCurrentPageData()"></div>
+            </div>
+        </div>
+
+        <!-- Bottom Page Controls -->
+        <div class="page-navigation">
+            <button class="btn-tool" onclick="navigatePage(-1)">⬅️ Previous Page</button>
+            <span class="page-indicator" id="pageIndicator">Page 1 of 1</span>
+            <button class="btn-tool" onclick="navigatePage(1)">Next Page ➡️</button>
+        </div>
+
+        <div class="save-status" id="saveStatus">Auto-saved locally</div>
+    </main>
+
+    <script>
+        // Data Structure for Pages
+        let notebook = {
+            activePageIndex: 0,
+            pages: []
+        };
+
+        // Default Template for a Page
+        function createNewPageObject(title = "Untitled Page") {
+            const today = new Date().toISOString().split('T')[0];
+            return {
+                id: Date.now(),
+                title: title,
+                subject: "",
+                date: today,
+                fontStyle: "standard",
+                content: ""
+            };
+        }
+
+        // Initialize App
+        window.onload = function() {
+            const savedData = localStorage.getItem('student_notebook_data');
+            if (savedData) {
+                try {
+                    notebook = JSON.parse(savedData);
+                } catch(e) {
+                    initDefaultNotebook();
+                }
+            } else {
+                initDefaultNotebook();
+            }
+
+            renderPageList();
+            loadActivePage();
+        };
+
+        function initDefaultNotebook() {
+            notebook = {
+                activePageIndex: 0,
+                pages: [createNewPageObject("Page 1 - Introduction")]
+            };
+            saveToLocalStorage();
+        }
+
+        // Render Page List in Sidebar
+        function renderPageList() {
+            const pageListEl = document.getElementById('pageList');
+            pageListEl.innerHTML = '';
+
+            notebook.pages.forEach((page, index) => {
+                const li = document.createElement('li');
+                li.className = `page-item ${index === notebook.activePageIndex ? 'active' : ''}`;
+                li.onclick = () => switchPage(index);
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'page-item-title';
+                titleSpan.innerText = page.title || `Page ${index + 1}`;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-delete-page';
+                deleteBtn.innerHTML = '🗑️';
+                deleteBtn.title = 'Delete Page';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation(); // Prevent page switch trigger
+                    deletePage(index);
+                };
+
+                li.appendChild(titleSpan);
+                if (notebook.pages.length > 1) {
+                    li.appendChild(deleteBtn);
+                }
+                pageListEl.appendChild(li);
+            });
+
+            // Update page indicator footer
+            document.getElementById('pageIndicator').innerText = 
+                `Page ${notebook.activePageIndex + 1} of ${notebook.pages.length}`;
+        }
+
+        // Load Active Page Content into Editor
+        function loadActivePage() {
+            const page = notebook.pages[notebook.activePageIndex];
+            if (!page) return;
+
+            document.getElementById('noteTitle').value = page.title || '';
+            document.getElementById('noteSubject').value = page.subject || '';
+            document.getElementById('noteDate').value = page.date || '';
+            document.getElementById('editor').innerHTML = page.content || '';
+
+            // Set Font Style
+            const editor = document.getElementById('editor');
+            const fontSelect = document.querySelector('select');
+            if (page.fontStyle === 'handwritten') {
+                editor.classList.add('font-handwritten');
+                fontSelect.value = 'handwritten';
+            } else {
+                editor.classList.remove('font-handwritten');
+                fontSelect.value = 'standard';
+            }
+        }
+
+        // Update Notebook Object on Input
+        function updateCurrentPageData() {
+            const page = notebook.pages[notebook.activePageIndex];
+            if (!page) return;
+
+            page.title = document.getElementById('noteTitle').value;
+            page.subject = document.getElementById('noteSubject').value;
+            page.date = document.getElementById('noteDate').value;
+            page.content = document.getElementById('editor').innerHTML;
+
+            renderPageList();
+            saveToLocalStorage();
+        }
+
+        // Add a New Page
+        function addNewPage() {
+            const newPageIndex = notebook.pages.length;
+            const newPage = createNewPageObject(`Page ${newPageIndex + 1}`);
+            notebook.pages.push(newPage);
+            notebook.activePageIndex = newPageIndex;
+
+            saveToLocalStorage();
+            renderPageList();
+            loadActivePage();
+        }
+
+        // Switch to Selected Page
+        function switchPage(index) {
+            notebook.activePageIndex = index;
+            renderPageList();
+            loadActivePage();
+        }
+
+        // Delete Selected Page
+        function deletePage(index) {
+            if (notebook.pages.length <= 1) {
+                alert("Your notebook must contain at least one page!");
+                return;
+            }
+
+            if (confirm("Are you sure you want to delete this page?")) {
+                notebook.pages.splice(index, 1);
+                
+                // Adjust active index if necessary
+                if (notebook.activePageIndex >= notebook.pages.length) {
+                    notebook.activePageIndex = notebook.pages.length - 1;
+                }
+
+                saveToLocalStorage();
+                renderPageList();
+                loadActivePage();
+            }
+        }
+
+        // Navigate via Next/Prev Buttons
+        function navigatePage(direction) {
+            const newIndex = notebook.activePageIndex + direction;
+            if (newIndex >= 0 && newIndex < notebook.pages.length) {
+                switchPage(newIndex);
+            }
+        }
+
+        // Rich Text Formatting Executer
+        function formatDoc(cmd, value = null) {
+            document.execCommand(cmd, false, value);
+            document.getElementById('editor').focus();
+            updateCurrentPageData();
+        }
+
+        // Change Font Style
+        function changeFont(fontType) {
+            const editor = document.getElementById('editor');
+            const page = notebook.pages[notebook.activePageIndex];
+
+            if (fontType === 'handwritten') {
+                editor.classList.add('font-handwritten');
+                page.fontStyle = 'handwritten';
+            } else {
+                editor.classList.remove('font-handwritten');
+                page.fontStyle = 'standard';
+            }
+            saveToLocalStorage();
+        }
+
+        // Auto Save to LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('student_notebook_data', JSON.stringify(notebook));
+            const status = document.getElementById('saveStatus');
+            status.innerText = "Saving...";
+            setTimeout(() => {
+                status.innerText = "All changes saved locally";
+            }, 400);
+        }
+
+        // Download Current Page as TXT
+        function downloadCurrentPageTXT() {
+            const page = notebook.pages[notebook.activePageIndex];
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = page.content;
+            const plainText = tempDiv.innerText || tempDiv.textContent || "";
+
+            const textData = `TITLE: ${page.title}\nSUBJECT: ${page.subject}\nDATE: ${page.date}\n-----------------------------------\n\n${plainText}`;
+
+            downloadFile(`${sanitizeFilename(page.title)}.txt`, textData);
+        }
+
+        // Download Entire Notebook as single TXT
+        function downloadAllPagesTXT() {
+            let fullTextData = "===================================\n";
+            fullTextData += "         MY DIGITAL NOTEBOOK        \n";
+            fullTextData += "===================================\n\n";
+
+            notebook.pages.forEach((page, index) => {
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = page.content;
+                const plainText = tempDiv.innerText || tempDiv.textContent || "";
+
+                fullTextData += `--- PAGE ${index + 1}: ${page.title.toUpperCase()} ---\n`;
+                fullTextData += `SUBJECT: ${page.subject} | DATE: ${page.date}\n`;
+                fullTextData += `-----------------------------------\n`;
+                fullTextData += `${plainText}\n\n\n`;
+            });
+
+            downloadFile("My_Complete_Notebook.txt", fullTextData);
+        }
+
+        // Utility: File Download Trigger
+        function downloadFile(filename, text) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Utility: Filename Sanitizer
+        function sanitizeFilename(name) {
+            return (name || 'page_note').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        }
+
+        // Export PDF using print feature
+        function exportPDF() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
