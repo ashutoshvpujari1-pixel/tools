@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Professional Screen Recorder</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #f5f9ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 850px;
+            max-width: 95%;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .recording-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .option {
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .option:hover {
+            border-color: #1976d2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(25, 118, 210, 0.15);
+        }
+
+        .option-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .option h2 {
+            color: #0d47a1;
+            margin: 10px 0;
+        }
+
+        .option p {
+            color: #666;
+            line-height: 1.5;
+            min-height: 48px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 13px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .start-btn {
+            background: #1976d2;
+            color: white;
+        }
+
+        .start-btn:hover {
+            background: #0d47a1;
+        }
+
+        .stop-btn {
+            background: #d32f2f;
+            color: white;
+            display: none;
+        }
+
+        .stop-btn:hover {
+            background: #b71c1c;
+        }
+
+        .download-btn {
+            background: #2e7d32;
+            color: white;
+            display: none;
+        }
+
+        .download-btn:hover {
+            background: #1b5e20;
+        }
+
+        .status {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f5f5f5;
+            text-align: center;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .recording {
+            color: #d32f2f;
+            background: #ffebee;
+        }
+
+        .timer {
+            display: none;
+            font-size: 24px;
+            color: #d32f2f;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .preview-container {
+            display: none;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .preview-container video {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            background: black;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .browser-note {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff8e1;
+            border-left: 5px solid #ffb300;
+            border-radius: 5px;
+            color: #795548;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .recording-options {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🎥 Screen Recorder</h1>
+        <p>Record your screen, microphone and webcam</p></br>
+        <p>Created by Ashutosh Pujari. Mobile: 9860985354 Email: ashutoshvpujari@rediffmail.com</p>
+    </div>
+
+    <div class="content">
+
+        <div class="recording-options">
+
+            <!-- SCREEN ONLY -->
+            <div class="option">
+                <div class="option-icon">🖥️</div>
+
+                <h2>Screen Only</h2>
+
+                <p>
+                    Record your screen, application window or browser tab.
+                </p>
+
+                <button
+                    id="screenOnlyBtn"
+                    class="start-btn"
+                    onclick="startScreenRecording()">
+                    ▶ Start Screen Recording
+                </button>
+            </div>
+
+            <!-- SCREEN + AUDIO + CAMERA -->
+            <div class="option">
+                <div class="option-icon">🎬</div>
+
+                <h2>Screen + Audio + Camera</h2>
+
+                <p>
+                    Record screen, microphone audio and webcam video together.
+                </p>
+
+                <button
+                    id="fullRecordingBtn"
+                    class="start-btn"
+                    onclick="startFullRecording()">
+                    ▶ Start Full Recording
+                </button>
+            </div>
+
+        </div>
+
+        <div id="status" class="status">
+            Ready to record
+        </div>
+
+        <div id="timer" class="timer">
+            00:00
+        </div>
+
+        <div class="controls">
+
+            <button
+                id="stopBtn"
+                class="stop-btn"
+                onclick="stopRecording()">
+                ⏹ Stop Recording
+            </button>
+
+            <button
+                id="downloadBtn"
+                class="download-btn"
+                onclick="downloadRecording()">
+                ⬇ Download Recording
+            </button>
+
+        </div>
+
+        <div id="previewContainer" class="preview-container">
+
+            <h3>Recording Preview</h3>
+
+            <video
+                id="preview"
+                controls>
+            </video>
+
+        </div>
+
+        <div class="browser-note">
+
+            <strong>Important:</strong>
+
+            Your browser will ask permission to share your screen,
+            microphone and camera. No recording is uploaded to a server.
+            The recording is created locally in your browser.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let mediaRecorder;
+
+    let recordedChunks = [];
+
+    let recordedBlob = null;
+
+    let recordingMode = "";
+
+    let screenStream = null;
+    let cameraStream = null;
+    let microphoneStream = null;
+
+    let timerInterval;
+    let recordingSeconds = 0;
+
+
+    /*
+     * SCREEN ONLY RECORDING
+     */
+    async function startScreenRecording() {
+
+        try {
+
+            recordingMode = "screen";
+
+            recordedChunks = [];
+
+            updateStatus(
+                "Select the screen, window or browser tab you want to record...",
+                false
+            );
+
+            /*
+             * Ask browser to share screen.
+             */
+            screenStream = await navigator.mediaDevices.getDisplayMedia({
+
+                video: {
+                    frameRate: 30
+                },
+
+                audio: true
+
+            });
+
+
+            /*
+             * Create recorder.
+             */
+            mediaRecorder = new MediaRecorder(
+                screenStream,
+                getRecorderOptions()
+            );
+
+
+            setupRecorder();
+
+
+            mediaRecorder.start();
+
+            startTimer();
+
+            showRecordingControls();
+
+            updateStatus(
+                "🔴 Screen recording is in progress...",
+                true
+            );
+
+
+            /*
+             * If user stops sharing from browser's
+             * own screen sharing control.
+             */
+            screenStream.getVideoTracks()[0].onended = function () {
+
+                if (mediaRecorder &&
+                    mediaRecorder.state !== "inactive") {
+
+                    stopRecording();
+
+                }
+
+            };
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            updateStatus(
+                "Screen recording was cancelled or permission was denied.",
+                false
+            );
+
+        }
+
+    }
+
+
+    /*
+     * FULL RECORDING
+     *
+     * Screen + microphone + webcam
+     */
+    async function startFullRecording() {
+
+        try {
+
+            recordingMode = "full";
+
+            recordedChunks = [];
+
+
+            /*
+             * STEP 1:
+             * Select screen.
+             */
+            updateStatus(
+                "Select the screen/window/tab to record...",
+                false
+            );
+
+            screenStream =
+                await navigator.mediaDevices.getDisplayMedia({
+
+                    video: {
+                        frameRate: 30
+                    },
+
+                    audio: true
+
+                });
+
+
+            /*
+             * STEP 2:
+             * Request camera and microphone.
+             */
+            updateStatus(
+                "Requesting camera and microphone permission...",
+                false
+            );
+
+            cameraStream =
+                await navigator.mediaDevices.getUserMedia({
+
+                    video: {
+                        width: {
+                            ideal: 1280
+                        },
+
+                        height: {
+                            ideal: 720
+                        }
+                    },
+
+                    audio: true
+
+                });
+
+
+            /*
+             * STEP 3:
+             *
+             * Combine screen and webcam video.
+             *
+             * The webcam appears as a small
+             * picture-in-picture window.
+             */
+            const canvas = document.createElement("canvas");
+
+            canvas.width = 1280;
+            canvas.height = 720;
+
+            const ctx = canvas.getContext("2d");
+
+
+            const screenVideo =
+                document.createElement("video");
+
+            screenVideo.srcObject = screenStream;
+
+            screenVideo.muted = true;
+
+            await screenVideo.play();
+
+
+            const cameraVideo =
+                document.createElement("video");
+
+            cameraVideo.srcObject = cameraStream;
+
+            cameraVideo.muted = true;
+
+            await cameraVideo.play();
+
+
+            /*
+             * Draw screen and webcam continuously.
+             */
+            function drawVideo() {
+
+                if (!screenStream ||
+                    screenStream.getVideoTracks()[0].readyState === "ended") {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Draw screen.
+                 */
+                ctx.drawImage(
+                    screenVideo,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+                /*
+                 * Webcam picture-in-picture.
+                 */
+                const cameraWidth = 260;
+                const cameraHeight = 195;
+
+                const cameraX =
+                    canvas.width - cameraWidth - 20;
+
+                const cameraY =
+                    canvas.height - cameraHeight - 20;
+
+
+                /*
+                 * Webcam border.
+                 */
+                ctx.fillStyle = "white";
+
+                ctx.fillRect(
+                    cameraX - 4,
+                    cameraY - 4,
+                    cameraWidth + 8,
+                    cameraHeight + 8
+                );
+
+
+                /*
+                 * Webcam.
+                 */
+                ctx.drawImage(
+                    cameraVideo,
+                    cameraX,
+                    cameraY,
+                    cameraWidth,
+                    cameraHeight
+                );
+
+
+                requestAnimationFrame(drawVideo);
+
+            }
+
+
+            drawVideo();
+
+
+            /*
+             * Canvas becomes the final video stream.
+             */
+            const canvasStream =
+                canvas.captureStream(30);
+
+
+            /*
+             * Add microphone audio.
+             *
+             * We also attempt to include system audio
+             * captured from the screen.
+             */
+            const audioContext =
+                new AudioContext();
+
+            const destination =
+                audioContext.createMediaStreamDestination();
+
+
+            /*
+             * Microphone.
+             */
+            if (cameraStream.getAudioTracks().length > 0) {
+
+                const micSource =
+                    audioContext.createMediaStreamSource(
+                        cameraStream
+                    );
+
+                micSource.connect(destination);
+
+            }
+
+
+            /*
+             * System/tab audio from screen sharing.
+             */
+            if (screenStream.getAudioTracks().length > 0) {
+
+                const systemSource =
+                    audioContext.createMediaStreamSource(
+                        new MediaStream(
+                            screenStream.getAudioTracks()
+                        )
+                    );
+
+                systemSource.connect(destination);
+
+            }
+
+
+            /*
+             * Add mixed audio to canvas stream.
+             */
+            destination.stream
+                .getAudioTracks()
+                .forEach(track => {
+
+                    canvasStream.addTrack(track);
+
+                });
+
+
+            /*
+             * Create MediaRecorder.
+             */
+            mediaRecorder = new MediaRecorder(
+                canvasStream,
+                getRecorderOptions()
+            );
+
+
+            setupRecorder();
+
+
+            mediaRecorder.start();
+
+            startTimer();
+
+            showRecordingControls();
+
+            updateStatus(
+                "🔴 Screen + Audio + Camera recording is in progress...",
+                true
+            );
+
+
+            /*
+             * Detect user stopping screen sharing.
+             */
+            screenStream.getVideoTracks()[0].onended = function () {
+
+                if (mediaRecorder &&
+                    mediaRecorder.state !== "inactive") {
+
+                    stopRecording();
+
+                }
+
+            };
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            stopAllStreams();
+
+            updateStatus(
+                "Recording could not be started. Please allow screen, camera and microphone permissions.",
+                false
+            );
+
+        }
+
+    }
+
+
+    /*
+     * MediaRecorder settings.
+     */
+    function getRecorderOptions() {
+
+        if (
+            MediaRecorder.isTypeSupported(
+                "video/webm;codecs=vp9,opus"
+            )
+        ) {
+
+            return {
+                mimeType:
+                    "video/webm;codecs=vp9,opus"
+            };
+
+        }
+
+
+        if (
+            MediaRecorder.isTypeSupported(
+                "video/webm;codecs=vp8,opus"
+            )
+        ) {
+
+            return {
+                mimeType:
+                    "video/webm;codecs=vp8,opus"
+            };
+
+        }
+
+
+        return {
+            mimeType: "video/webm"
+        };
+
+    }
+
+
+    /*
+     * Recorder events.
+     */
+    function setupRecorder() {
+
+        mediaRecorder.ondataavailable =
+            function (event) {
+
+                if (event.data &&
+                    event.data.size > 0) {
+
+                    recordedChunks.push(
+                        event.data
+                    );
+
+                }
+
+            };
+
+
+        mediaRecorder.onstop =
+            function () {
+
+                recordedBlob = new Blob(
+                    recordedChunks,
+                    {
+                        type: "video/webm"
+                    }
+                );
+
+
+                const videoURL =
+                    URL.createObjectURL(
+                        recordedBlob
+                    );
+
+
+                document.getElementById(
+                    "preview"
+                ).src = videoURL;
+
+
+                document.getElementById(
+                    "previewContainer"
+                ).style.display = "block";
+
+
+                document.getElementById(
+                    "downloadBtn"
+                ).style.display = "inline-block";
+
+
+                updateStatus(
+                    "✅ Recording completed successfully.",
+                    false
+                );
+
+            };
+
+    }
+
+
+    /*
+     * STOP RECORDING
+     */
+    function stopRecording() {
+
+        if (mediaRecorder &&
+            mediaRecorder.state !== "inactive") {
+
+            mediaRecorder.stop();
+
+        }
+
+
+        stopTimer();
+
+        stopAllStreams();
+
+
+        document.getElementById(
+            "stopBtn"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "screenOnlyBtn"
+        ).style.display = "inline-block";
+
+
+        document.getElementById(
+            "fullRecordingBtn"
+        ).style.display = "inline-block";
+
+    }
+
+
+    /*
+     * Stop all media streams.
+     */
+    function stopAllStreams() {
+
+        if (screenStream) {
+
+            screenStream
+                .getTracks()
+                .forEach(track => track.stop());
+
+            screenStream = null;
+
+        }
+
+
+        if (cameraStream) {
+
+            cameraStream
+                .getTracks()
+                .forEach(track => track.stop());
+
+            cameraStream = null;
+
+        }
+
+
+        if (microphoneStream) {
+
+            microphoneStream
+                .getTracks()
+                .forEach(track => track.stop());
+
+            microphoneStream = null;
+
+        }
+
+    }
+
+
+    /*
+     * DOWNLOAD
+     */
+    function downloadRecording() {
+
+        if (!recordedBlob) {
+
+            return;
+
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                recordedBlob
+            );
+
+
+        const link =
+            document.createElement("a");
+
+
+        const timestamp =
+            new Date()
+                .toISOString()
+                .replace(/[:.]/g, "-");
+
+
+        link.href = url;
+
+        link.download =
+            "screen-recording-" +
+            timestamp +
+            ".webm";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+
+        setTimeout(
+            () => URL.revokeObjectURL(url),
+            1000
+        );
+
+    }
+
+
+    /*
+     * SHOW RECORDING CONTROLS
+     */
+    function showRecordingControls() {
+
+        document.getElementById(
+            "stopBtn"
+        ).style.display = "inline-block";
+
+
+        document.getElementById(
+            "downloadBtn"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "previewContainer"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "screenOnlyBtn"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "fullRecordingBtn"
+        ).style.display = "none";
+
+    }
+
+
+    /*
+     * STATUS
+     */
+    function updateStatus(
+        message,
+        isRecording
+    ) {
+
+        const status =
+            document.getElementById("status");
+
+
+        status.innerHTML = message;
+
+
+        if (isRecording) {
+
+            status.classList.add("recording");
+
+        }
+        else {
+
+            status.classList.remove("recording");
+
+        }
+
+    }
+
+
+    /*
+     * TIMER
+     */
+    function startTimer() {
+
+        recordingSeconds = 0;
+
+
+        const timer =
+            document.getElementById("timer");
+
+
+        timer.style.display = "block";
+
+
+        timerInterval =
+            setInterval(
+                function () {
+
+                    recordingSeconds++;
+
+
+                    const minutes =
+                        Math.floor(
+                            recordingSeconds / 60
+                        );
+
+
+                    const seconds =
+                        recordingSeconds % 60;
+
+
+                    timer.innerHTML =
+                        String(minutes).padStart(2, "0") +
+                        ":" +
+                        String(seconds).padStart(2, "0");
+
+                },
+                1000
+            );
+
+    }
+
+
+    function stopTimer() {
+
+        clearInterval(
+            timerInterval
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
