@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashutosh Pujari | Web Tools & Utilities Suite</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #3B82F6;
+            --primary-hover: #2563EB;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --header-bg: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* --- HEADER STYLES --- */
+        header {
+            background: var(--header-bg);
+            color: #FFFFFF;
+            padding: 3.5rem 1.5rem 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3B82F6, #6366F1, #8B5CF6);
+        }
+
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.15);
+            color: #60A5FA;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: #94A3B8;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        /* --- MAIN CONTENT STYLES --- */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- CARD STYLES --- */
+        .tool-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.75rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease-in-out;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background-color: #EFF6FF;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        .tool-card:hover .card-icon {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .card-content h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .card-content p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .card-action i {
+            transition: transform 0.2s ease;
+        }
+
+        .tool-card:hover .card-action i {
+            transform: translateX(4px);
+        }
+
+        /* --- FOOTER STYLES --- */
+        footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-item i {
+            color: var(--primary-color);
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 2.5rem 1rem 2rem;
+            }
+            
+            header h1 {
+                font-size: 1.75rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <span class="badge">Techno Freelancer</span>
+            <h1>Ashutosh Pujari</h1>
+            <p>Interactive Web Utilities & Digital Productivity Tools</p>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <div class="section-title">
+            <i class="fa-solid fa-layer-group" style="color: var(--primary-color);"></i>
+            <span>Available Applications & Tools</span>
+        </div>
+
+        <div class="tools-grid">
+            
+            <!-- Tool 1 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/ScreenCapture_Audio_Video_Recording.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Screen Capture & Recorder</h2>
+                        <p>Capture your screen, record high-quality audio, and record video seamlessly directly from your browser.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Tool 2 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_First.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-address-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 1)</h2>
+                        <p>Generate clean, classic, and professional digital business cards with effortless instant formatting.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Tool 3 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_Second.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 2)</h2>
+                        <p>Design modern, stylish visiting cards crafted specifically for contemporary corporate profiles.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Tool 4 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_Third.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 3)</h2>
+                        <p>Create elegant, executive-grade business cards tailored for freelancers and entrepreneurs.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Tool 5 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/compressor.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-file-zipper"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>File & Image Compressor</h2>
+                        <p>Quickly optimize and compress your files and images locally without sacrificing quality.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- Tool 6 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/notebook.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Digital Notebook</h2>
+                        <p>A lightweight, distraction-free web notepad to quickly jot down, organize, and store your thoughts.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <p>&copy; Created by <strong>Ashutosh Pujari</strong>. All rights reserved.</p>
+            </div>
+            <div class="contact-links">
+                <a href="mailto:ashutoshvpujari@rediffmail.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>ashutoshvpujari@rediffmail.com</span>
+                </a>
+                <a href="tel:9860985354" class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>9860985354</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
