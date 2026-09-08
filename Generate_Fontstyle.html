@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Font Style Generator</title>
+    <!-- Google Fonts import for enhanced Word/decorative font rendering support -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Dancing+Script&family=Great+Vibes&family=Lora&family=Montserrat&family=Open+Sans&family=Pacifico&family=Playfair+Display&family=Roboto&family=Roboto+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+            --muted: #64748b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 24px 12px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--text);
+            font-size: 28px;
+        }
+
+        /* Controls Card */
+        .controls-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            user-select: none;
+            margin-top: 22px;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .btn-main {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .btn-main:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Global Actions Bar */
+        .global-actions {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .global-actions-title {
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 16px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: var(--text);
+        }
+
+        /* Font Results List */
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .font-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .font-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .font-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .font-preview {
+            word-break: break-word;
+            white-space: pre-wrap;
+            line-height: 1.4;
+            color: #0f172a;
+            overflow-x: auto;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f172a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .controls-card, .global-actions, .font-card-header .action-btns, .tabs, h1 {
+                display: none !important;
+            }
+            .font-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Word Font Style Generator</h1>
+
+    <div class="controls-card">
+        <!-- Input Type Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('textbox')">Single Line Input</button>
+            <button class="tab-btn" onclick="switchTab('textarea')">Paragraph Input (Text Area)</button>
+        </div>
+
+        <!-- Single Line Text Box Input -->
+        <div id="textboxTab" class="tab-content active">
+            <input type="text" id="textboxInput" placeholder="Enter text here (e.g., Ashutosh Pujari, Brand Name, Sample Text)..." value="Ashutosh Pujari">
+        </div>
+
+        <!-- Multi-Line Text Area Input -->
+        <div id="textareaTab" class="tab-content">
+            <textarea id="textareaInput" placeholder="Enter paragraph content here...">Ashutosh Pujari developed this feature to test how different fonts look. This will help in taking decision about font style to be used..</textarea>
+        </div>
+
+        <!-- Formatting Controls -->
+        <div class="options-grid">
+            <div class="option-group">
+                <label for="fontSize">Font Size</label>
+                <select id="fontSize">
+                    <option value="12px">12 px</option>
+                    <option value="14px">14 px</option>
+                    <option value="16px">16 px</option>
+                    <option value="18px">18 px</option>
+                    <option value="20px">20 px</option>
+                    <option value="24px" selected>24 px</option>
+                    <option value="28px">28 px</option>
+                    <option value="32px">32 px</option>
+                    <option value="36px">36 px</option>
+                    <option value="48px">48 px</option>
+                    <option value="60px">60 px</option>
+                    <option value="72px">72 px</option>
+                </select>
+            </div>
+
+            <div class="option-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="italicCheckbox">
+                    Italic Style
+                </label>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <button class="btn-main" onclick="generateFontStyles()">Show Different Fonts Styles</button>
+    </div>
+
+    <!-- Global Action Bar for Entire Output -->
+    <div id="globalActions" class="global-actions">
+        <span class="global-actions-title">Entire Output Actions:</span>
+        <div class="action-btns">
+            <button class="btn-action" onclick="copyEntireOutput()">📋 Copy All</button>
+            <button class="btn-action" onclick="printEntireOutput()">🖨️ Print All</button>
+            <button class="btn-action" onclick="emailEntireOutput()">✉️ Email All</button>
+            <button class="btn-action" onclick="shareEntireOutput()">🔗 Share All</button>
+        </div>
+    </div>
+
+    <!-- Output List -->
+    <div id="resultsContainer" class="results-list"></div>
+</div>
+
+<!-- Toast element for feedback -->
+<div id="toast" class="toast"></div>
+
+<script>
+    // Comprehensive Microsoft Word Standard Fonts & Styles List
+    const wordFonts = [
+        { name: "Arial", style: "Arial, 'Helvetica Neue', Helvetica, sans-serif" },
+        { name: "Calibri", style: "Calibri, 'Segoe UI', Candara, sans-serif" },
+        { name: "Cambria", style: "Cambria, Georgia, serif" },
+        { name: "Candara", style: "Candara, Arial, sans-serif" },
+        { name: "Century Gothic", style: "'Century Gothic', AppleGothic, sans-serif" },
+        { name: "Comic Sans MS", style: "'Comic Sans MS', cursive, sans-serif" },
+        { name: "Consolas", style: "Consolas, 'Courier New', monospace" },
+        { name: "Courier New", style: "'Courier New', Courier, monospace" },
+        { name: "Franklin Gothic Medium", style: "'Franklin Gothic Medium', 'Arial Narrow', sans-serif" },
+        { name: "Garamond", style: "Garamond, 'Baskerville', serif" },
+        { name: "Georgia", style: "Georgia, serif" },
+        { name: "Impact", style: "Impact, Charcoal, sans-serif" },
+        { name: "Lucida Console", style: "'Lucida Console', Monaco, monospace" },
+        { name: "Lucida Sans Unicode", style: "'Lucida Sans Unicode', 'Lucida Grande', sans-serif" },
+        { name: "Monotype Corsiva / Script", style: "'Dancing Script', 'Monotype Corsiva', cursive" },
+        { name: "Palatino Linotype", style: "'Palatino Linotype', 'Book Antiqua', Palatino, serif" },
+        { name: "Segoe UI", style: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" },
+        { name: "Tahoma", style: "Tahoma, Geneva, sans-serif" },
+        { name: "Times New Roman", style: "'Times New Roman', Times, serif" },
+        { name: "Trebuchet MS", style: "'Trebuchet MS', sans-serif" },
+        { name: "Verdana", style: "Verdana, Geneva, sans-serif" },
+        { name: "Baskerville", style: "Baskerville, 'Baskerville Old Face', 'Hoefler Text', Garamond, serif" },
+        { name: "Bodoni MT", style: "'Bodoni MT', Didot, serif" },
+        { name: "Bookman Old Style", style: "'Bookman Old Style', Georgia, serif" },
+        { name: "Copperplate Gothic", style: "'Copperplate Gothic Bold', Copperplate, sans-serif" },
+        { name: "Gill Sans", style: "'Gill Sans', 'Gill Sans MT', sans-serif" },
+        { name: "Perpetua", style: "Perpetua, Palatino, serif" },
+        { name: "Rockwell", style: "Rockwell, 'Courier Bold', serif" },
+        { name: "Calligraphy / Great Vibes", style: "'Great Vibes', cursive" },
+        { name: "Handwriting / Pacifico", style: "'Pacifico', cursive" },
+        { name: "Serif / Playfair Display", style: "'Playfair Display', serif" },
+        { name: "Classy / Cinzel", style: "'Cinzel', serif" },
+        { name: "Modern Sans / Montserrat", style: "'Montserrat', sans-serif" },
+        { name: "Code Mono / Roboto Mono", style: "'Roboto Mono', monospace" }
+    ];
+
+    let currentTab = 'textbox';
+
+    // Tab Switcher logic
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        if (tab === 'textbox') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('textboxTab').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('textareaTab').classList.add('active');
+        }
+    }
+
+    // Generate Font Styles
+    function generateFontStyles() {
+        const textInput = currentTab === 'textbox' 
+            ? document.getElementById('textboxInput').value.trim() 
+            : document.getElementById('textareaInput').value.trim();
+
+        if (!textInput) {
+            alert('Please enter some text or paragraph content first!');
+            return;
+        }
+
+        const fontSize = document.getElementById('fontSize').value;
+        const isItalic = document.getElementById('italicCheckbox').checked;
+
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = '';
+
+        wordFonts.forEach((font, index) => {
+            const card = document.createElement('div');
+            card.className = 'font-card';
+
+            const fontStyleCss = `font-family: ${font.style}; font-size: ${fontSize}; font-style: ${isItalic ? 'italic' : 'normal'};`;
+
+            card.innerHTML = `
+                <div class="font-card-header">
+                    <span class="font-name">${font.name}</span>
+                    <div class="action-btns">
+                        <button class="btn-action" onclick="copySingleFont('${index}')">📋 Copy</button>
+                        <button class="btn-action" onclick="printSingleFont('${index}')">🖨️ Print</button>
+                        <button class="btn-action" onclick="emailSingleFont('${index}')">✉️ Email</button>
+                        <button class="btn-action" onclick="shareSingleFont('${index}')">🔗 Share</button>
+                    </div>
+                </div>
+                <div id="preview-${index}" class="font-preview" style="${fontStyleCss}">${escapeHtml(textInput)}</div>
+            `;
+
+            resultsContainer.appendChild(card);
+        });
+
+        // Show global actions bar
+        document.getElementById('globalActions').style.display = 'flex';
+    }
+
+    // Helper: Toast message
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 2500);
+    }
+
+    // Helper: Get text input
+    function getEnteredText() {
+        return currentTab === 'textbox' 
+            ? document.getElementById('textboxInput').value 
+            : document.getElementById('textareaInput').value;
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    /* --- Individual Item Actions --- */
+
+    function copySingleFont(index) {
+        const text = getEnteredText();
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`Copied text for "${wordFonts[index].name}" to clipboard!`);
+        });
+    }
+
+    function printSingleFont(index) {
+        const font = wordFonts[index];
+        const text = getEnteredText();
+        const fontSize = document.getElementById('fontSize').value;
+        const isItalic = document.getElementById('italicCheckbox').checked;
+
+        const printWin = window.open('', '_blank');
+        printWin.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Print - ${font.name}</title>
+                <style>
+                    body { 
+                        font-family: ${font.style}; 
+                        font-size: ${fontSize}; 
+                        font-style: ${isItalic ? 'italic' : 'normal'}; 
+                        padding: 40px; 
+                        line-height: 1.5;
+                    }
+                    .header {
+                        font-family: sans-serif;
+                        font-size: 13px;
+                        color: #666;
+                        border-bottom: 1px solid #ccc;
+                        padding-bottom: 8px;
+                        margin-bottom: 24px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">Font Style: <strong>${font.name}</strong> | Size: <strong>${fontSize}</strong></div>
+                <div>${escapeHtml(text).replace(/\n/g, '<br>')}</div>
+            </body>
+            </html>
+        `);
+        printWin.document.close();
+        printWin.focus();
+        setTimeout(() => {
+            printWin.print();
+            printWin.close();
+        }, 300);
+    }
+
+    function emailSingleFont(index) {
+        const font = wordFonts[index];
+        const text = getEnteredText();
+        const subject = `Font Preview: ${font.name}`;
+        const body = `Font Style: ${font.name}\n\nContent:\n${text}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function shareSingleFont(index) {
+        const font = wordFonts[index];
+        const text = getEnteredText();
+        const shareData = {
+            title: `Font Style: ${font.name}`,
+            text: `[Font: ${font.name}]\n${text}`
+        };
+
+        if (navigator.share) {
+            navigator.share(shareData).catch(() => {});
+        } else {
+            copySingleFont(index);
+            showToast("Sharing not supported directly. Text copied to clipboard!");
+        }
+    }
+
+    /* --- Entire Output Actions --- */
+
+    function getAllGeneratedText() {
+        const text = getEnteredText();
+        const fontSize = document.getElementById('fontSize').value;
+        const isItalic = document.getElementById('italicCheckbox').checked ? " (Italic)" : "";
+
+        let summary = `Generated Font Previews (${fontSize}${isItalic}):\n\n`;
+        wordFonts.forEach(font => {
+            summary += `--- [Font: ${font.name}] ---\n${text}\n\n`;
+        });
+        return summary;
+    }
+
+    function copyEntireOutput() {
+        const content = getAllGeneratedText();
+        navigator.clipboard.writeText(content).then(() => {
+            showToast("All font previews copied to clipboard!");
+        });
+    }
+
+    function printEntireOutput() {
+        window.print();
+    }
+
+    function emailEntireOutput() {
+        const content = getAllGeneratedText();
+        const subject = "All Font Style Previews";
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(content)}`;
+    }
+
+    function shareEntireOutput() {
+        const content = getAllGeneratedText();
+        const shareData = {
+            title: "All Font Style Previews",
+            text: content
+        };
+
+        if (navigator.share) {
+            navigator.share(shareData).catch(() => {});
+        } else {
+            copyEntireOutput();
+            showToast("Sharing not supported directly. All text copied to clipboard!");
+        }
+    }
+
+    // Auto generate on page load for initial demonstration
+    window.onload = function() {
+        generateFontStyles();
+    };
+</script>
+
+</body>
+</html>
