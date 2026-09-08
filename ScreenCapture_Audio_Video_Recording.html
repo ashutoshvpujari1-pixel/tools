@@ -177,6 +177,23 @@
             line-height: 1.5;
         }
 
+        /* Floating Live Webcam Overlay */
+        .floating-webcam {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 220px;
+            height: 165px;
+            border-radius: 12px;
+            border: 3px solid #1976d2;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            object-fit: cover;
+            display: none;
+            background: #000;
+            transform: scaleX(-1);
+        }
+
         @media (max-width: 700px) {
             .recording-options {
                 grid-template-columns: 1fr;
@@ -190,6 +207,9 @@
 </head>
 
 <body>
+
+<!-- Live floating camera preview during active recording -->
+<video id="floatingWebcam" class="floating-webcam" autoplay muted playsinline></video>
 
 <div class="container">
 
@@ -306,6 +326,7 @@
     let screenStream = null;
     let cameraStream = null;
     let microphoneStream = null;
+    let drawInterval = null;
 
     let timerInterval;
     let recordingSeconds = 0;
@@ -458,6 +479,16 @@
 
 
             /*
+             * Show live floating camera overlay on page
+             */
+            const floatingWebcam = document.getElementById("floatingWebcam");
+            if (floatingWebcam) {
+                floatingWebcam.srcObject = cameraStream;
+                floatingWebcam.style.display = "block";
+            }
+
+
+            /*
              * STEP 3:
              *
              * Combine screen and webcam video.
@@ -473,95 +504,111 @@
             const ctx = canvas.getContext("2d");
 
 
-            const screenVideo =
-                document.createElement("video");
-
+            const screenVideo = document.createElement("video");
             screenVideo.srcObject = screenStream;
-
             screenVideo.muted = true;
+            screenVideo.playsInline = true;
+            screenVideo.autoplay = true;
+
+            const cameraVideo = document.createElement("video");
+            cameraVideo.srcObject = cameraStream;
+            cameraVideo.muted = true;
+            cameraVideo.playsInline = true;
+            cameraVideo.autoplay = true;
+
+            /*
+             * Wait until video streams are ready
+             */
+            await Promise.all([
+                new Promise((resolve) => {
+                    if (screenVideo.readyState >= 2) resolve();
+                    else screenVideo.onloadeddata = resolve;
+                }),
+                new Promise((resolve) => {
+                    if (cameraVideo.readyState >= 2) resolve();
+                    else cameraVideo.onloadeddata = resolve;
+                })
+            ]);
 
             await screenVideo.play();
-
-
-            const cameraVideo =
-                document.createElement("video");
-
-            cameraVideo.srcObject = cameraStream;
-
-            cameraVideo.muted = true;
-
             await cameraVideo.play();
 
 
             /*
-             * Draw screen and webcam continuously.
+             * Draw screen and webcam continuously using setInterval
+             * to keep running when changing tabs/windows.
              */
             function drawVideo() {
 
                 if (!screenStream ||
                     screenStream.getVideoTracks()[0].readyState === "ended") {
 
+                    if (drawInterval) clearInterval(drawInterval);
                     return;
 
                 }
 
+                ctx.fillStyle = "#000000";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 /*
                  * Draw screen.
                  */
-                ctx.drawImage(
-                    screenVideo,
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+                if (screenVideo.readyState >= 2) {
+                    ctx.drawImage(
+                        screenVideo,
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+                }
 
 
                 /*
                  * Webcam picture-in-picture.
                  */
-                const cameraWidth = 260;
-                const cameraHeight = 195;
+                if (cameraVideo.readyState >= 2) {
+                    const cameraWidth = 260;
+                    const cameraHeight = 195;
 
-                const cameraX =
-                    canvas.width - cameraWidth - 20;
+                    const cameraX =
+                        canvas.width - cameraWidth - 20;
 
-                const cameraY =
-                    canvas.height - cameraHeight - 20;
-
-
-                /*
-                 * Webcam border.
-                 */
-                ctx.fillStyle = "white";
-
-                ctx.fillRect(
-                    cameraX - 4,
-                    cameraY - 4,
-                    cameraWidth + 8,
-                    cameraHeight + 8
-                );
+                    const cameraY =
+                        canvas.height - cameraHeight - 20;
 
 
-                /*
-                 * Webcam.
-                 */
-                ctx.drawImage(
-                    cameraVideo,
-                    cameraX,
-                    cameraY,
-                    cameraWidth,
-                    cameraHeight
-                );
+                    /*
+                     * Webcam border.
+                     */
+                    ctx.fillStyle = "white";
+
+                    ctx.fillRect(
+                        cameraX - 4,
+                        cameraY - 4,
+                        cameraWidth + 8,
+                        cameraHeight + 8
+                    );
 
 
-                requestAnimationFrame(drawVideo);
+                    /*
+                     * Webcam.
+                     */
+                    ctx.drawImage(
+                        cameraVideo,
+                        cameraX,
+                        cameraY,
+                        cameraWidth,
+                        cameraHeight
+                    );
+                }
 
             }
 
 
-            drawVideo();
+            if (drawInterval) clearInterval(drawInterval);
+            drawInterval = setInterval(drawVideo, 1000 / 30);
 
 
             /*
@@ -824,6 +871,21 @@
      * Stop all media streams.
      */
     function stopAllStreams() {
+
+        if (drawInterval) {
+
+            clearInterval(drawInterval);
+
+            drawInterval = null;
+
+        }
+
+        const floatingWebcam = document.getElementById("floatingWebcam");
+        if (floatingWebcam) {
+            floatingWebcam.style.display = "none";
+            floatingWebcam.srcObject = null;
+        }
+
 
         if (screenStream) {
 
