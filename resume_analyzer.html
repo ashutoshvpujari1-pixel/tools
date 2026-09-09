@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer & Job Advisor</title>
+    <!-- Tailwind CSS for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF.js for parsing PDF files client-side -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white py-6 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-file-invoice text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-tight">Resume Advisor & Analyzer</h1>
+            </div>
+            <span class="text-xs bg-indigo-500 text-indigo-100 px-3 py-1 rounded-full font-medium">100% Client-Side & Private</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- Input & Target Job Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Upload Box -->
+            <div class="md:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 custom-shadow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900 mb-2">1. Upload Your Resume</h2>
+                    <p class="text-sm text-slate-500 mb-4">Upload your resume in <strong>PDF</strong> or <strong>TXT</strong> format to start analysis.</p>
+                </div>
+                
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-50 hover:bg-indigo-50/30">
+                    <input type="file" id="resume-file" accept=".pdf, .txt" class="hidden">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500 mb-3"></i>
+                    <p class="text-slate-700 font-medium">Click to upload or drag & drop</p>
+                    <p class="text-xs text-slate-400 mt-1">PDF or TXT (Max size: 5MB)</p>
+                    <p id="file-name" class="mt-3 text-sm font-semibold text-indigo-600 hidden"></p>
+                </div>
+            </div>
+
+            <!-- Optional Job Role Target -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900 mb-2">2. Target Job Role (Optional)</h2>
+                    <p class="text-sm text-slate-500 mb-4">Specify the job title you are targeting for tailored keyword matching.</p>
+                    <input type="text" id="target-role" placeholder="e.g. Frontend Developer, Data Analyst" 
+                           class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                </div>
+                <button id="analyze-btn" onclick="processResume()" disabled 
+                        class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    <span>Analyze Resume</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-spinner" class="hidden text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent mb-4"></div>
+            <p class="text-slate-600 font-medium">Parsing resume text & running ATS checks...</p>
+        </div>
+
+        <!-- Results Dashboard (Hidden by default) -->
+        <div id="results-dashboard" class="hidden space-y-8">
+
+            <!-- Score Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Overall ATS Score -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow text-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Overall Score</span>
+                    <div id="score-val" class="text-4xl font-extrabold text-indigo-600 my-2">0/100</div>
+                    <div id="score-badge" class="inline-block text-xs px-2.5 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600">--</div>
+                </div>
+
+                <!-- Word Count -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow text-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Length & Volume</span>
+                    <div id="word-count" class="text-3xl font-bold text-slate-800 my-2">0 words</div>
+                    <p id="word-count-status" class="text-xs text-slate-500">Ideal: 400 - 800 words</p>
+                </div>
+
+                <!-- Action Verbs & Metrics -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow text-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Measurable Impact</span>
+                    <div id="metrics-count" class="text-3xl font-bold text-slate-800 my-2">0 Found</div>
+                    <p class="text-xs text-slate-500">Quantifiable metrics (%, $, numbers)</p>
+                </div>
+
+                <!-- Contact Info Check -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 custom-shadow text-center">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Contact Info</span>
+                    <div id="contact-status" class="text-3xl font-bold text-emerald-600 my-2"><i class="fa-solid fa-circle-check"></i></div>
+                    <p id="contact-details" class="text-xs text-slate-500">Email & Phone check</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Recommendations Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Content Improvement Tips -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-indigo-600"></i> Content & Structural Improvements
+                        </h3>
+                        <ul id="tips-list" class="space-y-3">
+                            <!-- Injected by JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Suitable Job Roles & Career Advice -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-briefcase text-indigo-600"></i> Recommended Job Roles & Match
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">Based on key technical skills, tools, and domain keywords detected in your resume:</p>
+                        <div id="suggested-roles" class="flex flex-wrap gap-2 mb-4">
+                            <!-- Injected by JS -->
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <h4 class="text-sm font-semibold text-slate-800 mb-2"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Strategy to Get Hired Faster:</h4>
+                            <p id="career-strategy" class="text-sm text-slate-600 leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Section Breakdown Sidebar -->
+                <div class="space-y-6">
+                    
+                    <!-- Section Checklist -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-indigo-600"></i> Essential Sections
+                        </h3>
+                        <div id="section-checks" class="space-y-3">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Detected Keywords -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow">
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-tags text-indigo-600"></i> Detected Keywords
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-3">ATS scanners use these keywords to evaluate your profile.</p>
+                        <div id="keyword-tags" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Resume Text Preview -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow">
+                <button onclick="togglePreview()" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-2">
+                    <i class="fa-solid fa-eye"></i> View Extracted Text
+                </button>
+                <pre id="extracted-text" class="hidden mt-4 p-4 bg-slate-900 text-slate-200 text-xs rounded-xl overflow-x-auto max-h-60 font-mono"></pre>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Set PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let extractedResumeText = "";
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('resume-file');
+        const fileNameDisplay = document.getElementById('file-name');
+        const analyzeBtn = document.getElementById('analyze-btn');
+
+        // Drag and Drop listeners
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500', 'bg-indigo-50/50'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500', 'bg-indigo-50/50'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-indigo-500', 'bg-indigo-50/50');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        });
+
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                fileNameDisplay.textContent = `Selected: ${file.name}`;
+                fileNameDisplay.classList.remove('hidden');
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        async function processResume() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            document.getElementById('results-dashboard').classList.add('hidden');
+
+            try {
+                if (file.type === "application/pdf") {
+                    extractedResumeText = await extractTextFromPDF(file);
+                } else {
+                    extractedResumeText = await readPlainText(file);
+                }
+
+                if (!extractedResumeText.trim()) {
+                    alert("Unable to extract text from file. Please ensure it's not an image-only PDF.");
+                    document.getElementById('loading-spinner').classList.add('hidden');
+                    return;
+                }
+
+                // Perform Resume Analysis
+                runAnalysis(extractedResumeText);
+
+            } catch (err) {
+                alert("Error processing file: " + err.message);
+            } finally {
+                document.getElementById('loading-spinner').classList.add('hidden');
+            }
+        }
+
+        // Extract text from TXT files
+        function readPlainText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
+
+        // Extract text from PDF using PDF.js
+        async function extractTextFromPDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = "";
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(" ");
+                fullText += pageText + "\n";
+            }
+            return fullText;
+        }
+
+        // Main Analysis Engine
+        function runAnalysis(text) {
+            const lowerText = text.toLowerCase();
+            const words = text.match(/\b\w+\b/g) || [];
+            const wordCount = words.length;
+
+            // Target Role
+            const targetRole = document.getElementById('target-role').value.trim();
+
+            // Check Essential Sections
+            const sections = {
+                "Contact Information": /email|phone|linkedin|github|address/i.test(text),
+                "Professional Summary": /summary|profile|objective|about me/i.test(text),
+                "Work Experience": /experience|employment|work history|career|projects/i.test(text),
+                "Education": /education|academic|university|degree|college/i.test(text),
+                "Skills": /skills|technologies|competencies|expertise|tools/i.test(text)
+            };
+
+            // Check Contact Details
+            const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
+            const hasPhone = /(\+\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}/.test(text);
+            const hasLinkedIn = /linkedin\.com\/in\/[a-zA-Z0-9_-]+/i.test(text);
+
+            // Check Action Verbs & Metrics
+            const actionVerbs = ["managed", "led", "developed", "created", "designed", "built", "increased", "reduced", "improved", "implemented", "engineered", "achieved", "spearheaded", "orchestrated"];
+            const foundVerbs = actionVerbs.filter(v => lowerText.includes(v));
+            
+            const metricsMatches = text.match(/(\d+%\b|\$\d+|\b\d+\s*(m|k|billion|million|percent|users|clients|projects|team)\b)/gi) || [];
+
+            // Skill Keywords Dictionary for Role Suggestion
+            const roleKeywords = {
+                "Software Engineer / Developer": ["javascript", "python", "java", "react", "node", "sql", "git", "api", "html", "css", "docker", "aws", "c++", "typescript", "backend", "frontend"],
+                "Data Analyst / Scientist": ["python", "r", "sql", "tableau", "power bi", "pandas", "numpy", "statistics", "machine learning", "excel", "data analysis", "visualization"],
+                "Digital Marketer / SEO": ["seo", "sem", "google analytics", "content", "social media", "campaigns", "copywriting", "roi", "crm", "hubspot", "marketing"],
+                "Project / Product Manager": ["agile", "scrum", "roadmap", "jira", "stakeholders", "budget", "leadership", "kpi", "cross-functional", "pmp", "product lifecycle"],
+                "Finance / Accountant": ["accounting", "financial modeling", "forecasting", "budgeting", "audit", "tax", "excel", "sap", "reconciliation", "cash flow"]
+            };
+
+            // Detect suitable job roles based on keywords
+            let roleScores = {};
+            for (let role in roleKeywords) {
+                let count = 0;
+                roleKeywords[role].forEach(kw => {
+                    if (lowerText.includes(kw)) count++;
+                });
+                roleScores[role] = count;
+            }
+
+            const sortedRoles = Object.keys(roleScores).sort((a,b) => roleScores[b] - roleScores[a]);
+            const suggestedRoles = sortedRoles.filter(r => roleScores[r] > 0).slice(0, 3);
+
+            // Calculate Overall Score (0 - 100)
+            let score = 0;
+            // 1. Length score (max 20)
+            if (wordCount >= 400 && wordCount <= 800) score += 20;
+            else if (wordCount >= 250 && wordCount <= 1000) score += 12;
+            else score += 5;
+
+            // 2. Section completeness (max 30)
+            const sectionCount = Object.values(sections).filter(Boolean).length;
+            score += (sectionCount / 5) * 30;
+
+            // 3. Contact Details (max 15)
+            if (hasEmail) score += 5;
+            if (hasPhone) score += 5;
+            if (hasLinkedIn) score += 5;
+
+            // 4. Measurable metrics & action verbs (max 20)
+            score += Math.min(foundVerbs.length * 2, 10);
+            score += Math.min(metricsMatches.length * 2, 10);
+
+            // 5. Target Role Keyword Match Bonus (max 15)
+            if (targetRole && lowerText.includes(targetRole.toLowerCase())) {
+                score += 15;
+            } else if (!targetRole) {
+                score += 10; // Default score allotment if target not specified
+            }
+
+            score = Math.min(Math.round(score), 100);
+
+            // RENDER RESULTS TO DOM
+            renderResults({
+                score,
+                wordCount,
+                hasEmail,
+                hasPhone,
+                hasLinkedIn,
+                metricsMatches,
+                foundVerbs,
+                sections,
+                suggestedRoles,
+                targetRole,
+                text
+            });
+        }
+
+        function renderResults(data) {
+            // Unhide Dashboard
+            document.getElementById('results-dashboard').classList.remove('hidden');
+
+            // Score & Badge
+            const scoreVal = document.getElementById('score-val');
+            const scoreBadge = document.getElementById('score-badge');
+            scoreVal.textContent = `${data.score}/100`;
+
+            if (data.score >= 80) {
+                scoreVal.className = "text-4xl font-extrabold text-emerald-600 my-2";
+                scoreBadge.className = "inline-block text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-100 text-emerald-700";
+                scoreBadge.textContent = "Great ATS Match";
+            } else if (data.score >= 60) {
+                scoreVal.className = "text-4xl font-extrabold text-amber-500 my-2";
+                scoreBadge.className = "inline-block text-xs px-2.5 py-0.5 rounded-full font-semibold bg-amber-100 text-amber-700";
+                scoreBadge.textContent = "Moderate - Needs Optimization";
+            } else {
+                scoreVal.className = "text-4xl font-extrabold text-rose-600 my-2";
+                scoreBadge.className = "inline-block text-xs px-2.5 py-0.5 rounded-full font-semibold bg-rose-100 text-rose-700";
+                scoreBadge.textContent = "Needs Significant Work";
+            }
+
+            // Word Count
+            document.getElementById('word-count').textContent = `${data.wordCount} words`;
+
+            // Metrics Count
+            document.getElementById('metrics-count').textContent = `${data.metricsMatches.length} Metrics`;
+
+            // Contact Status
+            const contactStatus = document.getElementById('contact-status');
+            const contactDetails = document.getElementById('contact-details');
+            if (data.hasEmail && data.hasPhone) {
+                contactStatus.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i>`;
+                contactDetails.textContent = data.hasLinkedIn ? "Email, Phone & LinkedIn present" : "Email & Phone present (Add LinkedIn)";
+            } else {
+                contactStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-500"></i>`;
+                contactDetails.textContent = "Missing Email or Phone number";
+            }
+
+            // Render Essential Sections Checklist
+            const sectionContainer = document.getElementById('section-checks');
+            sectionContainer.innerHTML = Object.entries(data.sections).map(([sec, found]) => `
+                <div class="flex items-center justify-between text-sm p-2 rounded-lg ${found ? 'bg-emerald-50' : 'bg-rose-50'}">
+                    <span class="font-medium ${found ? 'text-emerald-900' : 'text-rose-900'}">${sec}</span>
+                    <i class="fa-solid ${found ? 'fa-check text-emerald-600' : 'fa-xmark text-rose-500'} font-bold"></i>
+                </div>
+            `).join('');
+
+            // Generated Tips for Improvement
+            const tipsList = document.getElementById('tips-list');
+            let tips = [];
+
+            if (data.wordCount < 400) {
+                tips.push(`<strong>Expand Content:</strong> Your resume has only ${data.wordCount} words. Standard professional resumes are between 400–800 words. Expand on responsibilities and achievements.`);
+            } else if (data.wordCount > 900) {
+                tips.push(`<strong>Trim Length:</strong> Your resume is quite long (${data.wordCount} words). Aim for concise 1–2 pages with punchy bullet points.`);
+            }
+
+            if (data.metricsMatches.length < 3) {
+                tips.push(`<strong>Add Quantifiable Results:</strong> Include numbers, percentages, or dollar amounts in your job achievements (e.g., "Increased sales by 25%", "Managed a team of 6"). Recruiters value measurable impact.`);
+            }
+
+            if (data.foundVerbs.length < 4) {
+                tips.push(`<strong>Use Stronger Action Verbs:</strong> Start bullet points with dynamic verbs like <em>Spearheaded, Optimized, Engineered, Reduced, Led</em> instead of passive phrases like "Responsible for".`);
+            }
+
+            if (!data.hasLinkedIn) {
+                tips.push(`<strong>Add LinkedIn Profile:</strong> Include your full LinkedIn URL in the header section. Over 85% of recruiters cross-check LinkedIn.`);
+            }
+
+            if (data.targetRole && !data.text.toLowerCase().includes(data.targetRole.toLowerCase())) {
+                tips.push(`<strong>Target Keyword Missing:</strong> You entered target role "<strong>${data.targetRole}</strong>", but this exact keyword phrase wasn't explicitly found in your resume text.`);
+            }
+
+            if (tips.length === 0) {
+                tips.push(`<strong>Strong Resume Base!</strong> Your resume covers standard formatting, contact details, and keywords. Ensure you tailor specific skills for each job application.`);
+            }
+
+            tipsList.innerHTML = tips.map(tip => `
+                <li class="flex items-start gap-3 p-3 bg-slate-50 rounded-xl text-sm text-slate-700">
+                    <i class="fa-solid fa-circle-arrow-right text-indigo-500 mt-0.5"></i>
+                    <div>${tip}</div>
+                </li>
+            `).join('');
+
+            // Render Suggested Roles
+            const rolesContainer = document.getElementById('suggested-roles');
+            if (data.suggestedRoles.length > 0) {
+                rolesContainer.innerHTML = data.suggestedRoles.map(role => `
+                    <span class="bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-lg text-sm font-semibold">${role}</span>
+                `).join('');
+            } else {
+                rolesContainer.innerHTML = `<span class="text-sm text-slate-500">General Profile (Add specific technical or industry tools to unlock precise job matching).</span>`;
+            }
+
+            // Strategy Advice Text
+            const strategyEl = document.getElementById('career-strategy');
+            strategyEl.innerHTML = `To maximize interview callbacks for <strong>${data.targetRole || data.suggestedRoles[0] || 'your domain'}</strong>: 
+            1. Tailor the top third of your resume (Summary & Key Skills) to directly match target job description keywords.<br>
+            2. Convert passive duty lists into result-oriented statements: <em>[Action Verb] + [Task] + [Result / % Metric]</em>.`;
+
+            // Extract & Display Simple Keywords Tag Cloud
+            const keywords = Array.from(new Set(data.text.match(/\b[A-Za-z]{4,}\b/g) || []))
+                .filter(w => !["with", "from", "that", "this", "have", "been", "were", "their", "about", "which"].includes(w.toLowerCase()))
+                .slice(0, 25);
+
+            document.getElementById('keyword-tags').innerHTML = keywords.map(kw => `
+                <span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-xs font-medium">${kw}</span>
+            `).join('');
+
+            // Text Preview
+            document.getElementById('extracted-text').textContent = data.text;
+        }
+
+        function togglePreview() {
+            const preview = document.getElementById('extracted-text');
+            preview.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
