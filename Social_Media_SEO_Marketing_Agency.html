@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Social Media SEO Marketing Agency</title>
+
+<meta name="description"
+      content="Social Media SEO and Marketing Optimization Tool for LinkedIn, Facebook, YouTube and search engines.">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef5fb;
+    color: #172b4d;
+}
+
+/* HEADER */
+
+header {
+    background: linear-gradient(135deg, #063970, #0b63b6, #0877d1);
+    color: white;
+    padding: 24px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.20);
+}
+
+.header-inner {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: white;
+    color: #0877d1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+header p {
+    margin: 5px 0 0;
+    opacity: .9;
+}
+
+.header-badge {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+}
+
+/* MAIN */
+
+.container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* INPUT CARD */
+
+.input-card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(25,70,110,.12);
+    margin-bottom: 25px;
+}
+
+.input-card h2 {
+    margin-top: 0;
+}
+
+.url-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.url-row {
+    display: flex;
+    gap: 12px;
+}
+
+#urlInput {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid #d5e4f2;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+#urlInput:focus {
+    border-color: #0877d1;
+}
+
+.analyze-btn {
+    border: 0;
+    padding: 0 28px;
+    border-radius: 10px;
+    color: white;
+    background: linear-gradient(135deg,#0877d1,#063970);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.analyze-btn:hover {
+    opacity: .9;
+}
+
+.examples {
+    margin-top: 12px;
+    color: #63788f;
+    font-size: 13px;
+}
+
+.platform-info {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.platform {
+    padding: 9px 14px;
+    border-radius: 20px;
+    background: #eef6ff;
+    color: #075ca4;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* SCORE */
+
+.score-section {
+    display: none;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.score-card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(25,70,110,.12);
+}
+
+.score-circle {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    margin: 10px auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: conic-gradient(#0b78d0 0deg, #dfeaf3 0deg);
+}
+
+.score-number {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.score-number strong {
+    font-size: 38px;
+    color: #075ca4;
+}
+
+.score-number span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.score-details {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 30px rgba(25,70,110,.12);
+}
+
+.score-details h3 {
+    margin-top: 0;
+}
+
+.score-bars {
+    display: grid;
+    gap: 15px;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 50px;
+    gap: 10px;
+    align-items: center;
+}
+
+.bar {
+    height: 10px;
+    background: #e4edf5;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #0877d1;
+    border-radius: 20px;
+}
+
+/* GRID */
+
+.results {
+    display: none;
+}
+
+.section-title {
+    margin: 30px 0 15px;
+    font-size: 22px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(25,70,110,.10);
+    position: relative;
+}
+
+.card.full {
+    grid-column: 1 / -1;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #063970;
+}
+
+.card-description {
+    color: #66788a;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.output {
+    background: #f6f9fc;
+    border: 1px solid #dce8f2;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 70px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.copy-btn {
+    margin-top: 10px;
+    border: 0;
+    background: #e8f3fd;
+    color: #075ca4;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.copy-btn:hover {
+    background: #d9ecfb;
+}
+
+/* KEYWORDS */
+
+.keyword-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.keyword {
+    background: #eaf5ff;
+    color: #075ca4;
+    border: 1px solid #cce4f7;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 13px;
+}
+
+/* HASHTAGS */
+
+.hashtag {
+    background: #eef2ff;
+    color: #374da0;
+}
+
+/* RECOMMENDATIONS */
+
+.recommendations {
+    display: grid;
+    gap: 10px;
+}
+
+.recommendation {
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f7fafc;
+    border-left: 5px solid #0877d1;
+}
+
+.recommendation strong {
+    color: #063970;
+}
+
+/* PREVIEW */
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 20px;
+}
+
+.preview {
+    border: 1px solid #dbe6ef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.preview-header {
+    padding: 12px;
+    font-weight: bold;
+    background: #f3f7fa;
+}
+
+.preview-body {
+    padding: 16px;
+}
+
+.preview-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.preview-url {
+    color: #0877d1;
+    font-size: 13px;
+}
+
+.preview-description {
+    color: #657789;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+/* ACTIONS */
+
+.action-panel {
+    margin-top: 25px;
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 8px 30px rgba(25,70,110,.10);
+}
+
+.action-btn {
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #0877d1;
+    color: white;
+}
+
+.action-btn.secondary {
+    background: #e8f3fd;
+    color: #075ca4;
+}
+
+.action-btn:hover {
+    opacity: .9;
+}
+
+/* CHECKLIST */
+
+.checklist {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+
+.check {
+    padding: 12px;
+    border-radius: 10px;
+    background: #f6f9fc;
+}
+
+.check.good {
+    border-left: 5px solid #19a974;
+}
+
+.check.warning {
+    border-left: 5px solid #f59e0b;
+}
+
+.check.bad {
+    border-left: 5px solid #dc3545;
+}
+
+/* LOADING */
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 25px;
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid #dceaf5;
+    border-top-color: #0877d1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 50px;
+    background: #063970;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+footer strong {
+    color: #8fd0ff;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    .score-section,
+    .grid,
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .url-row {
+        flex-direction: column;
+    }
+
+    .analyze-btn {
+        padding: 15px;
+    }
+
+    .checklist {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media print {
+    header,
+    .input-card,
+    .action-panel,
+    footer {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .results,
+    .score-section {
+        display: block !important;
+    }
+
+    .card {
+        break-inside: avoid;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div class="logo-area">
+            <div class="logo">M</div>
+
+            <div>
+                <h1>Social Media SEO Marketing Agency</h1>
+                <p>AI-style visibility & content optimization toolkit</p>
+            </div>
+        </div>
+
+        <div class="header-badge">
+            LinkedIn • Facebook • YouTube • Google
+        </div>
+
+    </div>
+</header>
+
+
+<div class="container">
+
+    <!-- INPUT -->
+
+    <div class="input-card">
+
+        <h2>🚀 Optimize Your Post / Video</h2>
+
+        <p>
+            Enter a public LinkedIn post, Facebook post, YouTube video,
+            website or content URL. The tool will create a complete
+            marketing optimization package.
+        </p>
+
+        <label class="url-label">
+            Content URL
+        </label>
+
+        <div class="url-row">
+
+            <input
+                type="url"
+                id="urlInput"
+                placeholder="https://www.linkedin.com/posts/...">
+
+            <button
+                class="analyze-btn"
+                onclick="analyzeContent()">
+
+                🔎 Analyze & Optimize
+
+            </button>
+
+        </div>
+
+        <div class="examples">
+            Example:
+            LinkedIn URL, Facebook URL, YouTube URL or your website URL.
+        </div>
+
+        <div class="platform-info">
+            <span class="platform">💼 LinkedIn</span>
+            <span class="platform">📘 Facebook</span>
+            <span class="platform">▶️ YouTube</span>
+            <span class="platform">🌐 Website</span>
+            <span class="platform">🔍 Search Engines</span>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing content and preparing marketing strategy...</p>
+        </div>
+
+    </div>
+
+
+    <!-- SCORE -->
+
+    <div class="score-section" id="scoreSection">
+
+        <div class="score-card">
+
+            <h3>Visibility Score</h3>
+
+            <div class="score-circle" id="scoreCircle">
+
+                <div class="score-number">
+
+                    <strong id="scoreNumber">0</strong>
+                    <span>/ 100</span>
+
+                </div>
+
+            </div>
+
+            <div id="scoreMessage">
+                Optimization score
+            </div>
+
+        </div>
+
+
+        <div class="score-details">
+
+            <h3>📊 Marketing Health Check</h3>
+
+            <div class="score-bars">
+
+                <div class="bar-row">
+                    <span>SEO Keywords</span>
+                    <div class="bar">
+                        <div class="bar-fill" id="seoBar"></div>
+                    </div>
+                    <b id="seoValue">0%</b>
+                </div>
+
+                <div class="bar-row">
+                    <span>Content Quality</span>
+                    <div class="bar">
+                        <div class="bar-fill" id="contentBar"></div>
+                    </div>
+                    <b id="contentValue">0%</b>
+                </div>
+
+                <div class="bar-row">
+                    <span>Social Optimization</span>
+                    <div class="bar">
+                        <div class="bar-fill" id="socialBar"></div>
+                    </div>
+                    <b id="socialValue">0%</b>
+                </div>
+
+                <div class="bar-row">
+                    <span>Search Visibility</span>
+                    <div class="bar">
+                        <div class="bar-fill" id="searchBar"></div>
+                    </div>
+                    <b id="searchValue">0%</b>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="results" id="results">
+
+        <h2 class="section-title">🎯 Marketing Strategy</h2>
+
+        <div class="grid">
+
+            <!-- PLATFORM -->
+
+            <div class="card">
+
+                <h3>📌 Detected Platform</h3>
+
+                <div
+                    class="output"
+                    id="platformOutput">
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT TYPE -->
+
+            <div class="card">
+
+                <h3>📄 Content Type</h3>
+
+                <div
+                    class="output"
+                    id="contentTypeOutput">
+                </div>
+
+            </div>
+
+
+            <!-- SEO TITLE -->
+
+            <div class="card full">
+
+                <h3>🔎 Recommended SEO Title</h3>
+
+                <div
+                    class="card-description">
+                    Use this as the primary search-friendly title.
+                </div>
+
+                <div
+                    class="output"
+                    id="seoTitle">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('seoTitle')">
+                    📋 Copy
+                </button>
+
+            </div>
+
+
+            <!-- SEO DESCRIPTION -->
+
+            <div class="card full">
+
+                <h3>📝 SEO Description</h3>
+
+                <div
+                    class="output"
+                    id="seoDescription">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('seoDescription')">
+                    📋 Copy
+                </button>
+
+            </div>
+
+
+            <!-- KEYWORDS -->
+
+            <div class="card">
+
+                <h3>🔑 Target Keywords</h3>
+
+                <div
+                    class="keyword-container"
+                    id="keywords">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyKeywords()">
+                    📋 Copy Keywords
+                </button>
+
+            </div>
+
+
+            <!-- HASHTAGS -->
+
+            <div class="card">
+
+                <h3>#️⃣ Recommended Hashtags</h3>
+
+                <div
+                    class="keyword-container"
+                    id="hashtags">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyHashtags()">
+                    📋 Copy Hashtags
+                </button>
+
+            </div>
+
+
+            <!-- LINKEDIN -->
+
+            <div class="card full">
+
+                <h3>💼 LinkedIn Marketing Post</h3>
+
+                <div class="card-description">
+                    Optimized for professional engagement,
+                    keywords, readability and calls-to-action.
+                </div>
+
+                <div
+                    class="output"
+                    id="linkedinPost">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('linkedinPost')">
+                    📋 Copy LinkedIn Post
+                </button>
+
+            </div>
+
+
+            <!-- FACEBOOK -->
+
+            <div class="card full">
+
+                <h3>📘 Facebook Marketing Post</h3>
+
+                <div
+                    class="output"
+                    id="facebookPost">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('facebookPost')">
+                    📋 Copy Facebook Post
+                </button>
+
+            </div>
+
+
+            <!-- YOUTUBE -->
+
+            <div class="card full">
+
+                <h3>▶️ YouTube Optimization Package</h3>
+
+                <h4>Recommended Video Title</h4>
+
+                <div
+                    class="output"
+                    id="youtubeTitle">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('youtubeTitle')">
+                    📋 Copy
+                </button>
+
+                <br><br>
+
+                <h4>Recommended Description</h4>
+
+                <div
+                    class="output"
+                    id="youtubeDescription">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('youtubeDescription')">
+                    📋 Copy
+                </button>
+
+                <br><br>
+
+                <h4>Recommended YouTube Tags</h4>
+
+                <div
+                    class="output"
+                    id="youtubeTags">
+                </div>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyElement('youtubeTags')">
+                    📋 Copy
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH ENGINE -->
+
+            <div class="card full">
+
+                <h3>🌐 Search Engine Optimization</h3>
+
+                <div class="checklist" id="seoChecklist">
+                </div>
+
+            </div>
+
+
+            <!-- RECOMMENDATIONS -->
+
+            <div class="card full">
+
+                <h3>📣 Marketing Agency Recommendations</h3>
+
+                <div
+                    class="recommendations"
+                    id="recommendations">
+                </div>
+
+            </div>
+
+
+            <!-- PREVIEWS -->
+
+            <div class="card full">
+
+                <h3>👀 Search & Social Preview</h3>
+
+                <div class="preview-grid">
+
+                    <div class="preview">
+
+                        <div class="preview-header">
+                            🔍 Google-style Preview
+                        </div>
+
+                        <div class="preview-body">
+
+                            <div
+                                class="preview-title"
+                                id="googlePreviewTitle">
+                            </div>
+
+                            <div
+                                class="preview-url"
+                                id="googlePreviewUrl">
+                            </div>
+
+                            <div
+                                class="preview-description"
+                                id="googlePreviewDescription">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview">
+
+                        <div class="preview-header">
+                            💼 LinkedIn Preview
+                        </div>
+
+                        <div class="preview-body">
+
+                            <div
+                                class="preview-title"
+                                id="linkedinPreviewTitle">
+                            </div>
+
+                            <div
+                                class="preview-description"
+                                id="linkedinPreviewDescription">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview">
+
+                        <div class="preview-header">
+                            ▶️ YouTube Preview
+                        </div>
+
+                        <div class="preview-body">
+
+                            <div
+                                class="preview-title"
+                                id="youtubePreviewTitle">
+                            </div>
+
+                            <div
+                                class="preview-description"
+                                id="youtubePreviewDescription">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTION PANEL -->
+
+        <div class="action-panel">
+
+            <button
+                class="action-btn"
+                onclick="copyCompleteReport()">
+                📋 Copy Complete Report
+            </button>
+
+            <button
+                class="action-btn secondary"
+                onclick="downloadReport()">
+                📥 Download SEO Report
+            </button>
+
+            <button
+                class="action-btn secondary"
+                onclick="window.print()">
+                🖨️ Print Report
+            </button>
+
+            <button
+                class="action-btn secondary"
+                onclick="shareReport()">
+                📤 Share
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div>
+        <strong>Social Media SEO Marketing Agency</strong>
+    </div>
+
+    <div style="margin-top:8px;font-size:13px;opacity:.85;">
+        LinkedIn • Facebook • YouTube • Search Engine Optimization
+    </div>
+
+    <div style="margin-top:12px;font-size:12px;opacity:.7;">
+        Optimization recommendations are generated locally.
+        Search ranking and social-platform visibility cannot be guaranteed.
+    </div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+let marketingData = {};
+
+const keywordPool = [
+    "digital marketing",
+    "social media marketing",
+    "SEO",
+    "content marketing",
+    "online visibility",
+    "social media strategy",
+    "personal branding",
+    "digital strategy",
+    "online marketing",
+    "content strategy",
+    "search engine optimization",
+    "social media growth",
+    "brand awareness",
+    "audience engagement",
+    "marketing strategy"
+];
+
+
+/* =========================================================
+   PLATFORM DETECTION
+========================================================= */
+
+function detectPlatform(url) {
+
+    const value = url.toLowerCase();
+
+    if (value.includes("linkedin.com")) {
+        return "LinkedIn";
+    }
+
+    if (
+        value.includes("facebook.com") ||
+        value.includes("fb.com")
+    ) {
+        return "Facebook";
+    }
+
+    if (
+        value.includes("youtube.com") ||
+        value.includes("youtu.be")
+    ) {
+        return "YouTube";
+    }
+
+    return "Website / Other";
+}
+
+
+/* =========================================================
+   CONTENT TYPE
+========================================================= */
+
+function detectContentType(platform) {
+
+    if (platform === "LinkedIn") {
+        return "Professional Social Media Post";
+    }
+
+    if (platform === "Facebook") {
+        return "Social Media Post";
+    }
+
+    if (platform === "YouTube") {
+        return "Video Content";
+    }
+
+    return "Web Content";
+}
+
+
+/* =========================================================
+   EXTRACT URL INFORMATION
+========================================================= */
+
+function extractUrlInfo(url) {
+
+    try {
+
+        const parsed = new URL(url);
+
+        let host = parsed.hostname.replace("www.","");
+
+        let path = parsed.pathname
+            .replaceAll("/", " ")
+            .replaceAll("-", " ")
+            .replaceAll("_", " ");
+
+        path = decodeURIComponent(path);
+
+        return {
+            host: host,
+            path: path.trim()
+        };
+
+    } catch(e) {
+
+        return {
+            host: "",
+            path: ""
+        };
+    }
+}
+
+
+/* =========================================================
+   CREATE KEYWORDS
+========================================================= */
+
+function createKeywords(platform, urlInfo) {
+
+    let keywords = [];
+
+    if (platform === "LinkedIn") {
+
+        keywords = [
+            "LinkedIn marketing",
+            "professional networking",
+            "personal branding",
+            "professional content",
+            "LinkedIn visibility",
+            "content marketing",
+            "social media strategy"
+        ];
+
+    } else if (platform === "Facebook") {
+
+        keywords = [
+            "Facebook marketing",
+            "Facebook engagement",
+            "social media marketing",
+            "content marketing",
+            "audience engagement",
+            "brand awareness",
+            "social media strategy"
+        ];
+
+    } else if (platform === "YouTube") {
+
+        keywords = [
+            "YouTube SEO",
+            "YouTube marketing",
+            "video marketing",
+            "YouTube visibility",
+            "video SEO",
+            "content marketing",
+            "audience growth"
+        ];
+
+    } else {
+
+        keywords = [
+            "SEO",
+            "search engine optimization",
+            "digital marketing",
+            "online visibility",
+            "content marketing",
+            "website traffic",
+            "digital strategy"
+        ];
+    }
+
+    if (urlInfo.path) {
+
+        const words = urlInfo.path
+            .split(/\s+/)
+            .filter(word => word.length > 3)
+            .slice(0,5);
+
+        words.forEach(word => {
+
+            const clean = word
+                .replace(/[^\w]/g,"")
+                .trim();
+
+            if (
+                clean.length > 3 &&
+                !keywords.some(k =>
+                    k.toLowerCase() === clean.toLowerCase()
+                )
+            ) {
+                keywords.push(clean);
+            }
+
+        });
+    }
+
+    return [...new Set(keywords)].slice(0,15);
+}
+
+
+/* =========================================================
+   CREATE HASHTAGS
+========================================================= */
+
+function createHashtags(platform) {
+
+    let tags;
+
+    if (platform === "LinkedIn") {
+
+        tags = [
+            "#LinkedIn",
+            "#DigitalMarketing",
+            "#SEO",
+            "#ContentMarketing",
+            "#PersonalBranding",
+            "#SocialMediaMarketing",
+            "#ProfessionalGrowth",
+            "#MarketingStrategy",
+            "#OnlineVisibility"
+        ];
+
+    } else if (platform === "Facebook") {
+
+        tags = [
+            "#FacebookMarketing",
+            "#DigitalMarketing",
+            "#SEO",
+            "#ContentMarketing",
+            "#SocialMedia",
+            "#BrandAwareness",
+            "#Marketing",
+            "#OnlineMarketing"
+        ];
+
+    } else if (platform === "YouTube") {
+
+        tags = [
+            "#YouTube",
+            "#YouTubeSEO",
+            "#VideoMarketing",
+            "#SEO",
+            "#DigitalMarketing",
+            "#ContentCreator",
+            "#VideoSEO",
+            "#AudienceGrowth"
+        ];
+
+    } else {
+
+        tags = [
+            "#SEO",
+            "#DigitalMarketing",
+            "#ContentMarketing",
+            "#OnlineVisibility",
+            "#SearchEngineOptimization",
+            "#MarketingStrategy",
+            "#DigitalStrategy"
+        ];
+    }
+
+    return tags;
+}
+
+
+/* =========================================================
+   SEO TITLE
+========================================================= */
+
+function createSeoTitle(platform, urlInfo) {
+
+    let subject = "";
+
+    if (urlInfo.path) {
+        subject = urlInfo.path
+            .replace(/\s+/g," ")
+            .trim();
+    }
+
+    if (!subject) {
+        subject = "Digital Marketing and Online Visibility";
+    }
+
+    subject = subject.substring(0,60);
+
+    if (platform === "YouTube") {
+
+        return `${subject} | Complete Guide & Tips`;
+
+    }
+
+    if (platform === "LinkedIn") {
+
+        return `${subject} | Professional Insights & Strategy`;
+
+    }
+
+    if (platform === "Facebook") {
+
+        return `${subject} | Tips, Insights & Ideas`;
+
+    }
+
+    return `${subject} | Digital Marketing & SEO`;
+}
+
+
+/* =========================================================
+   SEO DESCRIPTION
+========================================================= */
+
+function createSeoDescription(platform, title) {
+
+    return `${title}. Discover practical insights, useful strategies and actionable ideas to improve online visibility, audience engagement and digital growth. Explore the content and share it with your network.`;
+}
+
+
+/* =========================================================
+   LINKEDIN POST
+========================================================= */
+
+function createLinkedInPost(title, hashtags) {
+
+    return `🚀 ${title}
+
+Want to improve your online visibility and reach the right audience?
+
+Here are a few important marketing principles:
+
+✅ Create useful and original content
+✅ Use relevant keywords naturally
+✅ Write a strong opening that captures attention
+✅ Encourage meaningful conversations
+✅ Use a clear call-to-action
+✅ Share consistently
+✅ Measure engagement and improve your strategy
+
+The goal is not simply to publish content.
+
+The goal is to create content people want to discover, read, discuss and share.
+
+👉 Explore the content here:
+${document.getElementById("urlInput").value}
+
+What strategy has worked best for you?
+
+${hashtags.slice(0,7).join(" ")}`;
+}
+
+
+/* =========================================================
+   FACEBOOK POST
+========================================================= */
+
+function createFacebookPost(title, hashtags) {
+
+    return `🔥 ${title}
+
+Looking for better online visibility?
+
+Create content that is:
+
+✔ Useful
+✔ Search-friendly
+✔ Easy to understand
+✔ Valuable to your audience
+✔ Worth sharing
+
+Good digital marketing is about providing value first.
+
+👉 Check out the content:
+${document.getElementById("urlInput").value}
+
+👍 Like
+💬 Comment
+📤 Share
+
+${hashtags.slice(0,6).join(" ")}`;
+}
+
+
+/* =========================================================
+   YOUTUBE CONTENT
+========================================================= */
+
+function createYoutubeTitle(title) {
+
+    return title.length > 95
+        ? title.substring(0,95)
+        : title;
+}
+
+
+function createYoutubeDescription(title, keywords, hashtags) {
+
+    return `${title}
+
+In this video/content you will discover useful information, practical ideas and actionable strategies related to ${keywords.slice(0,4).join(", ")}.
+
+🎯 What you can learn:
+• Practical marketing strategies
+• Search visibility techniques
+• Content optimization ideas
+• Audience engagement approaches
+• Social media growth concepts
+
+🔗 Original Content:
+${document.getElementById("urlInput").value}
+
+📌 If you found this useful:
+👍 Like the video
+💬 Leave a comment
+🔔 Subscribe
+📤 Share with your network
+
+Keywords:
+${keywords.join(", ")}
+
+${hashtags.slice(0,8).join(" ")}`;
+}
+
+
+/* =========================================================
+   SCORE CALCULATION
+========================================================= */
+
+function calculateScore(platform, keywords, hashtags) {
+
+    let seo = 70;
+    let content = 75;
+    let social = 78;
+    let search = 68;
+
+    if (platform === "YouTube") {
+        seo += 8;
+        search += 5;
+    }
+
+    if (keywords.length >= 10) {
+        seo += 8;
+    }
+
+    if (hashtags.length >= 7) {
+        social += 7;
+    }
+
+    seo = Math.min(seo,100);
+    content = Math.min(content,100);
+    social = Math.min(social,100);
+    search = Math.min(search,100);
+
+    const overall = Math.round(
+        (seo + content + social + search) / 4
+    );
+
+    return {
+        seo,
+        content,
+        social,
+        search,
+        overall
+    };
+}
+
+
+/* =========================================================
+   SCORE UI
+========================================================= */
+
+function setScore(score) {
+
+    document.getElementById("scoreNumber").textContent =
+        score.overall;
+
+    document.getElementById("scoreCircle").style.background =
+        `conic-gradient(#0b78d0 ${score.overall * 3.6}deg,#dfeaf3 0deg)`;
+
+    document.getElementById("seoBar").style.width =
+        score.seo + "%";
+
+    document.getElementById("contentBar").style.width =
+        score.content + "%";
+
+    document.getElementById("socialBar").style.width =
+        score.social + "%";
+
+    document.getElementById("searchBar").style.width =
+        score.search + "%";
+
+    document.getElementById("seoValue").textContent =
+        score.seo + "%";
+
+    document.getElementById("contentValue").textContent =
+        score.content + "%";
+
+    document.getElementById("socialValue").textContent =
+        score.social + "%";
+
+    document.getElementById("searchValue").textContent =
+        score.search + "%";
+
+    let message = "";
+
+    if (score.overall >= 90) {
+        message = "Excellent optimization";
+    } else if (score.overall >= 80) {
+        message = "Very good optimization";
+    } else if (score.overall >= 70) {
+        message = "Good optimization";
+    } else {
+        message = "Needs improvement";
+    }
+
+    document.getElementById("scoreMessage").textContent =
+        message;
+}
+
+
+/* =========================================================
+   SEO CHECKLIST
+========================================================= */
+
+function createChecklist(platform) {
+
+    const items = [
+
+        {
+            text:"Use a keyword-focused title",
+            type:"good"
+        },
+
+        {
+            text:"Keep the main topic clear in the first few lines",
+            type:"good"
+        },
+
+        {
+            text:"Use relevant keywords naturally",
+            type:"good"
+        },
+
+        {
+            text:"Include a clear call-to-action",
+            type:"good"
+        },
+
+        {
+            text:"Encourage comments and meaningful engagement",
+            type:"good"
+        },
+
+        {
+            text:"Use descriptive text instead of keyword stuffing",
+            type:"good"
+        },
+
+        {
+            text:"Create a unique thumbnail/image for visual platforms",
+            type:"warning"
+        },
+
+        {
+            text:"Build links from relevant websites and communities",
+            type:"warning"
+        },
+
+        {
+            text:"Avoid excessive hashtags or repetitive keywords",
+            type:"warning"
+        },
+
+        {
+            text:"Track impressions, clicks and engagement",
+            type:"warning"
+        }
+
+    ];
+
+    if (platform === "YouTube") {
+
+        items.push({
+            text:"Add chapters when the video is long",
+            type:"good"
+        });
+
+        items.push({
+            text:"Use an accurate custom thumbnail",
+            type:"good"
+        });
+    }
+
+    const container =
+        document.getElementById("seoChecklist");
+
+    container.innerHTML = "";
+
+    items.forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className =
+            `check ${item.type}`;
+
+        div.innerHTML =
+            `${item.type === "good" ? "✓" : "⚠️"} ${item.text}`;
+
+        container.appendChild(div);
+    });
+}
+
+
+/* =========================================================
+   RECOMMENDATIONS
+========================================================= */
+
+function createRecommendations(platform) {
+
+    const recommendations = [
+
+        "Publish consistently instead of relying on one post.",
+
+        "Create a strong first sentence because users decide quickly whether to continue reading.",
+
+        "Use one primary topic and several closely related keywords.",
+
+        "Encourage genuine comments by asking a specific question.",
+
+        "Repurpose the same topic into LinkedIn, Facebook, YouTube Shorts and website content.",
+
+        "Create supporting articles or pages on your own website.",
+
+        "Link related content together to create a stronger topical structure.",
+
+        "Promote the content through relevant communities rather than mass-posting.",
+
+        "Use analytics to identify which topics generate the most engagement.",
+
+        "Update older content when information becomes outdated.",
+
+        "Avoid fake engagement, automated spam, keyword stuffing and misleading claims.",
+
+        "Build genuine backlinks and mentions from relevant websites."
+
+    ];
+
+    if (platform === "YouTube") {
+
+        recommendations.push(
+            "Create a short version or YouTube Short that points viewers to the main video."
+        );
+
+        recommendations.push(
+            "Use chapters, captions and a descriptive thumbnail."
+        );
+    }
+
+    const container =
+        document.getElementById("recommendations");
+
+    container.innerHTML = "";
+
+    recommendations.forEach((item,index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "recommendation";
+
+        div.innerHTML =
+            `<strong>${index + 1}</strong><span>${item}</span>`;
+
+        container.appendChild(div);
+
+    });
+}
+
+
+/* =========================================================
+   MAIN ANALYZER
+========================================================= */
+
+function analyzeContent() {
+
+    const url =
+        document.getElementById("urlInput").value.trim();
+
+    if (!url) {
+
+        alert("Please enter a URL first.");
+
+        return;
+    }
+
+    try {
+
+        new URL(url);
+
+    } catch(e) {
+
+        alert("Please enter a valid URL.");
+
+        return;
+    }
+
+    document.getElementById("loading").style.display =
+        "block";
+
+    document.getElementById("results").style.display =
+        "none";
+
+    document.getElementById("scoreSection").style.display =
+        "none";
+
+
+    setTimeout(() => {
+
+        const platform =
+            detectPlatform(url);
+
+        const type =
+            detectContentType(platform);
+
+        const urlInfo =
+            extractUrlInfo(url);
+
+        const keywords =
+            createKeywords(platform,urlInfo);
+
+        const hashtags =
+            createHashtags(platform);
+
+        const title =
+            createSeoTitle(platform,urlInfo);
+
+        const description =
+            createSeoDescription(platform,title);
+
+        const linkedinPost =
+            createLinkedInPost(title,hashtags);
+
+        const facebookPost =
+            createFacebookPost(title,hashtags);
+
+        const youtubeTitle =
+            createYoutubeTitle(title);
+
+        const youtubeDescription =
+            createYoutubeDescription(
+                title,
+                keywords,
+                hashtags
+            );
+
+        const youtubeTags =
+            keywords.join(", ");
+
+        const score =
+            calculateScore(
+                platform,
+                keywords,
+                hashtags
+            );
+
+
+        marketingData = {
+            url,
+            platform,
+            type,
+            keywords,
+            hashtags,
+            title,
+            description,
+            linkedinPost,
+            facebookPost,
+            youtubeTitle,
+            youtubeDescription,
+            youtubeTags,
+            score
+        };
+
+
+        /* PLATFORM */
+
+        document.getElementById("platformOutput")
+            .textContent =
+            platform;
+
+
+        /* TYPE */
+
+        document.getElementById("contentTypeOutput")
+            .textContent =
+            type;
+
+
+        /* SEO TITLE */
+
+        document.getElementById("seoTitle")
+            .textContent =
+            title;
+
+
+        /* DESCRIPTION */
+
+        document.getElementById("seoDescription")
+            .textContent =
+            description;
+
+
+        /* KEYWORDS */
+
+        const keywordContainer =
+            document.getElementById("keywords");
+
+        keywordContainer.innerHTML = "";
+
+        keywords.forEach(keyword => {
+
+            const span =
+                document.createElement("span");
+
+            span.className =
+                "keyword";
+
+            span.textContent =
+                keyword;
+
+            keywordContainer.appendChild(span);
+
+        });
+
+
+        /* HASHTAGS */
+
+        const hashtagContainer =
+            document.getElementById("hashtags");
+
+        hashtagContainer.innerHTML = "";
+
+        hashtags.forEach(tag => {
+
+            const span =
+                document.createElement("span");
+
+            span.className =
+                "keyword hashtag";
+
+            span.textContent =
+                tag;
+
+            hashtagContainer.appendChild(span);
+
+        });
+
+
+        /* SOCIAL POSTS */
+
+        document.getElementById("linkedinPost")
+            .textContent =
+            linkedinPost;
+
+        document.getElementById("facebookPost")
+            .textContent =
+            facebookPost;
+
+
+        /* YOUTUBE */
+
+        document.getElementById("youtubeTitle")
+            .textContent =
+            youtubeTitle;
+
+        document.getElementById("youtubeDescription")
+            .textContent =
+            youtubeDescription;
+
+        document.getElementById("youtubeTags")
+            .textContent =
+            youtubeTags;
+
+
+        /* CHECKLIST */
+
+        createChecklist(platform);
+
+
+        /* RECOMMENDATIONS */
+
+        createRecommendations(platform);
+
+
+        /* SCORE */
+
+        setScore(score);
+
+
+        /* PREVIEWS */
+
+        document.getElementById("googlePreviewTitle")
+            .textContent =
+            title;
+
+        document.getElementById("googlePreviewUrl")
+            .textContent =
+            url;
+
+        document.getElementById("googlePreviewDescription")
+            .textContent =
+            description;
+
+        document.getElementById("linkedinPreviewTitle")
+            .textContent =
+            title;
+
+        document.getElementById("linkedinPreviewDescription")
+            .textContent =
+            linkedinPost.substring(0,180) + "...";
+
+        document.getElementById("youtubePreviewTitle")
+            .textContent =
+            youtubeTitle;
+
+        document.getElementById("youtubePreviewDescription")
+            .textContent =
+            youtubeDescription.substring(0,180) + "...";
+
+
+        /* DISPLAY */
+
+        document.getElementById("loading").style.display =
+            "none";
+
+        document.getElementById("scoreSection").style.display =
+            "grid";
+
+        document.getElementById("results").style.display =
+            "block";
+
+
+        window.scrollTo({
+            top: document.getElementById("scoreSection")
+                .offsetTop - 20,
+            behavior:"smooth"
+        });
+
+    },1200);
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+function copyElement(id) {
+
+    const text =
+        document.getElementById(id).textContent;
+
+    navigator.clipboard.writeText(text)
+        .then(() => {
+
+            alert("Copied successfully!");
+
+        })
+        .catch(() => {
+
+            fallbackCopy(text);
+
+        });
+}
+
+
+function copyKeywords() {
+
+    copyText(
+        marketingData.keywords.join(", ")
+    );
+}
+
+
+function copyHashtags() {
+
+    copyText(
+        marketingData.hashtags.join(" ")
+    );
+}
+
+
+function copyText(text) {
+
+    navigator.clipboard.writeText(text)
+        .then(() => alert("Copied successfully!"))
+        .catch(() => fallbackCopy(text));
+}
+
+
+function fallbackCopy(text) {
+
+    const textarea =
+        document.createElement("textarea");
+
+    textarea.value = text;
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("Copied successfully!");
+}
+
+
+/* =========================================================
+   COMPLETE REPORT
+========================================================= */
+
+function createCompleteReport() {
+
+    if (!marketingData.url) {
+        return "No analysis has been generated yet.";
+    }
+
+    return `
+SOCIAL MEDIA SEO MARKETING REPORT
+=================================
+
+URL:
+${marketingData.url}
+
+PLATFORM:
+${marketingData.platform}
+
+CONTENT TYPE:
+${marketingData.type}
+
+VISIBILITY SCORE:
+${marketingData.score.overall}/100
+
+
+SEO TITLE
+---------
+${marketingData.title}
+
+
+SEO DESCRIPTION
+---------------
+${marketingData.description}
+
+
+KEYWORDS
+--------
+${marketingData.keywords.join(", ")}
+
+
+HASHTAGS
+--------
+${marketingData.hashtags.join(" ")}
+
+
+LINKEDIN POST
+-------------
+${marketingData.linkedinPost}
+
+
+FACEBOOK POST
+-------------
+${marketingData.facebookPost}
+
+
+YOUTUBE TITLE
+-------------
+${marketingData.youtubeTitle}
+
+
+YOUTUBE DESCRIPTION
+-------------------
+${marketingData.youtubeDescription}
+
+
+YOUTUBE TAGS
+------------
+${marketingData.youtubeTags}
+
+
+MARKETING STRATEGY
+------------------
+1. Publish consistently.
+2. Use relevant keywords naturally.
+3. Create a strong opening.
+4. Encourage meaningful engagement.
+5. Add a clear call-to-action.
+6. Repurpose content across relevant channels.
+7. Build genuine backlinks and mentions.
+8. Track impressions, clicks and engagement.
+9. Avoid spam and artificial engagement.
+10. Improve content based on analytics.
+
+
+DISCLAIMER
+----------
+This report provides optimization recommendations.
+No SEO tool can guarantee search-engine rankings,
+social-media reach or engagement.
+`;
+}
+
+
+function copyCompleteReport() {
+
+    copyText(
+        createCompleteReport()
+    );
+}
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function downloadReport() {
+
+    const report =
+        createCompleteReport();
+
+    const blob =
+        new Blob(
+            [report],
+            {type:"text/plain;charset=utf-8"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "Social_Media_SEO_Marketing_Report.txt";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+function shareReport() {
+
+    if (!marketingData.url) {
+
+        alert("Please analyze a URL first.");
+
+        return;
+    }
+
+    const shareText =
+        `Check this content optimization report:
+
+${marketingData.title}
+
+Visibility Score:
+${marketingData.score.overall}/100
+
+${marketingData.url}`;
+
+    if (navigator.share) {
+
+        navigator.share({
+            title: marketingData.title,
+            text: shareText,
+            url: marketingData.url
+        });
+
+    } else {
+
+        copyText(shareText);
+
+        alert(
+            "Sharing is not supported by this browser. The share text has been copied."
+        );
+    }
+}
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+document.getElementById("urlInput")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            analyzeContent();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
