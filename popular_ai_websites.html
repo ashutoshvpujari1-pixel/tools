@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Websites Directory - Popular AI Tools</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #eef5ff;
+        color: #172033;
+    }
+
+    header {
+        background: linear-gradient(135deg, #062b63, #0b63ce);
+        color: white;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,.15);
+    }
+
+    header h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+    }
+
+    header p {
+        margin: 0;
+        font-size: 16px;
+        opacity: .95;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: auto;
+        padding: 25px;
+    }
+
+    .info {
+        background: white;
+        padding: 18px;
+        border-radius: 14px;
+        margin-bottom: 22px;
+        box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .info strong {
+        color: #0759bd;
+    }
+
+    .controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    #searchBox {
+        flex: 1;
+        min-width: 260px;
+        padding: 14px;
+        border: 1px solid #c7d5e8;
+        border-radius: 10px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    #searchBox:focus {
+        border-color: #0b63ce;
+        box-shadow: 0 0 0 3px rgba(11,99,206,.1);
+    }
+
+    .filter {
+        padding: 12px 18px;
+        border: none;
+        border-radius: 9px;
+        background: #dcecff;
+        color: #064c9e;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .filter.active,
+    .filter:hover {
+        background: #0864c9;
+        color: white;
+    }
+
+    .stats {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .stat {
+        background: white;
+        padding: 15px 22px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,.07);
+        min-width: 160px;
+    }
+
+    .stat b {
+        display: block;
+        font-size: 25px;
+        color: #075fc2;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,.08);
+        transition: .25s;
+        border: 1px solid #e0e8f2;
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.13);
+    }
+
+    .rank {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #075fc2;
+        color: white;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .name {
+        font-size: 21px;
+        font-weight: bold;
+        color: #073c7a;
+        padding-right: 55px;
+    }
+
+    .category {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #e8f2ff;
+        color: #075fc2;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .purpose {
+        margin: 14px 0;
+        line-height: 1.55;
+        color: #48566a;
+    }
+
+    .best {
+        background: #f7faff;
+        padding: 10px;
+        border-left: 4px solid #0b63ce;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .visit {
+        display: inline-block;
+        text-decoration: none;
+        background: #075fc2;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: .2s;
+    }
+
+    .visit:hover {
+        background: #043f83;
+    }
+
+    .empty {
+        display: none;
+        background: white;
+        text-align: center;
+        padding: 50px;
+        border-radius: 15px;
+        color: #65748a;
+    }
+
+    footer {
+        margin-top: 40px;
+        background: #062b63;
+        color: white;
+        text-align: center;
+        padding: 22px;
+    }
+
+    footer strong {
+        color: #8ec5ff;
+    }
+
+    @media(max-width:600px) {
+        header h1 {
+            font-size: 26px;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤖 World's Popular AI Websites</h1>
+    <p>AI Tools • Chatbots • Coding • Search • Images • Video • Audio • Productivity</p>
+</header>
+
+<div class="container">
+
+    <div class="info">
+        <strong>AI Website Directory</strong><br><br>
+        Explore popular AI websites and discover what each one is useful for.
+        Use the search box or category filters to quickly find the right AI tool.
+        Rankings are approximate and based primarily on publicly available
+        web-traffic/popularity indicators; they can change over time.
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <b id="totalTools">0</b>
+            AI Websites
+        </div>
+
+        <div class="stat">
+            <b>10+</b>
+            Categories
+        </div>
+
+        <div class="stat">
+            <b>2026</b>
+            Directory
+        </div>
+    </div>
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="🔎 Search AI website, purpose, category..."
+            onkeyup="filterTools()"
+        >
+
+        <button class="filter active" onclick="filterCategory('All', this)">
+            All
+        </button>
+
+        <button class="filter" onclick="filterCategory('Chat', this)">
+            Chat & Assistant
+        </button>
+
+        <button class="filter" onclick="filterCategory('Search', this)">
+            AI Search
+        </button>
+
+        <button class="filter" onclick="filterCategory('Coding', this)">
+            Coding
+        </button>
+
+        <button class="filter" onclick="filterCategory('Image', this)">
+            Image
+        </button>
+
+        <button class="filter" onclick="filterCategory('Video', this)">
+            Video
+        </button>
+
+        <button class="filter" onclick="filterCategory('Audio', this)">
+            Audio
+        </button>
+
+        <button class="filter" onclick="filterCategory('Productivity', this)">
+            Productivity
+        </button>
+
+        <button class="filter" onclick="filterCategory('Writing', this)">
+            Writing
+        </button>
+
+    </div>
+
+    <div class="grid" id="aiGrid">
+
+        <!-- 1 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#1</span>
+            <div class="name">ChatGPT</div>
+            <span class="category">Chat & Assistant</span>
+            <div class="purpose">
+                General-purpose AI assistant for answering questions,
+                writing, coding, analysis, brainstorming, learning,
+                image generation and many other tasks.
+            </div>
+            <div class="best">
+                <b>Best for:</b> General AI assistance, learning, coding,
+                writing and productivity.
+            </div>
+            <a class="visit" href="https://chatgpt.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 2 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#2</span>
+            <div class="name">Google Gemini</div>
+            <span class="category">Chat & Assistant</span>
+            <div class="purpose">
+                Google's AI assistant for research, writing, brainstorming,
+                coding, analysis and working with Google's ecosystem.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Google users, research, productivity and
+                multimodal AI.
+            </div>
+            <a class="visit" href="https://gemini.google.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 3 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#3</span>
+            <div class="name">Claude</div>
+            <span class="category">Chat & Assistant</span>
+            <div class="purpose">
+                AI assistant from Anthropic, particularly useful for
+                reasoning, document analysis, writing and programming.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Long documents, reasoning, writing and coding.
+            </div>
+            <a class="visit" href="https://claude.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 4 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#4</span>
+            <div class="name">DeepSeek</div>
+            <span class="category">Chat & Coding</span>
+            <div class="purpose">
+                AI assistant known for reasoning, mathematics, programming
+                and general-purpose AI conversations.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Coding, technical questions and reasoning.
+            </div>
+            <a class="visit" href="https://www.deepseek.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 5 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#5</span>
+            <div class="name">Grok</div>
+            <span class="category">Chat & Assistant</span>
+            <div class="purpose">
+                AI assistant from xAI designed for conversation, research,
+                reasoning and access to current information.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Current topics, conversation and research.
+            </div>
+            <a class="visit" href="https://grok.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 6 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#6</span>
+            <div class="name">GitHub Copilot</div>
+            <span class="category">Coding</span>
+            <div class="purpose">
+                AI coding assistant that helps developers write,
+                understand, debug and improve source code.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Software development and IDE-based coding.
+            </div>
+            <a class="visit" href="https://github.com/features/copilot"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 7 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#7</span>
+            <div class="name">Microsoft Copilot</div>
+            <span class="category">Productivity</span>
+            <div class="purpose">
+                Microsoft's AI assistant for questions, productivity,
+                research and Microsoft ecosystem tasks.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Microsoft 365 and Windows users.
+            </div>
+            <a class="visit" href="https://copilot.microsoft.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 8 -->
+        <div class="card" data-category="Search">
+            <span class="rank">#8</span>
+            <div class="name">Perplexity</div>
+            <span class="category">AI Search</span>
+            <div class="purpose">
+                AI-powered search and research engine that provides
+                conversational answers with web sources.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Research, fact finding and web exploration.
+            </div>
+            <a class="visit" href="https://www.perplexity.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 9 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#9</span>
+            <div class="name">Canva AI</div>
+            <span class="category">Design & Image</span>
+            <div class="purpose">
+                AI-powered design platform for presentations, social posts,
+                graphics, images, documents and marketing materials.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Social media graphics, presentations and design.
+            </div>
+            <a class="visit" href="https://www.canva.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 10 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#10</span>
+            <div class="name">NotebookLM</div>
+            <span class="category">Research & Productivity</span>
+            <div class="purpose">
+                Google's AI research assistant designed to work with
+                user-provided documents and sources.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Studying, document analysis and research.
+            </div>
+            <a class="visit" href="https://notebooklm.google.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 11 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#11</span>
+            <div class="name">Character.AI</div>
+            <span class="category">AI Characters</span>
+            <div class="purpose">
+                Platform for interacting with AI characters and creating
+                conversational AI personalities.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Creative conversations and entertainment.
+            </div>
+            <a class="visit" href="https://character.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 12 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#12</span>
+            <div class="name">Midjourney</div>
+            <span class="category">Image Generation</span>
+            <div class="purpose">
+                AI image generation platform for creating artistic,
+                realistic and imaginative images from text prompts.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Creative artwork and high-quality visuals.
+            </div>
+            <a class="visit" href="https://www.midjourney.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 13 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#13</span>
+            <div class="name">Adobe Firefly</div>
+            <span class="category">Image & Design</span>
+            <div class="purpose">
+                Adobe's generative AI platform for creating and editing
+                images and creative assets.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Professional creative design workflows.
+            </div>
+            <a class="visit" href="https://firefly.adobe.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 14 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#14</span>
+            <div class="name">Leonardo AI</div>
+            <span class="category">Image Generation</span>
+            <div class="purpose">
+                AI image creation platform for artwork, game assets,
+                marketing graphics and visual concepts.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI artwork and creative assets.
+            </div>
+            <a class="visit" href="https://leonardo.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 15 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#15</span>
+            <div class="name">Ideogram</div>
+            <span class="category">Image Generation</span>
+            <div class="purpose">
+                AI image generator particularly useful for designs
+                containing text, posters, logos and typography.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Posters, advertisements and text in images.
+            </div>
+            <a class="visit" href="https://ideogram.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 16 -->
+        <div class="card" data-category="Video">
+            <span class="rank">#16</span>
+            <div class="name">Runway</div>
+            <span class="category">AI Video</span>
+            <div class="purpose">
+                AI-powered video generation and editing platform for
+                filmmakers, creators and marketers.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI video generation and creative production.
+            </div>
+            <a class="visit" href="https://runwayml.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 17 -->
+        <div class="card" data-category="Video">
+            <span class="rank">#17</span>
+            <div class="name">Pika</div>
+            <span class="category">AI Video</span>
+            <div class="purpose">
+                AI platform for creating and transforming short videos
+                using text and image prompts.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Creative short-form AI videos.
+            </div>
+            <a class="visit" href="https://pika.art/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 18 -->
+        <div class="card" data-category="Video">
+            <span class="rank">#18</span>
+            <div class="name">Synthesia</div>
+            <span class="category">AI Video</span>
+            <div class="purpose">
+                Creates professional AI avatar videos for training,
+                presentations, education and business communication.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Corporate training and presentation videos.
+            </div>
+            <a class="visit" href="https://www.synthesia.io/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 19 -->
+        <div class="card" data-category="Audio">
+            <span class="rank">#19</span>
+            <div class="name">ElevenLabs</div>
+            <span class="category">AI Audio</span>
+            <div class="purpose">
+                AI voice generation, text-to-speech, voice cloning and
+                audio creation platform.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Voiceovers, narration and audio production.
+            </div>
+            <a class="visit" href="https://elevenlabs.io/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 20 -->
+        <div class="card" data-category="Writing">
+            <span class="rank">#20</span>
+            <div class="name">Jasper</div>
+            <span class="category">AI Writing</span>
+            <div class="purpose">
+                AI platform focused on marketing content, copywriting,
+                brand content and business communication.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Marketing teams and business content.
+            </div>
+            <a class="visit" href="https://www.jasper.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 21 -->
+        <div class="card" data-category="Writing">
+            <span class="rank">#21</span>
+            <div class="name">Grammarly</div>
+            <span class="category">Writing</span>
+            <div class="purpose">
+                AI-powered writing assistant for grammar, clarity,
+                rewriting, tone and professional communication.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Emails, documents and professional writing.
+            </div>
+            <a class="visit" href="https://www.grammarly.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 22 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#22</span>
+            <div class="name">Cursor</div>
+            <span class="category">AI Coding</span>
+            <div class="purpose">
+                AI-powered code editor that helps developers generate,
+                modify, understand and refactor code.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI-assisted software development.
+            </div>
+            <a class="visit" href="https://cursor.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 23 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#23</span>
+            <div class="name">Replit</div>
+            <span class="category">AI Coding</span>
+            <div class="purpose">
+                Online development platform with AI assistance for
+                building and deploying applications.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Learning programming and rapid development.
+            </div>
+            <a class="visit" href="https://replit.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 24 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#24</span>
+            <div class="name">Lovable</div>
+            <span class="category">AI App Builder</span>
+            <div class="purpose">
+                AI-powered application builder that helps users create
+                web applications using natural-language instructions.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Rapid web application prototyping.
+            </div>
+            <a class="visit" href="https://lovable.dev/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 25 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#25</span>
+            <div class="name">Notion AI</div>
+            <span class="category">Productivity</span>
+            <div class="purpose">
+                AI features integrated into Notion for writing,
+                summarization, knowledge management and productivity.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Notes, documentation and team knowledge.
+            </div>
+            <a class="visit" href="https://www.notion.com/product/ai"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 26 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#26</span>
+            <div class="name">Gamma</div>
+            <span class="category">Presentations</span>
+            <div class="purpose">
+                AI tool for creating presentations, documents and
+                visual content from simple prompts.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Fast AI-generated presentations.
+            </div>
+            <a class="visit" href="https://gamma.app/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 27 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#27</span>
+            <div class="name">Otter.ai</div>
+            <span class="category">Meeting AI</span>
+            <div class="purpose">
+                AI meeting assistant for transcription, summaries,
+                notes and meeting insights.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Meetings, interviews and lecture notes.
+            </div>
+            <a class="visit" href="https://otter.ai/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 28 -->
+        <div class="card" data-category="Search">
+            <span class="rank">#28</span>
+            <div class="name">You.com</div>
+            <span class="category">AI Search</span>
+            <div class="purpose">
+                AI search and research platform designed to combine
+                web search with AI-generated answers.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI-powered web research.
+            </div>
+            <a class="visit" href="https://you.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 29 -->
+        <div class="card" data-category="Chat">
+            <span class="rank">#29</span>
+            <div class="name">Poe</div>
+            <span class="category">AI Chat</span>
+            <div class="purpose">
+                Platform providing access to multiple AI models and
+                conversational bots through one interface.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Comparing and using different AI models.
+            </div>
+            <a class="visit" href="https://poe.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 30 -->
+        <div class="card" data-category="Audio">
+            <span class="rank">#30</span>
+            <div class="name">Suno</div>
+            <span class="category">AI Music</span>
+            <div class="purpose">
+                AI music generation platform for creating songs and
+                musical compositions from text prompts.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI-generated songs and music.
+            </div>
+            <a class="visit" href="https://suno.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 31 -->
+        <div class="card" data-category="Audio">
+            <span class="rank">#31</span>
+            <div class="name">Udio</div>
+            <span class="category">AI Music</span>
+            <div class="purpose">
+                AI music creation platform for generating songs,
+                vocals and musical ideas.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AI music experimentation.
+            </div>
+            <a class="visit" href="https://www.udio.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 32 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#32</span>
+            <div class="name">Remove.bg</div>
+            <span class="category">Image Editing</span>
+            <div class="purpose">
+                AI-powered background removal for photographs and
+                product images.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Removing image backgrounds quickly.
+            </div>
+            <a class="visit" href="https://www.remove.bg/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 33 -->
+        <div class="card" data-category="Image">
+            <span class="rank">#33</span>
+            <div class="name">Photoroom</div>
+            <span class="category">Image Editing</span>
+            <div class="purpose">
+                AI photo editing and product-image creation for
+                ecommerce and social media.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Product photography and ecommerce.
+            </div>
+            <a class="visit" href="https://www.photoroom.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 34 -->
+        <div class="card" data-category="Video">
+            <span class="rank">#34</span>
+            <div class="name">HeyGen</div>
+            <span class="category">AI Video</span>
+            <div class="purpose">
+                AI video creation platform using avatars, voices,
+                translation and text-to-video capabilities.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Marketing, training and presenter videos.
+            </div>
+            <a class="visit" href="https://www.heygen.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 35 -->
+        <div class="card" data-category="Writing">
+            <span class="rank">#35</span>
+            <div class="name">QuillBot</div>
+            <span class="category">Writing</span>
+            <div class="purpose">
+                AI writing assistant for paraphrasing, rewriting,
+                summarizing and improving text.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Rewriting and improving written content.
+            </div>
+            <a class="visit" href="https://quillbot.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 36 -->
+        <div class="card" data-category="Productivity">
+            <span class="rank">#36</span>
+            <div class="name">Zapier AI</div>
+            <span class="category">Automation</span>
+            <div class="purpose">
+                AI-assisted automation platform for connecting apps
+                and automating repetitive business workflows.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Business automation and workflows.
+            </div>
+            <a class="visit" href="https://zapier.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 37 -->
+        <div class="card" data-category="Search">
+            <span class="rank">#37</span>
+            <div class="name">Consensus</div>
+            <span class="category">AI Research</span>
+            <div class="purpose">
+                AI research search engine focused on finding and
+                summarizing scientific research papers.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Academic and scientific research.
+            </div>
+            <a class="visit" href="https://consensus.app/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 38 -->
+        <div class="card" data-category="Search">
+            <span class="rank">#38</span>
+            <div class="name">Elicit</div>
+            <span class="category">AI Research</span>
+            <div class="purpose">
+                AI research assistant for literature reviews,
+                finding papers and extracting research information.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Academic literature reviews.
+            </div>
+            <a class="visit" href="https://elicit.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 39 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#39</span>
+            <div class="name">Amazon Q Developer</div>
+            <span class="category">AI Coding</span>
+            <div class="purpose">
+                AWS-focused AI assistant for software development,
+                coding, debugging and cloud development.
+            </div>
+            <div class="best">
+                <b>Best for:</b> AWS developers and cloud applications.
+            </div>
+            <a class="visit" href="https://aws.amazon.com/q/developer/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+        <!-- 40 -->
+        <div class="card" data-category="Coding">
+            <span class="rank">#40</span>
+            <div class="name">Tabnine</div>
+            <span class="category">AI Coding</span>
+            <div class="purpose">
+                AI coding assistant providing code completion,
+                generation and developer productivity features.
+            </div>
+            <div class="best">
+                <b>Best for:</b> Developer productivity and code completion.
+            </div>
+            <a class="visit" href="https://www.tabnine.com/"
+               target="_blank">Visit Website →</a>
+        </div>
+
+    </div>
+
+    <div class="empty" id="empty">
+        <h2>No AI websites found</h2>
+        <p>Try another search term or category.</p>
+    </div>
+
+</div>
+
+<footer>
+    <strong>AI Websites Directory</strong><br>
+    A curated collection of popular and useful AI tools.
+    <br><br>
+    © 2026 AI Tools Directory
+</footer>
+
+
+<script>
+
+let selectedCategory = "All";
+
+const cards = document.querySelectorAll(".card");
+
+document.getElementById("totalTools").innerText = cards.length;
+
+
+function filterTools() {
+
+    const search =
+        document.getElementById("searchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    let visible = 0;
+
+    cards.forEach(card => {
+
+        const text = card.innerText.toLowerCase();
+        const category = card.dataset.category;
+
+        const matchesSearch =
+            text.includes(search);
+
+        const matchesCategory =
+            selectedCategory === "All" ||
+            category === selectedCategory ||
+            text.includes(selectedCategory.toLowerCase());
+
+        if (matchesSearch && matchesCategory) {
+
+            card.style.display = "block";
+            visible++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    document.getElementById("empty").style.display =
+        visible === 0 ? "block" : "none";
+}
+
+
+function filterCategory(category, button) {
+
+    selectedCategory = category;
+
+    document
+        .querySelectorAll(".filter")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    filterTools();
+}
+
+</script>
+
+</body>
+</html>
