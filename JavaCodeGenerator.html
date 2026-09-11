@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Main Class Generator</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --code-bg: #090d16;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    button.btn-primary {
+      width: 100%;
+      padding: 12px 20px;
+      background-color: var(--accent);
+      color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 24px;
+    }
+
+    button.btn-primary:hover {
+      background-color: var(--accent-hover);
+      color: #ffffff;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .output-header span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: "Fira Code", Consolas, Monaco, "Andale Mono", monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Java Main Class Generator</h1>
+    <p class="subtitle">Specify package and class names to generate ready-to-run Java code.</p>
+
+    <div class="form-group">
+      <div class="field">
+        <label for="packageNameInput">Package Name (Optional)</label>
+        <input 
+          type="text" 
+          id="packageNameInput" 
+          placeholder="e.g., com.pt" 
+          value="com.pt" 
+          autocomplete="off" 
+        />
+      </div>
+
+      <div class="field">
+        <label for="classNameInput">Class Name</label>
+        <input 
+          type="text" 
+          id="classNameInput" 
+          placeholder="e.g., HelloWorldTest"
+          value="HelloWorldTest" 
+          autocomplete="off" 
+        />
+      </div>
+    </div>
+
+    <button class="btn-primary" id="generateBtn">Generate Code</button>
+
+    <div class="output-header">
+      <span>Generated Code</span>
+      <div class="actions">
+        <button class="btn-secondary" id="copyBtn">Copy</button>
+        <button class="btn-secondary" id="downloadBtn">Download .java</button>
+      </div>
+    </div>
+
+    <pre><code id="codeOutput"></code></pre>
+  </div>
+
+  <script>
+    const packageNameInput = document.getElementById('packageNameInput');
+    const classNameInput = document.getElementById('classNameInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const codeOutput = document.getElementById('codeOutput');
+
+    // Clean class name to form a valid Java class identifier
+    function sanitizeClassName(rawInput) {
+      let clean = rawInput.trim().replace(/[^a-zA-Z0-9_$]/g, '');
+      
+      if (/^[0-9]/.test(clean)) {
+        clean = 'Class' + clean;
+      }
+
+      if (clean.length > 0) {
+        clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+      }
+
+      return clean || 'Main';
+    }
+
+    // Clean package name to valid lower-case Java package structure
+    function sanitizePackageName(rawInput) {
+      let clean = rawInput.trim().toLowerCase().replace(/[^a-z0-9_.]/g, '');
+      // Strip leading, trailing, or double dots
+      clean = clean.replace(/^\.+|\.+$|(?<=\.)\./g, '');
+      return clean;
+    }
+
+    // Java code template builder
+    function generateJavaClass(pkgName, className) {
+      let code = '';
+      if (pkgName) {
+        code += `package ${pkgName};\n\n`;
+      }
+      code += `public class ${className} {\n` +
+              `    public static void main(String[] args) {\n` +
+              `        System.out.println("Hello World from ${className}!");\n` +
+              `    }\n` +
+              `}`;
+      return code;
+    }
+
+    // Render code in pre block
+    function renderCode() {
+      const validPkg = sanitizePackageName(packageNameInput.value);
+      const validClass = sanitizeClassName(classNameInput.value);
+      codeOutput.textContent = generateJavaClass(validPkg, validClass);
+    }
+
+    // Download generated code as .java file
+    function downloadFile() {
+      const validClass = sanitizeClassName(classNameInput.value);
+      const code = codeOutput.textContent;
+      
+      // Create a blob containing the Java code
+      const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      
+      // Create hidden link element and trigger click
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${validClass}.java`;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // Event Handlers
+    generateBtn.addEventListener('click', renderCode);
+
+    [packageNameInput, classNameInput].forEach(input => {
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') renderCode();
+      });
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codeOutput.textContent);
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.color = '#10b981';
+        
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.style.color = '';
+        }, 2000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    });
+
+    downloadBtn.addEventListener('click', downloadFile);
+
+    // Initial render on page load
+    renderCode();
+  </script>
+</body>
+</html>
