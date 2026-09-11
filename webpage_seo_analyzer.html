@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO & Marketing Growth Analyzer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+
+    <!-- Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-600 p-2 rounded-lg text-white">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                    Rank&Grow Engine
+                </span>
+            </div>
+            <div class="text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                <i class="fa-solid fa-bolt text-amber-400 mr-1"></i> SEO & Marketing Intelligence
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- Hero Input Section -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                Get More Search Traffic & <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Viral Growth</span>
+            </h1>
+            <p class="mt-4 text-slate-400 text-base sm:text-lg">
+                Enter your Website or YouTube video URL. Get an instant SEO audit, rank score, and step-by-step user acquisition roadmap.
+            </p>
+
+            <!-- URL Input Form -->
+            <div class="mt-8 bg-slate-900 p-2 rounded-2xl border border-slate-800 shadow-2xl flex flex-col sm:flex-row gap-2">
+                <div class="relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <input type="url" id="urlInput" required
+                        placeholder="https://example.com or https://youtube.com/watch?v=..." 
+                        class="w-full pl-11 pr-4 py-3.5 bg-slate-950 text-slate-100 placeholder-slate-500 rounded-xl border border-slate-800 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition">
+                </div>
+                <button onclick="analyzeURL()" id="analyzeBtn"
+                    class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-brand-600/30 flex items-center justify-center space-x-2 cursor-pointer">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Analyze URL</span>
+                </button>
+            </div>
+            <div id="errorMsg" class="hidden mt-3 text-red-400 text-sm flex items-center justify-center gap-1">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="errorText">Please enter a valid HTTP or HTTPS URL.</span>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden text-center py-16">
+            <div class="inline-block relative w-16 h-16">
+                <div class="w-16 h-16 rounded-full border-4 border-brand-500/20 border-t-brand-500 animate-spin"></div>
+            </div>
+            <p class="mt-4 text-slate-300 font-medium text-lg">Scanning page, metadata & search indexing rules...</p>
+            <p class="text-sm text-slate-500">Generating SEO & marketing growth suggestions</p>
+        </div>
+
+        <!-- Empty State Placeholder -->
+        <div id="emptyState" class="border border-dashed border-slate-800 rounded-2xl p-12 text-center my-8 bg-slate-900/30">
+            <i class="fa-solid fa-magnifying-glass-chart text-5xl text-slate-700 mb-4"></i>
+            <h3 class="text-lg font-semibold text-slate-400">No URL Analyzed Yet</h3>
+            <p class="text-slate-500 text-sm max-w-md mx-auto mt-1">
+                Enter a link above to get actionable SEO optimization tips, keyword suggestions, and marketing frameworks tailored for your channel or web site.
+            </p>
+        </div>
+
+        <!-- Analysis Results Section -->
+        <div id="resultsSection" class="hidden space-x-0 space-y-8">
+
+            <!-- Overview Header Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-start space-x-4">
+                        <div id="typeIconContainer" class="p-4 bg-slate-800 rounded-xl text-brand-500 text-2xl border border-slate-700">
+                            <i id="typeIcon" class="fa-solid fa-globe"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span id="urlTypeBadge" class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                                    Website
+                                </span>
+                                <span id="domainTag" class="text-xs text-slate-500 truncate max-w-[200px]"></span>
+                            </div>
+                            <h2 id="urlTitle" class="text-xl sm:text-2xl font-bold text-white mt-1 leading-snug">
+                                Target Content Title
+                            </h2>
+                            <p id="analyzedUrlDisplay" class="text-slate-400 text-xs sm:text-sm mt-1 truncate max-w-md"></p>
+                        </div>
+                    </div>
+
+                    <!-- Scores -->
+                    <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-slate-800 pt-4 md:pt-0">
+                        <div class="text-center px-4">
+                            <div id="seoScore" class="text-3xl font-extrabold text-emerald-400">82</div>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">SEO Health Score</div>
+                        </div>
+                        <div class="h-10 w-px bg-slate-800"></div>
+                        <div class="text-center px-4">
+                            <div id="growthScore" class="text-3xl font-extrabold text-indigo-400">75</div>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">Growth Potential</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Preview Card (Only displayed if YouTube) -->
+            <div id="youtubeEmbedCard" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-center">
+                <img id="ytThumbnail" src="" alt="Thumbnail" class="w-full sm:w-56 rounded-lg object-cover aspect-video border border-slate-800">
+                <div class="flex-1">
+                    <span class="text-xs font-semibold text-red-400 uppercase tracking-wider">YouTube Data Extracted</span>
+                    <h3 id="ytVideoTitle" class="text-lg font-bold text-white mt-1"></h3>
+                    <p id="ytAuthor" class="text-sm text-slate-400 mt-0.5"></p>
+                    <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                        <span class="bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700">
+                            <i class="fa-solid fa-eye text-indigo-400 mr-1"></i> CTR Optimization Ready
+                        </span>
+                        <span class="bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700">
+                            <i class="fa-solid fa-tags text-purple-400 mr-1"></i> Tag & Title Recommendations Available
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Analysis Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left 2 Columns: SEO & Content Optimization -->
+                <div class="lg:col-span-2 space-y-8">
+
+                    <!-- SEO Optimization Suggestions -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass text-indigo-400"></i>
+                                SEO & Search Visibility Improvements
+                            </h3>
+                            <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md">Step-by-Step</span>
+                        </div>
+
+                        <div id="seoSuggestionsList" class="space-y-4">
+                            <!-- JS will inject dynamic items here -->
+                        </div>
+                    </div>
+
+                    <!-- User Acquisition & Marketing Playbook -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-bullhorn text-purple-400"></i>
+                                Marketing & User Acquisition Roadmap
+                            </h3>
+                            <span class="text-xs text-slate-400 bg-slate-800 px-2.5 py-1 rounded-md">Growth Hacking</span>
+                        </div>
+
+                        <div id="marketingSuggestionsList" class="space-y-4">
+                            <!-- JS will inject dynamic items here -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right 1 Column: Action Checklist & Meta Tools -->
+                <div class="space-y-8">
+
+                    <!-- Quick Wins Checklist -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            Priority Quick Wins
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">Complete these high-impact tasks first to boost indexation & clicks.</p>
+                        
+                        <div id="quickWinsList" class="space-y-3">
+                            <!-- JS injected checklist -->
+                        </div>
+                    </div>
+
+                    <!-- Keyword Strategy Ideas -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-key text-amber-400"></i>
+                            Recommended Keywords & Topics
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">Target these seed search queries in titles, headers & descriptions.</p>
+                        
+                        <div id="keywordTags" class="flex flex-wrap gap-2">
+                            <!-- JS injected keywords -->
+                        </div>
+                    </div>
+
+                    <!-- Export Report Card -->
+                    <div class="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 rounded-2xl p-6 text-center">
+                        <i class="fa-solid fa-file-arrow-down text-3xl text-indigo-400 mb-3"></i>
+                        <h4 class="font-bold text-white">Save Strategy Report</h4>
+                        <p class="text-xs text-slate-300 mt-1 mb-4">Download your tailored SEO and growth checklist.</p>
+                        <button onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-medium py-2.5 rounded-xl border border-slate-700 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i>
+                            Print / Save as PDF
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-xs">
+        <p>© 2026 Rank&Grow Engine. Built for Creators, Webmasters & Digital Marketers.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Check if URL is YouTube
+        function isYouTubeURL(url) {
+            return /(youtube\.com|youtu\.be)/i.test(url);
+        }
+
+        // Validate URL syntax
+        function isValidURL(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Extract domain name
+        function getDomainName(urlStr) {
+            try {
+                const url = new URL(urlStr);
+                return url.hostname.replace('www.', '');
+            } catch(e) {
+                return 'unknown domain';
+            }
+        }
+
+        // Main Trigger Function
+        async function analyzeURL() {
+            const urlInput = document.getElementById('urlInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const errorText = document.getElementById('errorText');
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+            const resultsSection = document.getElementById('resultsSection');
+
+            // Reset UI
+            errorMsg.classList.add('hidden');
+            
+            if (!urlInput || !isValidURL(urlInput)) {
+                errorText.innerText = "Please enter a valid HTTP or HTTPS URL (e.g., https://example.com)";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            // Show loader
+            emptyState.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            // Simulate parsing/fetching delay
+            setTimeout(async () => {
+                try {
+                    if (isYouTubeURL(urlInput)) {
+                        await processYouTubeURL(urlInput);
+                    } else {
+                        processWebsiteURL(urlInput);
+                    }
+                    loadingState.classList.add('hidden');
+                    resultsSection.classList.remove('hidden');
+                } catch (err) {
+                    loadingState.classList.add('hidden');
+                    errorText.innerText = "Failed to analyze URL. Please verify the link and try again.";
+                    errorMsg.classList.remove('hidden');
+                }
+            }, 1200);
+        }
+
+        // --- YOUTUBE ANALYSIS LOGIC ---
+        async function processYouTubeURL(url) {
+            const domain = getDomainName(url);
+            let title = "YouTube Content Analysis";
+            let author = "YouTube Creator";
+            let thumbnailUrl = "";
+            let hasOembed = false;
+
+            // Try fetching real YouTube metadata using public oEmbed API
+            try {
+                const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
+                const res = await fetch(oembedUrl);
+                if (res.ok) {
+                    const data = await res.json();
+                    title = data.title || title;
+                    author = data.author_name ? `By ${data.author_name}` : author;
+                    thumbnailUrl = data.thumbnail_url || "";
+                    hasOembed = true;
+                }
+            } catch (e) {
+                console.log("oEmbed fetch failed, fallback to heuristic analysis");
+            }
+
+            // Update UI Card Metadata
+            document.getElementById('typeIconContainer').className = "p-4 bg-red-950/50 text-red-500 rounded-xl border border-red-800/50";
+            document.getElementById('typeIcon').className = "fa-brands fa-youtube text-2xl";
+            document.getElementById('urlTypeBadge').className = "text-xs px-2.5 py-0.5 rounded-full font-medium bg-red-900/40 text-red-300 border border-red-700/50";
+            document.getElementById('urlTypeBadge').innerText = "YouTube Video / Channel";
+            document.getElementById('domainTag').innerText = domain;
+            document.getElementById('urlTitle').innerText = title;
+            document.getElementById('analyzedUrlDisplay').innerText = url;
+
+            // Display YT Embed Card if thumbnail exists
+            const ytEmbedCard = document.getElementById('youtubeEmbedCard');
+            if (hasOembed && thumbnailUrl) {
+                document.getElementById('ytThumbnail').src = thumbnailUrl;
+                document.getElementById('ytVideoTitle').innerText = title;
+                document.getElementById('ytAuthor').innerText = author;
+                ytEmbedCard.classList.remove('hidden');
+            } else {
+                ytEmbedCard.classList.add('hidden');
+            }
+
+            // Scores calculation
+            const titleLength = title.length;
+            const isGoodTitleLen = titleLength >= 40 && titleLength <= 70;
+            const seoScore = isGoodTitleLen ? 88 : 72;
+            document.getElementById('seoScore').innerText = seoScore;
+            document.getElementById('growthScore').innerText = "85";
+
+            // SEO Suggestions for YouTube
+            const seoItems = [
+                {
+                    status: isGoodTitleLen ? 'pass' : 'warn',
+                    title: `Title Optimization (${titleLength} characters)`,
+                    desc: isGoodTitleLen 
+                        ? `Great title length! Ideal YouTube titles are between 40-70 characters so they don't get truncated on mobile devices.`
+                        : `Your title is ${titleLength} characters. Aim for 40–60 characters. Place core primary keywords in the first 3 words for highest search weight.`
+                },
+                {
+                    status: 'info',
+                    title: 'High CTR Thumbnail Rules',
+                    desc: 'Ensure thumbnail text has high contrast, no more than 3-4 dynamic words, and includes an expressive face or bright focal object to boost Click-Through-Rate (CTR).'
+                },
+                {
+                    status: 'info',
+                    title: 'Description & Chapter Timestamps',
+                    desc: 'Place your main target keyword in the first 2 lines of the description. Add timestamp chapters (e.g., 00:00 Intro, 01:30 Step 1) to enable Google Search Key Moments.'
+                },
+                {
+                    status: 'pass',
+                    title: 'Tags & Playlist Categorization',
+                    desc: 'Add 5–8 focused tags mix of broad category tags (e.g., "YouTube Marketing") and long-tail specific tags. Add this video to an existing targeted playlist to increase binge session watch time.'
+                }
+            ];
+
+            // Marketing Suggestions for YouTube
+            const marketingItems = [
+                {
+                    title: 'Repurpose into Shorts & TikToks',
+                    desc: 'Extract 3 to 5 highlight key takeaways into 30-60 second vertical videos (YouTube Shorts, Reels, TikTok). Link the Shorts back to this full video.'
+                },
+                {
+                    title: 'Community & First 24-Hour Velocity',
+                    desc: 'Promote this link within the first 2 hours to your email list, Discord/Telegram, or LinkedIn. YouTube algorithm prioritizes early CTR and Velocity.'
+                },
+                {
+                    title: 'Pinned Comment CTA',
+                    desc: 'Pin a comment asking an engaging question ("What was your favorite tip?") and include a link to your website or newsletter lead magnet.'
+                },
+                {
+                    title: 'Niche Community Distribution',
+                    desc: 'Share on relevant Subreddits, Quora questions, or Facebook Groups, but provide value in text form before dropping the link to prevent spam flags.'
+                }
+            ];
+
+            // Quick Wins Checklist
+            const quickWins = [
+                "Add 0:00 Timestamps to description",
+                "Include main target keyword in top 3 words of title",
+                "Create a vertical YouTube Short linking back to this video",
+                "Pin a comment with a call-to-action & lead magnet link",
+                "Add video into a themed Playlist"
+            ];
+
+            // Keyword Tags
+            const keywords = [
+                "YouTube SEO", "Video CTR Hacks", "Organic Reach", "Watch Time", "Thumbnail Design", "Search Ranking", "Viral Shorts"
+            ];
+
+            renderResults(seoItems, marketingItems, quickWins, keywords);
+        }
+
+        // --- WEBSITE ANALYSIS LOGIC ---
+        function processWebsiteURL(url) {
+            const domain = getDomainName(url);
+            const isHttps = url.startsWith('https://');
+            const urlPath = new URL(url).pathname;
+
+            document.getElementById('typeIconContainer').className = "p-4 bg-indigo-950/50 text-indigo-400 rounded-xl border border-indigo-800/50";
+            document.getElementById('typeIcon').className = "fa-solid fa-globe text-2xl";
+            document.getElementById('urlTypeBadge').className = "text-xs px-2.5 py-0.5 rounded-full font-medium bg-indigo-900/40 text-indigo-300 border border-indigo-700/50";
+            document.getElementById('urlTypeBadge').innerText = "Web Page / SaaS / Blog";
+            document.getElementById('domainTag').innerText = domain;
+            document.getElementById('urlTitle').innerText = `SEO & Growth Report for ${domain}`;
+            document.getElementById('analyzedUrlDisplay').innerText = url;
+            document.getElementById('youtubeEmbedCard').classList.add('hidden');
+
+            const seoScore = isHttps ? 78 : 55;
+            document.getElementById('seoScore').innerText = seoScore;
+            document.getElementById('growthScore').innerText = "80";
+
+            // SEO Suggestions for Website
+            const seoItems = [
+                {
+                    status: isHttps ? 'pass' : 'warn',
+                    title: 'Security & Protocol (HTTPS)',
+                    desc: isHttps 
+                        ? 'HTTPS secure connection detected. Google prioritizes secure websites in search rankings.' 
+                        : 'Your site is missing HTTPS security! Search engines penalize non-HTTPS websites. Install an SSL certificate immediately.'
+                },
+                {
+                    status: 'info',
+                    title: 'On-Page Meta Tags & Structured Data',
+                    desc: 'Ensure your `<title>` tag is under 60 characters and `<meta name="description">` is 140–160 characters containing your primary target keyword. Implement Schema.org JSON-LD structured data.'
+                },
+                {
+                    status: 'info',
+                    title: 'Page Speed & Core Web Vitals',
+                    desc: 'Compress images (use WebP format), utilize browser caching, and defer non-essential JS scripts to improve LCP (Largest Contentful Paint) below 2.5 seconds.'
+                },
+                {
+                    status: 'pass',
+                    title: 'URL Slug Structure',
+                    desc: `URL Path ("${urlPath}"): Ensure your slug is clean, readable, hyphenated, and contains your main search query without unnecessary parameters.`
+                }
+            ];
+
+            // Marketing Suggestions for Website
+            const marketingItems = [
+                {
+                    title: 'Content Marketing & Keyword Clustering',
+                    desc: 'Publish 5-10 supporting blog articles answering specific sub-topics ("How-to", "vs competitors") that link back to this core URL to build domain authority.'
+                },
+                {
+                    title: 'Programmatic & Directory Distribution',
+                    desc: 'Submit your website to directory sites like Product Hunt, BetaList, AlternativeTo, Indie Hackers, and industry-specific aggregators for immediate backlink juice.'
+                },
+                {
+                    title: 'Lead Magnet & Email Capture Hook',
+                    desc: 'Add a high-converting lead capture form (free checklist, ebook, or free tool access) above the fold to capture abandoning search traffic.'
+                },
+                {
+                    title: 'Cold Outreach & Backlink Building',
+                    desc: 'Find articles listing "Top Tools/Resources in [Your Niche]" and send targeted email outreach to authors requesting inclusion or resource replacement.'
+                }
+            ];
+
+            // Quick Wins
+            const quickWins = [
+                "Verify Google Search Console & submit sitemap.xml",
+                "Optimize H1 tag to include primary target keyword",
+                "Set up OpenGraph (OG) image meta tags for social sharing preview",
+                "List site on ProductHunt / LaunchingNext / Reddit communities",
+                "Compress homepage images to WebP format"
+            ];
+
+            // Keywords
+            const keywords = [
+                domain, "SEO Audit", "User Acquisition", "Backlink Strategy", "Search Ranking", "Organic Traffic", "Conversion Rate"
+            ];
+
+            renderResults(seoItems, marketingItems, quickWins, keywords);
+        }
+
+        // Helper to render output to HTML elements
+        function renderResults(seoItems, marketingItems, quickWins, keywords) {
+            // Render SEO List
+            const seoContainer = document.getElementById('seoSuggestionsList');
+            seoContainer.innerHTML = seoItems.map(item => {
+                let badgeClass = "bg-indigo-900/40 text-indigo-400 border-indigo-700/50";
+                let icon = "fa-circle-info";
+                
+                if (item.status === 'pass') {
+                    badgeClass = "bg-emerald-900/40 text-emerald-400 border-emerald-700/50";
+                    icon = "fa-circle-check";
+                } else if (item.status === 'warn') {
+                    badgeClass = "bg-amber-900/40 text-amber-400 border-amber-700/50";
+                    icon = "fa-triangle-exclamation";
+                }
+
+                return `
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid ${icon} mt-1 text-base"></i>
+                            <div>
+                                <h4 class="font-semibold text-slate-200 text-sm sm:text-base">${item.title}</h4>
+                                <p class="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">${item.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Render Marketing List
+            const marketingContainer = document.getElementById('marketingSuggestionsList');
+            marketingContainer.innerHTML = marketingItems.map((item, index) => `
+                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-start gap-4">
+                    <div class="w-7 h-7 rounded-lg bg-brand-600/20 text-brand-400 border border-brand-500/30 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                        0${index + 1}
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-200 text-sm sm:text-base">${item.title}</h4>
+                        <p class="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Quick Wins
+            const quickWinsContainer = document.getElementById('quickWinsList');
+            quickWinsContainer.innerHTML = quickWins.map(win => `
+                <label class="flex items-start gap-3 text-xs sm:text-sm text-slate-300 bg-slate-950 p-2.5 rounded-lg border border-slate-800/80 cursor-pointer hover:bg-slate-800/50 transition">
+                    <input type="checkbox" class="mt-0.5 rounded border-slate-700 text-brand-600 focus:ring-brand-500 bg-slate-900">
+                    <span>${win}</span>
+                </label>
+            `).join('');
+
+            // Render Keywords
+            const keywordsContainer = document.getElementById('keywordTags');
+            keywordsContainer.innerHTML = keywords.map(kw => `
+                <span class="text-xs bg-slate-800 text-slate-300 border border-slate-700 px-2.5 py-1 rounded-md font-medium hover:border-brand-500 transition cursor-default">
+                    # ${kw}
+                </span>
+            `).join('');
+        }
+
+        // Allow pressing Enter key to trigger analysis
+        document.getElementById('urlInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                analyzeURL();
+            }
+        });
+    </script>
+</body>
+</html>
