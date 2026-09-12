@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Class Generator with Log4j</title>
+    <style>
+        :root {
+            --primary-color: #0073e6;
+            --primary-hover: #005bb5;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --code-bg: #1e1e1e;
+            --code-color: #d4d4d4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #222;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .section {
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 10px;
+            position: fixed;
+            z-index: 1;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Java Class & Log4j Code Generator</h1>
+    <p>Fill in the details below to generate a boilerplate Java class configured with Log4j logging.</p>
+
+    <!-- Form Inputs -->
+    <div class="form-group">
+        <label for="packageName">Package Name:</label>
+        <input type="text" id="packageName" placeholder="e.g., com.example.demo" value="com.example.demo">
+    </div>
+
+    <div class="form-group">
+        <label for="className">Class Name:</label>
+        <input type="text" id="className" placeholder="e.g., Application" value="Application">
+    </div>
+
+    <button class="btn-primary" onclick="generateCode()">Generate Code</button>
+
+    <!-- Output Section -->
+    <div id="outputSection" style="display:none;" class="section">
+        <h2>Generated Java Code</h2>
+        
+        <div class="btn-group">
+            <button class="btn-secondary" onclick="copyCode()">📋 Copy Code</button>
+            <button class="btn-secondary" onclick="downloadCode()">💾 Download .java</button>
+            <button class="btn-secondary" onclick="emailCode()">✉️ Email Code</button>
+            <button class="btn-secondary" onclick="shareCode()">🔗 Share</button>
+        </div>
+
+        <pre><code id="javaCodeOutput"></code></pre>
+
+        <!-- How to Compile and Run -->
+        <div class="section">
+            <h2>How to Compile and Run</h2>
+            <p>To compile and run this Java program from the command line, follow these steps:</p>
+            <ol>
+                <li>Ensure you have the Java Development Kit (JDK) installed.</li>
+                <li>Download the Log4j 2 libraries (<code>log4j-api-2.x.x.jar</code> and <code>log4j-core-2.x.x.jar</code>) and place them in a <code>lib</code> folder.</li>
+                <li><strong>Compile the Java class:</strong>
+                    <pre><code>javac -cp "lib/*" <span class="class-file-path">Application.java</span></code></pre>
+                </li>
+                <li><strong>Run the Java class:</strong>
+                    <pre><code>java -cp "lib/*:." <span class="full-class-path">com.example.demo.Application</span></code></pre>
+                    <em>Note: On Windows, use a semicolon <code>;</code> instead of a colon <code>:</code> in the classpath (e.g., <code>"lib/*;."</code>).</em>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Log4j Setup & Configuration Note -->
+        <div class="section">
+            <h2>Log4j Setup & Configuration Note</h2>
+            <p>Log4j 2 requires dependency configuration and a configuration file to print logs correctly.</p>
+
+            <h3>1. Maven Dependencies (If using Maven)</h3>
+            <p>Add these dependencies to your <code>pom.xml</code> file:</p>
+            <pre><code>&lt;dependencies&gt;
+    &lt;!-- Log4j API --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;
+        &lt;version&gt;2.20.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!-- Log4j Core --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;
+        &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;
+        &lt;version&gt;2.20.0&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+            <h3>2. Basic Log4j Configuration (`log4j2.xml`)</h3>
+            <p>Place this file in your project's <code>src/main/resources/</code> directory to enable <code>DEBUG</code> level logs output to the console:</p>
+            <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Configuration status="WARN"&gt;
+    &lt;Appenders&gt;
+        &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+            &lt;PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/&gt;
+        &lt;/Console&gt;
+    &lt;/Appenders&gt;
+    &lt;Loggers&gt;
+        &lt;Root level="debug"&gt;
+            &lt;AppenderRef ref="Console"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;</code></pre>
+        </div>
+
+        <!-- Resources for Beginners -->
+        <div class="section">
+            <h2>New to Java?</h2>
+            <p>If you are a beginner looking to learn Java from scratch, check out these recommended tutorials:</p>
+            <ul>
+                <li><a href="https://dev.java/learn/" target="_blank" rel="noopener">Dev Java Tutorials</a></li>
+                <li><a href="https://www.w3schools.com/java/" target="_blank" rel="noopener">W3Schools Java Tutorial for Beginners</a></li>
+                <li><a href="https://www.geeksforgeeks.org/java/" target="_blank" rel="noopener">GeeksforGeeks Java Programming Language</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast">Notification Message</div>
+
+<script>
+    let generatedJavaCode = '';
+    let currentClassName = 'Application';
+    let currentPackageName = 'com.example.demo';
+
+    function cleanInput(str) {
+        return str.trim().replace(/[^a-zA-Z0-9_.]/g, '');
+    }
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function generateCode() {
+        let rawPackage = document.getElementById('packageName').value.trim();
+        let rawClass = document.getElementById('className').value.trim();
+
+        // Validation & Clean up
+        currentPackageName = cleanInput(rawPackage);
+        currentClassName = capitalizeFirstLetter(cleanInput(rawClass));
+
+        if (!currentClassName) {
+            currentClassName = "MainClass";
+        }
+
+        let packageHeader = currentPackageName ? `package ${currentPackageName};\n\n` : '';
+
+        // Generate Code Template
+        generatedJavaCode = `${packageHeader}import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class ${currentClassName} {
+
+    // Initialize Log4j Logger
+    private static final Logger logger = LogManager.getLogger(${currentClassName}.class);
+
+    public static void main(String[] args) {
+        // Standard Console Output
+        System.out.println("Hello, World! Application initialized successfully.");
+
+        // Log4j Debug Logging Message
+        logger.debug("This is a DEBUG message from Log4j inside ${currentClassName}.");
+        
+        // Log4j Info Logging Message
+        logger.info("Application executed successfully.");
+    }
+}`;
+
+        // Display Generated Code
+        document.getElementById('javaCodeOutput').textContent = generatedJavaCode;
+
+        // Dynamic updates for compile/run instructions
+        let filePaths = document.querySelectorAll('.class-file-path');
+        filePaths.forEach(el => el.textContent = `${currentClassName}.java`);
+
+        let fullClassPaths = document.querySelectorAll('.full-class-path');
+        let fullPath = currentPackageName ? `${currentPackageName}.${currentClassName}` : currentClassName;
+        fullClassPaths.forEach(el => el.textContent = fullPath);
+
+        // Show Output Section
+        document.getElementById('outputSection').style.display = 'block';
+
+        showToast("Java code generated successfully!");
+    }
+
+    function copyCode() {
+        if (!generatedJavaCode) return;
+        navigator.clipboard.writeText(generatedJavaCode)
+            .then(() => showToast("Code copied to clipboard!"))
+            .catch(() => showToast("Failed to copy code."));
+    }
+
+    function downloadCode() {
+        if (!generatedJavaCode) return;
+        const blob = new Blob([generatedJavaCode], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${currentClassName}.java`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast(`Downloaded ${currentClassName}.java`);
+    }
+
+    function emailCode() {
+        if (!generatedJavaCode) return;
+        const subject = encodeURIComponent(`Java Source Code: ${currentClassName}.java`);
+        const body = encodeURIComponent(`Here is the generated Java class:\n\n${generatedJavaCode}`);
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    async function shareCode() {
+        if (!generatedJavaCode) return;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `${currentClassName}.java`,
+                    text: generatedJavaCode
+                });
+                showToast("Shared successfully!");
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showToast("Could not share code.");
+                }
+            }
+        } else {
+            // Fallback: Copy to clipboard if Web Share API isn't supported
+            copyCode();
+            showToast("Web Share API not supported. Code copied instead!");
+        }
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "toast show";
+        setTimeout(() => { 
+            toast.className = toast.className.replace("toast show", "toast"); 
+        }, 3000);
+    }
+
+    // Auto-generate on initial page load
+    window.onload = function() {
+        generateCode();
+    };
+</script>
+
+</body>
+</html>
