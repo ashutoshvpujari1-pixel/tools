@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Web App Code Generator</title>
+    <style>
+        :root {
+            --primary-color: #6db33f;
+            --primary-dark: #589632;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #cccccc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button.generate-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        button.generate-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .output-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .code-container {
+            margin-bottom: 25px;
+            background: #1e1e1e;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .action-buttons button {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+
+        .action-buttons button:hover {
+            background: var(--primary-color);
+        }
+
+        pre {
+            margin: 0;
+            padding: 15px;
+            color: #dcdcdc;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .instructions-box {
+            background: #eef9ec;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .instructions-box h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        a.tutorial-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.tutorial-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Spring Boot Web App Generator</h1>
+    
+    <div class="form-group">
+        <label for="className">Web Application Class Name (e.g., HomeController):</label>
+        <input type="text" id="className" placeholder="HomeController" value="HomeController">
+    </div>
+
+    <div class="form-group">
+        <label for="mappingName">GET Mapping Name (e.g., /welcome):</label>
+        <input type="text" id="mappingName" placeholder="/welcome" value="/welcome">
+    </div>
+
+    <button class="generate-btn" onclick="generateCode()">Generate Code</button>
+
+    <div id="outputSection" class="output-section">
+        <!-- Java Code Output -->
+        <div class="code-container">
+            <div class="code-header">
+                <span id="javaFileName">HomeController.java</span>
+                <div class="action-buttons">
+                    <button onclick="copyCode('javaCode')">Copy</button>
+                    <button onclick="downloadFile('javaCode', document.getElementById('className').value + '.java')">Download</button>
+                    <button onclick="emailCode('javaCode', 'Java Controller')">Email</button>
+                    <button onclick="shareCode('Java Controller Code', document.getElementById('javaCode').innerText)">Share</button>
+                </div>
+            </div>
+            <pre><code id="javaCode"></code></pre>
+        </div>
+
+        <!-- HTML Code Output -->
+        <div class="code-container">
+            <div class="code-header">
+                <span id="htmlFileName">welcome.html (Thymeleaf template)</span>
+                <div class="action-buttons">
+                    <button onclick="copyCode('htmlCode')">Copy</button>
+                    <button onclick="downloadFile('htmlCode', document.getElementById('viewNameInput').value + '.html')">Download</button>
+                    <button onclick="emailCode('htmlCode', 'HTML View Template')">Email</button>
+                    <button onclick="shareCode('HTML Template Code', document.getElementById('htmlCode').innerText)">Share</button>
+                </div>
+            </div>
+            <pre><code id="htmlCode"></code></pre>
+            <input type="hidden" id="viewNameInput">
+        </div>
+
+        <!-- Project Integration & Log4j Setup Instructions -->
+        <div class="instructions-box">
+            <h3>📂 How to Integrate into Your Spring Boot Project</h3>
+            <ul>
+                <li><strong>Java Class:</strong> Place the generated Java file under your source folder inside a controller package, for example: <br><code>src/main/java/com/example/demo/controller/&lt;ClassName&gt;.java</code></li>
+                <li><strong>HTML File:</strong> Place the HTML file inside the Thymeleaf templates directory: <br><code>src/main/resources/templates/&lt;viewName&gt;.html  </br> OR </br><code>src/main/resources/static/&lt;viewName&gt;.html</code></li>
+            </ul>
+
+            <h3>⚙️ Log4j Setup & Configuration Note</h3>
+            <p>Spring Boot uses Logback by default via <code>spring-boot-starter-logging</code>. To use Log4j2:</p>
+            <ol>
+                <li>Exclude default logging and add the Log4j2 starter in your <code>pom.xml</code> (Maven):
+                    <pre style="background:#333; color:#fff; padding:8px; margin-top:5px; border-radius:4px;">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-log4j2&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+                </li>
+                <li>Optionally, configure log levels or appenders by placing a <code>log4j2.xml</code> or <code>log4j2.spring.xml</code> configuration file inside your <code>src/main/resources/</code> folder.</li>
+            </ol>
+
+            <h3>🚀 Beginner Tutorial</h3>
+            <p>If you are new to Spring Boot web applications, check out the official guide: <br>
+                <a class="tutorial-link" href="https://spring.io/guides/gs/serving-web-content" target="_blank">Spring.io - Serving Web Content with Spring MVC</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateCode() {
+        let className = document.getElementById('className').value.trim();
+        let mappingName = document.getElementById('mappingName').value.trim();
+
+        if (!className) {
+            alert("Please provide a valid Class Name.");
+            return;
+        }
+        if (!mappingName) {
+            alert("Please provide a valid Mapping Name.");
+            return;
+        }
+
+        // Clean mapping name format
+        if (!mappingName.startsWith('/')) {
+            mappingName = '/' + mappingName;
+        }
+
+        // Derive a view name from the mapping or class name
+        let viewName = mappingName.replace('/', '').toLowerCase() || 'index';
+        if (viewName === '') viewName = 'index';
+        document.getElementById('viewNameInput').value = viewName;
+
+        // Update file titles in headers
+        document.getElementById('javaFileName').innerText = className + '.java';
+        document.getElementById('htmlFileName').innerText = viewName + '.html';
+
+        // Generate Java Code
+        let javaTemplate = `package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@Controller
+public class ${className} {
+
+    // Initialize Log4j logger
+    private static final Logger logger = LogManager.getLogger(${className}.class);
+
+    @GetMapping("${mappingName}")
+    public String webAppHandler() {
+        // Standard System out print
+        System.out.println("System.out: Request received for mapping '${mappingName}'");
+
+        // Log4j debug message
+        logger.debug("Log4j Debug: Successfully processed GET request in class ${className} for mapping '${mappingName}'");
+
+        // Returns the HTML template view name (${viewName}.html)
+        return "${viewName}";
+    }
+}
+`;
+
+        // Generate HTML Code
+        let htmlTemplate = `<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>${className} - Spring Boot Web App</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; text-align: center; padding-top: 50px; }
+        .card { background: white; max-width: 500px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #6db33f; }
+        p { color: #555; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Welcome to Spring Boot!</h1>
+        <p>This page is served dynamically by Controller: <strong>${className}</strong></p>
+        <p>Handled Endpoint Mapping: <code>${mappingName}</code></p>
+    </div>
+</body>
+</html>
+`;
+
+        // Render code into DOM
+        document.getElementById('javaCode').innerText = javaTemplate;
+        document.getElementById('htmlCode').innerText = htmlTemplate;
+
+        // Display output container
+        document.getElementById('outputSection').style.display = 'block';
+    }
+
+    // Utility Actions
+    function copyCode(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Code copied to clipboard successfully!");
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+
+    function downloadFile(elementId, filename) {
+        const text = document.getElementById(elementId).innerText;
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function emailCode(elementId, title) {
+        const text = document.getElementById(elementId).innerText;
+        const subject = encodeURIComponent("Generated Spring Boot Code: " + title);
+        const body = encodeURIComponent("Here is the generated code:\n\n" + text);
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    async function shareCode(title, text) {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: title,
+                    text: text,
+                });
+            } catch (err) {
+                console.log('Error sharing:', err);
+            }
+        } else {
+            alert("Web Share API is not supported in your browser. Use the Copy button instead.");
+        }
+    }
+</script>
+
+</body>
+</html>
