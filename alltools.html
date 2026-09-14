@@ -3,236 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools Dashboard</title>
+    <title>HTML Tools</title>
+
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
             margin: 0;
-            padding: 3rem 1.5rem;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 2.5rem;
+        .header {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
         }
 
-        h1 {
-            font-size: 2.25rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
         }
 
-        p.subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+        .header p {
             margin: 0;
+            opacity: 0.9;
         }
 
-        .grid {
+        .search {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .tools {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+        .tool {
+            background: white;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.25s ease-in-out;
+            padding: 20px;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--primary);
-            transition: width 0.2s ease;
+        .tool:hover {
+            transform: translateY(-3px);
+            border-color: #2563eb;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            border-color: #cbd5e1;
+        .tool-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
         }
 
-        .card:hover::before {
-            width: 8px;
+        .tool-name {
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+            word-break: break-word;
         }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
+        .tool-file {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 6px;
         }
 
-        .card-desc {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .card-action {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .loading, .message {
+        .status {
             text-align: center;
-            grid-column: 1 / -1;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            padding: 3rem;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            padding: 30px;
+            color: #6b7280;
         }
 
         .error {
-            color: #dc2626;
-            background: #fef2f2;
-            border-color: #fee2e2;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .count {
+            margin-bottom: 15px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .header {
+                padding: 22px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <header>
-            <h1>🛠️ Tools Dashboard</h1>
-            <p class="subtitle">Select a tool below to get started</p>
-        </header>
+<div class="container">
 
-        <div id="tools-grid" class="grid">
-            <div class="loading">Scanning folder for available tools...</div>
-        </div>
+    <div class="header">
+        <h1>🛠 HTML Tools</h1>
+        <p>Select a tool below to open it.</p>
     </div>
 
-    <script>
-        async function loadTools() {
-            const grid = document.getElementById('tools-grid');
-            
-            // Get the current file's name so we can exclude it from the list
-            const currentFileName = window.location.pathname.split('/').pop();
+    <input
+        type="text"
+        id="search"
+        class="search"
+        placeholder="🔍 Search tools..."
+    >
 
-            try {
-                // Fetch the directory listing of the current folder
-                const response = await fetch('./');
-                if (!response.ok) throw new Error('Failed to read directory index.');
-                
-                const htmlText = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlText, 'text/html');
-                
-                // Extract all anchor links found in the directory layout
-                const links = Array.from(doc.querySelectorAll('a'));
-                const htmlFiles = new Set();
+    <div id="count" class="count"></div>
 
-                links.forEach(link => {
-                    let href = link.getAttribute('href');
-                    if (!href) return;
+    <div id="tools" class="tools">
+        <div class="status">Loading tools...</div>
+    </div>
 
-                    // Decode URI formatting (e.g., handles spaces like "my%20tool.html")
-                    try {
-                        href = decodeURIComponent(href);
-                    } catch (e) {}
+</div>
 
-                    // Clean query parameters or hashes if present
-                    href = href.split('?')[0].split('#')[0];
+<script>
+    /*
+     * ============================================================
+     * CONFIGURATION
+     * ============================================================
+     *
+     * This page is expected to be hosted on GitHub Pages.
+     *
+     * Example:
+     * https://username.github.io/my-tools/
+     *
+     * The script automatically determines:
+     *   - GitHub username
+     *   - Repository name
+     *   - Current folder path
+     *
+     * No folder selection is required.
+     */
 
-                    // Filtering conditions:
-                    // 1. Must end with .html or .htm
-                    // 2. Must not be this current dashboard file
-                    // 3. Must not be a parent directory link ('../')
-                    // 4. Must not be an external absolute URL
-                    if (
-                        (href.endsWith('.html') || href.endsWith('.htm')) &&
-                        href !== currentFileName &&
-                        href !== './' &&
-                        href !== '../' &&
-                        !href.startsWith('http://') &&
-                        !href.startsWith('https://')
-                    ) {
-                        htmlFiles.add(href);
-                    }
-                });
+    const currentFile =
+        window.location.pathname.split("/").pop() || "index.html";
 
-                if (htmlFiles.size === 0) {
-                    grid.innerHTML = `<div class="message">No other HTML tools were found in this folder.</div>`;
-                    return;
-                }
+    const toolsContainer = document.getElementById("tools");
+    const countElement = document.getElementById("count");
+    const searchInput = document.getElementById("search");
 
-                grid.innerHTML = ''; // Clear loading state
+    let tools = [];
 
-                // Build modern UI cards for each discovered HTML tool
-                htmlFiles.forEach(file => {
-                    // Turn "json-formatter.html" or "pdf_converter.html" into "Json Formatter" / "Pdf Converter"
-                    let displayName = file
-                        .replace(/\.html?$/, '')
-                        .replace(/[-_]/g, ' ')
-                        .replace(/\b\w/g, c => c.toUpperCase());
 
-                    const card = document.createElement('a');
-                    card.className = 'card';
-                    card.href = file;
-                    
-                    card.innerHTML = `
-                        <div>
-                            <div class="card-title">${displayName}</div>
-                            <div class="card-desc">Launch tool environment</div>
-                        </div>
-                        <div class="card-action">Open Tool &rarr;</div>
-                    `;
-                    grid.appendChild(card);
-                });
+    /*
+     * Get GitHub repository information from the GitHub Pages URL.
+     *
+     * Example:
+     *
+     * username.github.io/repository/tools/index.html
+     *
+     * becomes:
+     *
+     * owner = username
+     * repo  = repository
+     * path  = tools
+     */
+    function getGitHubInfo() {
 
-            } catch (error) {
-                console.error(error);
-                grid.innerHTML = `
-                    <div class="message error">
-                        ⚠️ <strong>Unable to auto-scan folder contents.</strong><br><br>
-                        <span style="font-size: 0.9rem; color: #475569;">
-                            Browsers restrict directory indexing on local files (<code>file://</code>). Please run this via a local server (like VS Code <strong>Live Server</strong> or Python's <code>http.server</code>).
-                        </span>
-                    </div>
-                `;
-            }
+        const hostname = window.location.hostname;
+        const pathname = window.location.pathname;
+
+        if (!hostname.endsWith(".github.io")) {
+            throw new Error(
+                "This page must be hosted on GitHub Pages."
+            );
         }
 
-        window.addEventListener('DOMContentLoaded', loadTools);
-    </script>
+        const owner = hostname.split(".")[0];
+
+        const parts = pathname
+            .split("/")
+            .filter(Boolean);
+
+        if (hostname === owner + ".github.io") {
+
+            if (parts.length === 0) {
+                throw new Error(
+                    "Unable to determine GitHub repository."
+                );
+            }
+
+            const repo = parts[0];
+
+            const folder = parts
+                .slice(1, -1)
+                .join("/");
+
+            return {
+                owner,
+                repo,
+                folder
+            };
+
+        } else {
+
+            const repo = parts[0];
+
+            const folder = parts
+                .slice(1, -1)
+                .join("/");
+
+            return {
+                owner,
+                repo,
+                folder
+            };
+        }
+    }
+
+
+    /*
+     * Read HTML files from the current GitHub folder.
+     */
+    async function loadTools() {
+
+        try {
+
+            const github = getGitHubInfo();
+
+            let apiUrl =
+                `https://api.github.com/repos/${github.owner}/${github.repo}/contents`;
+
+            if (github.folder) {
+                apiUrl += "/" + github.folder;
+            }
+
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error(
+                    `GitHub API error: ${response.status}`
+                );
+            }
+
+            const files = await response.json();
+
+            tools = files
+                .filter(file => {
+
+                    /*
+                     * Only HTML files.
+                     */
+                    if (file.type !== "file") {
+                        return false;
+                    }
+
+                    if (!file.name.toLowerCase().endsWith(".html")) {
+                        return false;
+                    }
+
+                    /*
+                     * Do not show this index page itself.
+                     */
+                    if (
+                        file.name.toLowerCase() ===
+                        currentFile.toLowerCase()
+                    ) {
+                        return false;
+                    }
+
+                    return true;
+                })
+                .sort((a, b) =>
+                    a.name.localeCompare(
+                        b.name,
+                        undefined,
+                        { sensitivity: "base" }
+                    )
+                );
+
+            displayTools(tools);
+
+        } catch (error) {
+
+            console.error(error);
+
+            toolsContainer.innerHTML = `
+                <div class="error">
+                    <strong>Unable to load tools.</strong><br><br>
+                    ${escapeHtml(error.message)}
+                </div>
+            `;
+
+            countElement.textContent = "";
+        }
+    }
+
+
+    /*
+     * Display tools.
+     */
+    function displayTools(list) {
+
+        toolsContainer.innerHTML = "";
+
+        countElement.textContent =
+            `${list.length} tool${list.length === 1 ? "" : "s"} available`;
+
+        if (list.length === 0) {
+
+            toolsContainer.innerHTML = `
+                <div class="status">
+                    No HTML tools found in this folder.
+                </div>
+            `;
+
+            return;
+        }
+
+        list.forEach(file => {
+
+            const link = document.createElement("a");
+
+            link.className = "tool";
+
+            /*
+             * GitHub Pages URL.
+             *
+             * We use a relative URL so the tool opens from
+             * the same folder.
+             */
+            link.href =
+                encodeURI(file.name);
+
+            link.target = "_self";
+
+            const name =
+                file.name
+                    .replace(/\.html$/i, "")
+                    .replace(/[-_]/g, " ");
+
+            link.innerHTML = `
+                <div class="tool-icon">🔧</div>
+
+                <div class="tool-name">
+                    ${escapeHtml(toTitleCase(name))}
+                </div>
+
+                <div class="tool-file">
+                    ${escapeHtml(file.name)}
+                </div>
+            `;
+
+            toolsContainer.appendChild(link);
+        });
+    }
+
+
+    /*
+     * Search/filter tools.
+     */
+    searchInput.addEventListener("input", function () {
+
+        const query =
+            this.value
+                .trim()
+                .toLowerCase();
+
+        const filtered = tools.filter(file =>
+            file.name
+                .toLowerCase()
+                .includes(query)
+        );
+
+        displayTools(filtered);
+    });
+
+
+    /*
+     * Convert filename to a nicer display name.
+     *
+     * Example:
+     *
+     * pdf_converter.html
+     *
+     * becomes:
+     *
+     * Pdf Converter
+     */
+    function toTitleCase(text) {
+
+        return text.replace(
+            /\w\S*/g,
+            word =>
+                word.charAt(0).toUpperCase() +
+                word.slice(1).toLowerCase()
+        );
+    }
+
+
+    /*
+     * Prevent HTML injection when displaying filenames.
+     */
+    function escapeHtml(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+
+    /*
+     * Start.
+     */
+    loadTools();
+
+</script>
+
 </body>
 </html>
