@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot RESTful Service Generator</title>
+    <!-- Tailwind CSS for modern UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden p-6 sm:p-8">
+        
+        <!-- Header -->
+        <div class="border-b border-slate-200 pb-5 mb-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Spring Boot RESTful Service Generator</h1>
+            <p class="mt-1 text-sm text-slate-600">Generate a boilerplate Spring Boot REST controller equipped with Log4j logging.</p>
+        </div>
+
+        <!-- Input Form -->
+        <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 mb-6">
+            <div>
+                <label for="className" class="block text-sm font-medium text-slate-700">REST Class Name <span class="text-red-500">*</span></label>
+                <input type="text" id="className" value="UserController" placeholder="e.g. ProductController" 
+                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+            </div>
+            <div>
+                <label for="packageName" class="block text-sm font-medium text-slate-700">Package Name</label>
+                <input type="text" id="packageName" value="com.example.demo.controller" placeholder="e.g. com.example.controller" 
+                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+            </div>
+            <div class="sm:col-span-2">
+                <label for="basePath" class="block text-sm font-medium text-slate-700">Base Request Mapping Path</label>
+                <input type="text" id="basePath" value="/api/v1" placeholder="e.g. /api/users" 
+                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mb-8">
+            <button onclick="generateCode()" 
+                class="w-full sm:w-auto inline-flex justify-center items-center rounded-lg bg-indigo-600 px-6 py-3 border border-transparent text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
+                Generate Code
+            </button>
+        </div>
+
+        <!-- Output Section (Hidden initially) -->
+        <div id="outputSection" class="hidden space-y-6">
+            
+            <!-- Generated Java Code Container -->
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium text-slate-900">Generated REST Class Code</h3>
+                    <div class="space-x-2">
+                        <button onclick="copyCode()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded text-slate-700 bg-white hover:bg-slate-50">Copy</button>
+                        <button onclick="downloadCode()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded text-slate-700 bg-white hover:bg-slate-50">Download</button>
+                        <button onclick="emailCode()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded text-slate-700 bg-white hover:bg-slate-50">Email</button>
+                        <button onclick="shareCode()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 shadow-sm text-xs font-medium rounded text-slate-700 bg-white hover:bg-slate-50">Share</button>
+                    </div>
+                </div>
+                <pre class="bg-slate-900 text-slate-100 p-4 rounded-xl overflow-x-auto text-sm font-mono shadow-inner"><code id="codeOutput"></code></pre>
+            </div>
+
+            <!-- Log4j Setup Notes -->
+            <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
+                <h4 class="text-sm font-bold text-amber-800 uppercase tracking-wide">Log4j Setup & Configuration Note</h4>
+                <p class="mt-1 text-sm text-amber-700">
+                    To use Log4j2 with Spring Boot:
+                </p>
+                <ul class="list-disc list-inside mt-2 text-sm text-amber-700 space-y-1">
+                    <li>Exclude default logging in your <code>pom.xml</code> if necessary and include <code>spring-boot-starter-log4j2</code>.</li>
+                    <li>Add your Log4j2 configuration file (e.g., <code>log4j2.xml</code> or <code>log4j2.spring.xml</code>) under your <code>src/main/resources</code> folder.</li>
+                </ul>
+            </div>
+
+            <!-- How to Integrate into Spring Boot Project -->
+            <div class="bg-indigo-50 border-l-4 border-indigo-400 p-4 rounded-r-lg">
+                <h4 class="text-sm font-bold text-indigo-800 uppercase tracking-wide">How to Integrate into a Spring Boot Project</h4>
+                <ol class="list-decimal list-inside mt-2 text-sm text-indigo-700 space-y-1">
+                    <li>Create a package directory inside your project's <code>src/main/java</code> matching your package declaration (e.g., <code>com/example/demo/controller</code>).</li>
+                    <li>Create a new Java file named with your class name (e.g., <code id="instructionClassName">UserController.java</code>).</li>
+                    <li>Paste the generated code into the file. Spring Boot's component scan will automatically detect your <code>@RestController</code> on application startup.</li>
+                </ol>
+            </div>
+
+            <!-- Beginner Resource -->
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg flex items-center justify-between">
+                <div>
+                    <h4 class="text-sm font-medium text-slate-900">New to Spring Boot REST APIs?</h4>
+                    <p class="text-xs text-slate-500">Check out the official beginner-friendly tutorial guides.</p>
+                </div>
+                <a href="https://spring.io/guides/gs/rest-service/" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+                    View Tutorial &rarr;
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let generatedJavaCode = "";
+
+        function generateCode() {
+            let className = document.getElementById('className').value.trim();
+            let packageName = document.getElementById('packageName').value.trim();
+            let basePath = document.getElementById('basePath').value.trim();
+
+            if (!className) {
+                alert("Please enter a REST Class Name.");
+                document.getElementById('className').focus();
+                return;
+            }
+
+            // Default safe fallbacks if fields are left blank
+            if (!packageName) packageName = "com.example.demo.controller";
+            if (!basePath) basePath = "/api/v1";
+
+            // Format basePath to ensure it starts with /
+            if (!basePath.startsWith("/")) {
+                basePath = "/" + basePath;
+            }
+
+            // Template for the Spring Boot REST controller with Log4j and System.out
+            generatedJavaCode = `package ${packageName};
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("${basePath}")
+public class ${className} {
+
+    private static final Logger logger = LogManager.getLogger(${className}.class);
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        // Standard system out print
+        System.out.println("System.out.println: /hello endpoint was hit.");
+        
+        // Log4j debug logger message
+        logger.debug("Log4j debug message: Successfully processed request on /hello endpoint inside ${className}.");
+        
+        return "Hello from Spring Boot RESTful Service!";
+    }
+}
+`;
+
+            // Display generated code and update UI sections
+            document.getElementById('codeOutput').textContent = generatedJavaCode;
+            document.getElementById('instructionClassName').textContent = className + ".java";
+            document.getElementById('outputSection').classList.remove('hidden');
+            
+            // Scroll down smoothly to output
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(generatedJavaCode).then(() => {
+                alert("Code copied to clipboard successfully!");
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        function downloadCode() {
+            let className = document.getElementById('className').value.trim() || "RestController";
+            let blob = new Blob([generatedJavaCode], { type: 'text/plain;charset=utf-8' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `${className}.java`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function emailCode() {
+            let subject = encodeURIComponent("Spring Boot RESTful Service Code");
+            let body = encodeURIComponent(generatedJavaCode);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+
+        function shareCode() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Spring Boot RESTful Service Code',
+                    text: generatedJavaCode,
+                }).catch((error) => console.log('Sharing failed', error));
+            } else {
+                alert("Web Share API is not supported in your browser. Use the Copy button instead.");
+            }
+        }
+    </script>
+</body>
+</html>
