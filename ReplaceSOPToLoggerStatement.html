@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java System.out.println to Logger Converter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-md py-6 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold">Java Logger Converter</h1>
+            <p class="text-indigo-200 mt-1">Convert System.out.println / print statements to SLF4J logger.debug automatically.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Input Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col p-5">
+            <h2 class="text-lg font-semibold text-slate-700 mb-3 flex items-center justify-between">
+                <span>1. Upload or Paste Java Code</span>
+                <span id="fileNameDisplay" class="text-xs font-normal text-slate-400 truncate max-w-[200px]"></span>
+            </h2>
+            
+            <!-- File Upload -->
+            <div class="mb-4">
+                <label class="block w-full border-2 border-dashed border-slate-300 hover:border-indigo-400 rounded-lg p-4 text-center cursor-pointer bg-slate-50 transition">
+                    <span class="text-sm text-slate-600 font-medium">Choose a .java file or drag it here</span>
+                    <input type="file" id="fileInput" accept=".java" class="hidden">
+                </label>
+            </div>
+
+            <!-- Textarea Input -->
+            <div class="flex-grow flex flex-col">
+                <label for="inputCode" class="text-xs font-medium text-slate-500 mb-1">Source Code:</label>
+                <textarea id="inputCode" rows="12" placeholder="public class Example {&#10;    public void test() {&#10;        System.out.println(&quot;Hello World&quot;);&#10;    }&#10;}" class="w-full flex-grow p-3 font-mono text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"></textarea>
+            </div>
+
+            <!-- Convert Button -->
+            <button id="convertBtn" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow transition duration-150">
+                Convert to Logger.debug
+            </button>
+        </div>
+
+        <!-- Output Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col p-5">
+            <h2 class="text-lg font-semibold text-slate-700 mb-3">2. Converted Output Class</h2>
+            
+            <div class="flex-grow flex flex-col">
+                <label for="outputCode" class="text-xs font-medium text-slate-500 mb-1">Modified Code:</label>
+                <textarea id="outputCode" rows="12" readonly placeholder="Converted code will appear here..." class="w-full flex-grow p-3 font-mono text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none resize-none"></textarea>
+            </div>
+
+            <!-- Action Buttons Toolbar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4">
+                <button id="copyBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-lg text-sm transition flex items-center justify-center gap-1">
+                    📋 Copy
+                </button>
+                <button id="downloadBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-lg text-sm transition flex items-center justify-center gap-1">
+                    💾 Download
+                </button>
+                <button id="emailBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-lg text-sm transition flex items-center justify-center gap-1">
+                    ✉️ Email
+                </button>
+                <button id="shareBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2 px-3 rounded-lg text-sm transition flex items-center justify-center gap-1">
+                    🔗 Share
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Java Logger Converter &bull; Built with HTML & JavaScript
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let uploadedFileName = "ConvertedClass.java";
+
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const convertBtn = document.getElementById('convertBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const emailBtn = document.getElementById('emailBtn');
+        const shareBtn = document.getElementById('shareBtn');
+
+        // Handle file upload
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            uploadedFileName = file.name;
+            fileNameDisplay.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                inputCode.value = event.target.result;
+            };
+            reader.readAsText(file);
+        });
+
+        // Convert logic
+        convertBtn.addEventListener('click', () => {
+            let code = inputCode.value;
+            if (!code.trim()) {
+                alert('Please enter or upload some Java code first.');
+                return;
+            }
+
+            // 1. Replace System.out.println & System.out.print with logger.debug
+            code = code.replace(/System\.out\.println\s*\(/g, 'logger.debug(');
+            code = code.replace(/System\.out\.print\s*\(/g, 'logger.debug(');
+
+            // 2. Automatically inject SLF4J imports if missing
+            const slf4jImports = 'import org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n';
+            if (!code.includes('org.slf4j.Logger')) {
+                if (code.includes('package ')) {
+                    code = code.replace(/(package\s+[\w.]+;\s*)/, `$1\n${slf4jImports}`);
+                } else {
+                    code = slf4jImports + '\n' + code;
+                }
+            }
+
+            // 3. Automatically inject logger variable definition inside the class if missing
+            if (!code.includes('LoggerFactory.getLogger')) {
+                const classMatch = code.match(/class\s+([a-zA-Z0-9_]+)/);
+                if (classMatch && classMatch[1]) {
+                    const className = classMatch[1];
+                    const loggerDecl = `\n    private static final Logger logger = LoggerFactory.getLogger(${className}.class);\n`;
+                    const classIndex = code.indexOf(classMatch[0]);
+                    const braceIndex = code.indexOf('{', classIndex);
+                    if (braceIndex !== -1) {
+                        code = code.slice(0, braceIndex + 1) + loggerDecl + code.slice(braceIndex + 1);
+                    }
+                }
+            }
+
+            outputCode.value = code;
+        });
+
+        // Copy functionality
+        copyBtn.addEventListener('click', () => {
+            if (!outputCode.value) {
+                alert('No converted code to copy.');
+                return;
+            }
+            navigator.clipboard.writeText(outputCode.value).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '✅ Copied!';
+                setTimeout(() => copyBtn.innerHTML = originalText, 2000);
+            }).catch(err => {
+                alert('Failed to copy text.');
+            });
+        });
+
+        // Download functionality
+        downloadBtn.addEventListener('click', () => {
+            if (!outputCode.value) {
+                alert('No converted code to download.');
+                return;
+            }
+            const blob = new Blob([outputCode.value], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = uploadedFileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Email functionality
+        emailBtn.addEventListener('click', () => {
+            if (!outputCode.value) {
+                alert('No converted code to email.');
+                return;
+            }
+            const subject = encodeURIComponent(`Converted Java Class: ${uploadedFileName}`);
+            const body = encodeURIComponent(outputCode.value);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        });
+
+        // Web Share API functionality
+        shareBtn.addEventListener('click', async () => {
+            if (!outputCode.value) {
+                alert('No converted code to share.');
+                return;
+            }
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: uploadedFileName,
+                        text: outputCode.value,
+                    });
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.error('Share failed:', err);
+                    }
+                }
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(outputCode.value);
+                alert('Web Share API is not supported on this browser. Converted code has been copied to your clipboard instead.');
+            }
+        });
+    </script>
+</body>
+</html>
