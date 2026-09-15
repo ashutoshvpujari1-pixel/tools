@@ -236,10 +236,22 @@
                 <a class="tutorial-link" href="https://spring.io/guides/gs/serving-web-content" target="_blank">Spring.io - Serving Web Content with Spring MVC</a>
             </p>
         </div>
+
+		<div id="accessCounter"
+     			style="text-align:center; font-size:18px; margin:20px;">
+		</div>
+
     </div>
 </div>
 
 <script>
+
+		let accessCount = parseInt(localStorage.getItem("pageAccessCount") || "0");
+		accessCount++;
+		localStorage.setItem("pageAccessCount", accessCount);
+		document.getElementById("accessCounter").innerHTML =
+        		"Your visits to this tool: <b>" + accessCount + "</b>";
+
     function generateCode() {
         let className = document.getElementById('className').value.trim();
         let mappingName = document.getElementById('mappingName').value.trim();
