@@ -93,6 +93,9 @@
                 </a>
             </div>
 
+		<div id="accessCounter"
+     			style="text-align:center; font-size:18px; margin:20px;">
+		</div>
         </div>
 
     </div>
@@ -100,6 +103,13 @@
     <!-- JavaScript Logic -->
     <script>
         let generatedJavaCode = "";
+
+		let accessCount = parseInt(localStorage.getItem("pageAccessCount") || "0");
+		accessCount++;
+		localStorage.setItem("pageAccessCount", accessCount);
+		document.getElementById("accessCounter").innerHTML =
+        		"Your visits to this tool: <b>" + accessCount + "</b>";
+
 
         function generateCode() {
             let className = document.getElementById('className').value.trim();
