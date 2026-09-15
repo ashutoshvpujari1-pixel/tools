@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Tools</title>
-
-    <!-- Google tag (gtag.js) -->
+    <title>Ashutosh Pujari | Web Tools & Utilities Suite</title>
+    
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -14,455 +14,435 @@
 
   gtag('config', 'G-334DZV34L8');
 </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --primary-color: #3B82F6;
+            --primary-hover: #2563EB;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --header-bg: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
         }
 
-        .container {
+        /* --- HEADER STYLES --- */
+        header {
+            background: var(--header-bg);
+            color: #FFFFFF;
+            padding: 3.5rem 1.5rem 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3B82F6, #6366F1, #8B5CF6);
+        }
+
+        .header-container {
             max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
+            margin: 0 auto;
         }
 
-        .header {
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
-            padding: 30px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+        .badge {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.15);
+            color: #60A5FA;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(96, 165, 250, 0.3);
         }
 
-        .header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
         }
 
-        .header p {
-            margin: 0;
-            opacity: 0.9;
+        header p {
+            color: #94A3B8;
+            font-size: 1.05rem;
+            font-weight: 400;
         }
 
-        .search {
+        /* --- MAIN CONTENT STYLES --- */
+        main {
+            flex: 1;
+            max-width: 1200px;
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            outline: none;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
         }
 
-        .search:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .tools {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
 
-        .tool {
-            background: white;
-            border: 1px solid #e5e7eb;
+        /* --- CARD STYLES --- */
+        .tool-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: 1.75rem;
             text-decoration: none;
             color: inherit;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease-in-out;
+            position: relative;
+            box-shadow: var(--shadow-sm);
         }
 
-        .tool:hover {
-            transform: translateY(-3px);
-            border-color: #2563eb;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.4);
         }
 
-        .tool-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
-
-        .tool-name {
-            font-size: 17px;
-            font-weight: bold;
-            color: #111827;
-            word-break: break-word;
-        }
-
-        .tool-file {
-            font-size: 13px;
-            color: #6b7280;
-            margin-top: 6px;
-        }
-
-        .status {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-        }
-
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 15px;
+        .card-icon {
+            width: 48px;
+            height: 48px;
             border-radius: 10px;
+            background-color: #EFF6FF;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.25rem;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        .count {
-            margin-bottom: 15px;
-            color: #6b7280;
-            font-size: 14px;
+        .tool-card:hover .card-icon {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                margin: 20px auto;
-                padding: 15px;
+        .card-content h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .card-content p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .card-action i {
+            transition: transform 0.2s ease;
+        }
+
+        .tool-card:hover .card-action i {
+            transform: translateX(4px);
+        }
+
+        /* --- FOOTER STYLES --- */
+        footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-item i {
+            color: var(--primary-color);
+        }
+
+        /* --- RESPONSIVE BREAKPOINTS --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 2.5rem 1rem 2rem;
+            }
+            
+            header h1 {
+                font-size: 1.75rem;
             }
 
-            .header {
-                padding: 22px;
+            .tools-grid {
+                grid-template-columns: 1fr;
             }
 
-            .header h1 {
-                font-size: 24px;
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
 </head>
-
 <body>
 
-<div class="container">
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <span class="badge">Techno Freelancer</span>
+            <h1>Ashutosh Pujari</h1>
+            <p>Interactive Web Utilities & Digital Productivity Tools</p>
+        </div>
+    </header>
 
-    <div class="header">
-        <h1>🛠 HTML Tools</h1>
-        <p>Select a tool below to open it.</p>
-    </div>
+    <!-- Main Section -->
+    <main>
+        <div class="section-title">
+            <i class="fa-solid fa-layer-group" style="color: var(--primary-color);"></i>
+            <span>Available Applications & Tools</span>
+        </div>
 
-    <input
-        type="text"
-        id="search"
-        class="search"
-        placeholder="🔍 Search tools..."
-    >
-
-    <div id="count" class="count"></div>
-
-    <div id="tools" class="tools">
-        <div class="status">Loading tools...</div>
-    </div>
-
-</div>
-
-<script>
-    /*
-     * ============================================================
-     * CONFIGURATION
-     * ============================================================
-     *
-     * This page is expected to be hosted on GitHub Pages.
-     *
-     * Example:
-     * https://username.github.io/my-tools/
-     *
-     * The script automatically determines:
-     *   - GitHub username
-     *   - Repository name
-     *   - Current folder path
-     *
-     * No folder selection is required.
-     */
-
-    const currentFile =
-        window.location.pathname.split("/").pop() || "index.html";
-
-    const toolsContainer = document.getElementById("tools");
-    const countElement = document.getElementById("count");
-    const searchInput = document.getElementById("search");
-
-    let tools = [];
-
-
-    /*
-     * Get GitHub repository information from the GitHub Pages URL.
-     *
-     * Example:
-     *
-     * username.github.io/repository/tools/index.html
-     *
-     * becomes:
-     *
-     * owner = username
-     * repo  = repository
-     * path  = tools
-     */
-    function getGitHubInfo() {
-
-        const hostname = window.location.hostname;
-        const pathname = window.location.pathname;
-
-        if (!hostname.endsWith(".github.io")) {
-            throw new Error(
-                "This page must be hosted on GitHub Pages."
-            );
-        }
-
-        const owner = hostname.split(".")[0];
-
-        const parts = pathname
-            .split("/")
-            .filter(Boolean);
-
-        if (hostname === owner + ".github.io") {
-
-            if (parts.length === 0) {
-                throw new Error(
-                    "Unable to determine GitHub repository."
-                );
-            }
-
-            const repo = parts[0];
-
-            const folder = parts
-                .slice(1, -1)
-                .join("/");
-
-            return {
-                owner,
-                repo,
-                folder
-            };
-
-        } else {
-
-            const repo = parts[0];
-
-            const folder = parts
-                .slice(1, -1)
-                .join("/");
-
-            return {
-                owner,
-                repo,
-                folder
-            };
-        }
-    }
-
-
-    /*
-     * Read HTML files from the current GitHub folder.
-     */
-    async function loadTools() {
-
-        try {
-
-            const github = getGitHubInfo();
-
-            let apiUrl =
-                `https://api.github.com/repos/${github.owner}/${github.repo}/contents`;
-
-            if (github.folder) {
-                apiUrl += "/" + github.folder;
-            }
-
-            const response = await fetch(apiUrl);
-
-            if (!response.ok) {
-                throw new Error(
-                    `GitHub API error: ${response.status}`
-                );
-            }
-
-            const files = await response.json();
-
-            tools = files
-                .filter(file => {
-
-                    /*
-                     * Only HTML files.
-                     */
-                    if (file.type !== "file") {
-                        return false;
-                    }
-
-                    if (!file.name.toLowerCase().endsWith(".html")) {
-                        return false;
-                    }
-
-                    /*
-                     * Do not show this index page itself.
-                     */
-                    if (
-                        file.name.toLowerCase() ===
-                        currentFile.toLowerCase()
-                    ) {
-                        return false;
-                    }
-
-                    return true;
-                })
-                .sort((a, b) =>
-                    a.name.localeCompare(
-                        b.name,
-                        undefined,
-                        { sensitivity: "base" }
-                    )
-                );
-
-            displayTools(tools);
-
-        } catch (error) {
-
-            console.error(error);
-
-            toolsContainer.innerHTML = `
-                <div class="error">
-                    <strong>Unable to load tools.</strong><br><br>
-                    ${escapeHtml(error.message)}
+        <div class="tools-grid">
+            
+            <!-- Tool 1 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/ScreenCapture_Audio_Video_Recording.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Screen Capture & Recorder</h2>
+                        <p>Capture your screen, record high-quality audio, and record video seamlessly directly from your browser.</p>
+                    </div>
                 </div>
-            `;
-
-            countElement.textContent = "";
-        }
-    }
-
-
-    /*
-     * Display tools.
-     */
-    function displayTools(list) {
-
-        toolsContainer.innerHTML = "";
-
-        countElement.textContent =
-            `${list.length} tool${list.length === 1 ? "" : "s"} available`;
-
-        if (list.length === 0) {
-
-            toolsContainer.innerHTML = `
-                <div class="status">
-                    No HTML tools found in this folder.
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
                 </div>
-            `;
+            </a>
 
-            return;
-        }
-
-        list.forEach(file => {
-
-            const link = document.createElement("a");
-
-            link.className = "tool";
-
-            /*
-             * GitHub Pages URL.
-             *
-             * We use a relative URL so the tool opens from
-             * the same folder.
-             */
-            link.href =
-                encodeURI(file.name);
-
-            link.target = "_self";
-
-            const name =
-                file.name
-                    .replace(/\.html$/i, "")
-                    .replace(/[-_]/g, " ");
-
-            link.innerHTML = `
-                <div class="tool-icon">🔧</div>
-
-                <div class="tool-name">
-                    ${escapeHtml(toTitleCase(name))}
+            <!-- Tool 2 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_First.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-address-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 1)</h2>
+                        <p>Generate clean, classic, and professional digital business cards with effortless instant formatting.</p>
+                    </div>
                 </div>
-
-                <div class="tool-file">
-                    ${escapeHtml(file.name)}
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
                 </div>
-            `;
+            </a>
 
-            toolsContainer.appendChild(link);
-        });
-    }
+            <!-- Tool 3 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_Second.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 2)</h2>
+                        <p>Design modern, stylish visiting cards crafted specifically for contemporary corporate profiles.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
+            <!-- Tool 4 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Visiting_Card_Generator_Third.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Visiting Card Generator (Style 3)</h2>
+                        <p>Create elegant, executive-grade business cards tailored for freelancers and entrepreneurs.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-    /*
-     * Search/filter tools.
-     */
-    searchInput.addEventListener("input", function () {
+            <!-- Tool 5 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/compressor.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-file-zipper"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>File & Image Compressor</h2>
+                        <p>Quickly optimize and compress your files and images locally without sacrificing quality.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        const query =
-            this.value
-                .trim()
-                .toLowerCase();
+            <!-- Tool 6 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/notebook.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Digital Notebook</h2>
+                        <p>A lightweight, distraction-free web notepad to quickly jot down, organize, and store your thoughts.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        const filtered = tools.filter(file =>
-            file.name
-                .toLowerCase()
-                .includes(query)
-        );
+	    <!-- Tool 7 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/spell_and_grammar_check.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Spelling and Grammar Check</h2>
+                        <p>Help in checking spelling and grammar.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
-        displayTools(filtered);
-    });
+	    <!-- Tool 8 -->
+            <a href="https://ashutoshvpujari1-pixel.github.io/tools/Generate_Fontstyle.html" class="tool-card">
+                <div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>Generate Various Font style</h2>
+                        <p>Help in checking various font style and size.</p>
+                    </div>
+                </div>
+                <div class="card-action">
+                    Launch Tool <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
 
+        </div>
+    </main>
 
-    /*
-     * Convert filename to a nicer display name.
-     *
-     * Example:
-     *
-     * pdf_converter.html
-     *
-     * becomes:
-     *
-     * Pdf Converter
-     */
-    function toTitleCase(text) {
-
-        return text.replace(
-            /\w\S*/g,
-            word =>
-                word.charAt(0).toUpperCase() +
-                word.slice(1).toLowerCase()
-        );
-    }
-
-
-    /*
-     * Prevent HTML injection when displaying filenames.
-     */
-    function escapeHtml(text) {
-
-        const div = document.createElement("div");
-
-        div.textContent = text;
-
-        return div.innerHTML;
-    }
-
-
-    /*
-     * Start.
-     */
-    loadTools();
-
-</script>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <p>&copy; Created by <strong>Ashutosh Pujari</strong>. All rights reserved.</p>
+            </div>
+            <div class="contact-links">
+                <a href="mailto:ashutoshvpujari@rediffmail.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>ashutoshvpujari@rediffmail.com</span>
+                </a>
+                <a href="tel:9860985354" class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>9860985354</span>
+                </a>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
