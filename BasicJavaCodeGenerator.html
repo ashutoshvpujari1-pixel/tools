@@ -248,6 +248,11 @@
                 <li><a href="https://www.geeksforgeeks.org/java/" target="_blank" rel="noopener">GeeksforGeeks Java Programming Language</a></li>
             </ul>
         </div>
+
+		<div id="accessCounter"
+     			style="text-align:center; font-size:18px; margin:20px;">
+		</div>
+
     </div>
 </div>
 
@@ -257,6 +262,12 @@
     let generatedJavaCode = '';
     let currentClassName = 'Application';
     let currentPackageName = 'com.example.demo';
+
+		let accessCount = parseInt(localStorage.getItem("pageAccessCount") || "0");
+		accessCount++;
+		localStorage.setItem("pageAccessCount", accessCount);
+		document.getElementById("accessCounter").innerHTML =
+        		"Your visits to this tool: <b>" + accessCount + "</b>";
 
     function cleanInput(str) {
         return str.trim().replace(/[^a-zA-Z0-9_.]/g, '');
