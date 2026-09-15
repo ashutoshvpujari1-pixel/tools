@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Java Log4j Main Project Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+            color: #172033;
+        }
+
+        header {
+            background: linear-gradient(90deg, #172554, #1d4ed8, #0369a1);
+            color: white;
+            padding: 22px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+            opacity: 0.92;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.10);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #1e3a8a;
+        }
+
+        .description {
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            padding: 13px 19px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        }
+
+        .generate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .copy {
+            background: #0f766e;
+            color: white;
+        }
+
+        .download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share {
+            background: #0891b2;
+            color: white;
+        }
+
+        .secondary {
+            background: #475569;
+            color: white;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .project-tree {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: Consolas, monospace;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .file-section {
+            margin-top: 20px;
+        }
+
+        .file-header {
+            background: #1e293b;
+            color: white;
+            padding: 11px 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+        }
+
+        pre {
+            margin: 0;
+            background: #020617;
+            color: #dbeafe;
+            padding: 20px;
+            overflow-x: auto;
+            border-radius: 0 0 8px 8px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.55;
+            white-space: pre;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature strong {
+            display: block;
+            color: #1d4ed8;
+            margin-bottom: 6px;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 25px;
+            line-height: 1.7;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>☕ Java Log4j2 Main Project Generator</h1>
+    <p>Generate a complete runnable Java Maven project with Log4j2 configuration.</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Generate Your Project</h2>
+
+        <p class="description">
+            Enter the Java package name and main class name. The generator will create
+            a complete Maven Java project containing Log4j2 libraries, configuration,
+            source code and README documentation.
+        </p>
+
+        <div class="form-grid">
+
+            <div>
+                <label for="projectName">Project Name</label>
+                <input
+                    type="text"
+                    id="projectName"
+                    value="JavaLog4jMainProject"
+                    placeholder="Example: JavaLog4jMainProject">
+            </div>
+
+            <div>
+                <label for="className">Main Class Name</label>
+                <input
+                    type="text"
+                    id="className"
+                    value="Log4jMain"
+                    placeholder="Example: Log4jMain">
+            </div>
+
+            <div>
+                <label for="packageName">Package Name</label>
+                <input
+                    type="text"
+                    id="packageName"
+                    value="com.example.log4j"
+                    placeholder="Example: com.example.log4j">
+            </div>
+
+            <div>
+                <label for="debugMessage">Logger Debug Message</label>
+                <input
+                    type="text"
+                    id="debugMessage"
+                    value="Application started successfully using Log4j2."
+                    placeholder="Debug message">
+            </div>
+
+        </div>
+
+        <div class="button-row">
+
+            <button class="generate" onclick="generateProject()">
+                ⚡ Generate Code
+            </button>
+
+            <button class="copy" onclick="copyEntireProject()">
+                📋 Copy Entire Project
+            </button>
+
+            <button class="download" onclick="downloadProject()">
+                📦 Download ZIP
+            </button>
+
+            <button class="email" onclick="emailProject()">
+                ✉ Email Project
+            </button>
+
+            <button class="share" onclick="shareProject()">
+                🔗 Share Project
+            </button>
+
+            <button class="secondary" onclick="resetGenerator()">
+                ↻ Reset
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
+    </div>
+
+
+    <div class="card">
+        <h2>Generated Project Structure</h2>
+
+        <div id="projectTree" class="project-tree">
+            Click <strong>Generate Code</strong> to create the project.
+        </div>
+
+        <div class="features">
+
+            <div class="feature">
+                <strong>Log4j2</strong>
+                Log4j API and Core libraries are included through Maven.
+            </div>
+
+            <div class="feature">
+                <strong>Debug Logging</strong>
+                The generated Java class uses LoggerFactory and logger.debug().
+            </div>
+
+            <div class="feature">
+                <strong>Runnable</strong>
+                The generated project can be imported into Eclipse or IntelliJ.
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="generatedFiles" class="card hidden">
+
+        <h2>Generated Project Files</h2>
+
+        <div class="file-section">
+
+            <div class="file-header">
+                pom.xml
+            </div>
+
+            <pre id="pomOutput"></pre>
+
+        </div>
+
+
+        <div class="file-section">
+
+            <div class="file-header">
+                Main Java Class
+            </div>
+
+            <pre id="javaOutput"></pre>
+
+        </div>
+
+
+        <div class="file-section">
+
+            <div class="file-header">
+                src/main/resources/log4j2.xml
+            </div>
+
+            <pre id="log4jOutput"></pre>
+
+        </div>
+
+
+        <div class="file-section">
+
+            <div class="file-header">
+                README.md
+            </div>
+
+            <pre id="readmeOutput"></pre>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <strong>Java Log4j2 Main Project Generator</strong>
+    <br>
+    Generate ready-to-use Java Maven projects with Log4j2 configuration.
+    <br><br>
+    Created by Ashutosh Pujari
+    <br>
+    Online Java / Spring Boot / Microservices Technical Training & Consultancy
+
+</footer>
+
+
+<script>
+
+    /*
+     * ==========================================================
+     * Global project object
+     * ==========================================================
+     */
+
+    let generatedProject = {};
+
+
+    /*
+     * ==========================================================
+     * Utility Functions
+     * ==========================================================
+     */
+
+    function showStatus(message, type) {
+
+        const status = document.getElementById("status");
+
+        status.textContent = message;
+
+        status.className = "status " + type;
+
+        setTimeout(() => {
+            status.className = "status";
+        }, 5000);
+    }
+
+
+    function sanitizeProjectName(name) {
+
+        name = name.trim();
+
+        name = name.replace(/[^a-zA-Z0-9_-]/g, "");
+
+        if (!name) {
+            name = "JavaLog4jMainProject";
+        }
+
+        return name;
+    }
+
+
+    function sanitizeClassName(name) {
+
+        name = name.trim();
+
+        name = name.replace(/[^a-zA-Z0-9_$]/g, "");
+
+        if (!name) {
+            name = "Log4jMain";
+        }
+
+        if (!/^[A-Za-z_$]/.test(name)) {
+            name = "Log4j" + name;
+        }
+
+        return name;
+    }
+
+
+    function sanitizePackageName(name) {
+
+        name = name.trim();
+
+        name = name
+            .replace(/\s+/g, "")
+            .replace(/[^a-zA-Z0-9_.]/g, "");
+
+        if (!name) {
+            name = "com.example.log4j";
+        }
+
+        return name;
+    }
+
+
+    /*
+     * ==========================================================
+     * Generate Maven POM
+     * ==========================================================
+     */
+
+    function createPom(projectName, packageName, className) {
+
+        return `<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${packageName}</groupId>
+
+    <artifactId>${projectName}</artifactId>
+
+    <version>1.0.0</version>
+
+    <properties>
+
+        <maven.compiler.source>17</maven.compiler.source>
+
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    </properties>
+
+    <dependencies>
+
+        <!-- Log4j2 API -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.25.2</version>
+        </dependency>
+
+        <!-- Log4j2 Core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.25.2</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+
+            </plugin>
+
+            <!-- Maven Exec Plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+
+                <configuration>
+                    <mainClass>${packageName}.${className}</mainClass>
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
+`;
+    }
+
+
+    /*
+     * ==========================================================
+     * Generate Java Main Class
+     * ==========================================================
+     */
+
+    function createJavaClass(packageName, className, debugMessage) {
+
+        const escapedMessage =
+            debugMessage
+                .replace(/\\/g, "\\\\")
+                .replace(/"/g, '\\"');
+
+        return `package ${packageName};
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class ${className} {
+
+    private static final Logger logger =
+            LogManager.getLogger(${className}.class);
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello from Java Main application.");
+
+        logger.debug("${escapedMessage}");
+
+        System.out.println("Log4j2 logger executed successfully.");
+
+        logger.info("Application execution completed.");
+
+    }
+}
+`;
+    }
+
+
+    /*
+     * ==========================================================
+     * Generate Log4j2 Configuration
+     * ==========================================================
+     */
+
+    function createLog4jConfiguration() {
+
+        return `<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+
+            <PatternLayout
+                pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
+
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!--
+            DEBUG logging is enabled for the application.
+        -->
+
+        <Root level="debug">
+
+            <AppenderRef ref="Console"/>
+
+        </Root>
+
+    </Loggers>
+
+</Configuration>
+`;
+    }
+
+
+    /*
+     * ==========================================================
+     * Generate README
+     * ==========================================================
+     */
+
+    function createReadme(projectName, packageName, className) {
+
+        return `# ${projectName}
+
+## Java Log4j2 Main Project
+
+This is a simple Java Maven project demonstrating Log4j2 logging.
+
+## Project Structure
+
+${projectName}/
+|
++-- pom.xml
+|
++-- README.md
+|
++-- src/
+    |
+    +-- main/
+        |
+        +-- java/
+        |   |
+        |   +-- ${packageName.replace(/\./g, "/")}/
+        |       |
+        |       +-- ${className}.java
+        |
+        +-- resources/
+            |
+            +-- log4j2.xml
+
+## Requirements
+
+- JDK 17 or higher
+- Maven 3.x
+- Eclipse / IntelliJ IDEA / VS Code
+
+## Log4j2 Libraries
+
+The project uses:
+
+- log4j-api
+- log4j-core
+
+The dependencies are configured in pom.xml.
+
+## Log4j2 Configuration
+
+The file:
+
+src/main/resources/log4j2.xml
+
+configures console logging.
+
+DEBUG logging is enabled.
+
+## Run Using Maven
+
+Open a command prompt in the project directory.
+
+Run:
+
+mvn clean compile
+
+Then:
+
+mvn exec:java
+
+## Expected Output
+
+The application prints:
+
+Hello from Java Main application.
+
+The Log4j2 DEBUG message will also be displayed.
+
+An INFO message will be displayed after that.
+
+## Eclipse
+
+1. Open Eclipse.
+2. Select File -> Import.
+3. Select Maven -> Existing Maven Projects.
+4. Select the generated project directory.
+5. Click Finish.
+6. Run ${className}.java as Java Application.
+
+## Important
+
+Do not remove:
+
+src/main/resources/log4j2.xml
+
+unless you want to replace it with another Log4j2 configuration.
+
+The Maven dependencies in pom.xml automatically download the Log4j2 libraries.
+
+## Generated By
+
+Java Log4j2 Main Project Generator
+
+Created by Ashutosh Pujari.
+`;
+    }
+
+
+    /*
+     * ==========================================================
+     * Generate Project
+     * ==========================================================
+     */
+
+    function generateProject() {
+
+        let projectName =
+            sanitizeProjectName(
+                document.getElementById("projectName").value
+            );
+
+        let className =
+            sanitizeClassName(
+                document.getElementById("className").value
+            );
+
+        let packageName =
+            sanitizePackageName(
+                document.getElementById("packageName").value
+            );
+
+        let debugMessage =
+            document.getElementById("debugMessage").value.trim();
+
+        if (!debugMessage) {
+            debugMessage =
+                "Application started successfully using Log4j2.";
+        }
+
+
+        const pom = createPom(
+            projectName,
+            packageName,
+            className
+        );
+
+        const javaCode = createJavaClass(
+            packageName,
+            className,
+            debugMessage
+        );
+
+        const log4j = createLog4jConfiguration();
+
+        const readme = createReadme(
+            projectName,
+            packageName,
+            className
+        );
+
+
+        generatedProject = {
+
+            projectName: projectName,
+
+            files: {
+
+                "pom.xml": pom,
+
+                [
+                    "src/main/java/"
+                    + packageName.replace(/\./g, "/")
+                    + "/"
+                    + className
+                    + ".java"
+                ]: javaCode,
+
+                "src/main/resources/log4j2.xml": log4j,
+
+                "README.md": readme
+
+            }
+
+        };
+
+
+        document.getElementById("pomOutput").textContent = pom;
+
+        document.getElementById("javaOutput").textContent = javaCode;
+
+        document.getElementById("log4jOutput").textContent = log4j;
+
+        document.getElementById("readmeOutput").textContent = readme;
+
+
+        document.getElementById("generatedFiles")
+            .classList.remove("hidden");
+
+
+        displayProjectTree();
+
+
+        showStatus(
+            "Java Log4j2 project generated successfully.",
+            "success"
+        );
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Display Project Tree
+     * ==========================================================
+     */
+
+    function displayProjectTree() {
+
+        const tree =
+            document.getElementById("projectTree");
+
+        let html =
+            `<strong>${generatedProject.projectName}/</strong><br>`;
+
+        Object.keys(generatedProject.files)
+            .forEach(file => {
+
+                html +=
+                    "&nbsp;&nbsp;📄 "
+                    + file
+                    + "<br>";
+
+            });
+
+        tree.innerHTML = html;
+    }
+
+
+    /*
+     * ==========================================================
+     * Get Complete Project Text
+     * ==========================================================
+     */
+
+    function getEntireProjectText() {
+
+        let output =
+            "JAVA LOG4J2 MAVEN PROJECT\n";
+
+        output +=
+            "===========================\n\n";
+
+        output +=
+            "Project: "
+            + generatedProject.projectName
+            + "\n\n";
+
+
+        Object.entries(generatedProject.files)
+            .forEach(([file, content]) => {
+
+                output +=
+                    "\n\n==================================================\n";
+
+                output +=
+                    "FILE: "
+                    + file
+                    + "\n";
+
+                output +=
+                    "==================================================\n\n";
+
+                output += content;
+
+            });
+
+        return output;
+    }
+
+
+    /*
+     * ==========================================================
+     * Copy Entire Project
+     * ==========================================================
+     */
+
+    async function copyEntireProject() {
+
+        if (!generatedProject.files) {
+
+            generateProject();
+
+        }
+
+        const text =
+            getEntireProjectText();
+
+        try {
+
+            await navigator.clipboard.writeText(text);
+
+            showStatus(
+                "Entire project copied to clipboard.",
+                "success"
+            );
+
+        } catch (error) {
+
+            fallbackCopy(text);
+
+        }
+    }
+
+
+    function fallbackCopy(text) {
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value = text;
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        textarea.remove();
+
+        showStatus(
+            "Entire project copied to clipboard.",
+            "success"
+        );
+    }
+
+
+    /*
+     * ==========================================================
+     * ZIP Creation
+     *
+     * JSZip is loaded dynamically from CDN.
+     * ==========================================================
+     */
+
+    async function loadJSZip() {
+
+        if (window.JSZip) {
+
+            return window.JSZip;
+
+        }
+
+        return new Promise((resolve, reject) => {
+
+            const script =
+                document.createElement("script");
+
+            script.src =
+                "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+
+            script.onload = () => {
+
+                resolve(window.JSZip);
+
+            };
+
+            script.onerror = () => {
+
+                reject(
+                    new Error("Unable to load ZIP library.")
+                );
+
+            };
+
+            document.head.appendChild(script);
+
+        });
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Create ZIP
+     * ==========================================================
+     */
+
+    async function createZipBlob() {
+
+        if (!generatedProject.files) {
+
+            generateProject();
+
+        }
+
+        const JSZip =
+            await loadJSZip();
+
+        const zip =
+            new JSZip();
+
+        const root =
+            generatedProject.projectName;
+
+
+        Object.entries(generatedProject.files)
+            .forEach(([file, content]) => {
+
+                zip.file(
+                    root + "/" + file,
+                    content
+                );
+
+            });
+
+
+        return await zip.generateAsync({
+            type: "blob"
+        });
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Download ZIP
+     * ==========================================================
+     */
+
+    async function downloadProject() {
+
+        try {
+
+            const blob =
+                await createZipBlob();
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+
+            link.download =
+                generatedProject.projectName
+                + ".zip";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            URL.revokeObjectURL(url);
+
+
+            showStatus(
+                "Project ZIP downloaded successfully.",
+                "success"
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            showStatus(
+                "Unable to create project ZIP.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Email Project
+     * ==========================================================
+     */
+
+    function emailProject() {
+
+        if (!generatedProject.files) {
+
+            generateProject();
+
+        }
+
+        const subject =
+            encodeURIComponent(
+                "Java Log4j2 Project - "
+                + generatedProject.projectName
+            );
+
+        const body =
+            encodeURIComponent(
+                getEntireProjectText()
+                + "\n\n"
+                + "Note: The project ZIP can be downloaded "
+                + "from the Java Log4j2 Project Generator."
+            );
+
+        window.location.href =
+            "mailto:?subject="
+            + subject
+            + "&body="
+            + body;
+
+        showStatus(
+            "Your email application is being opened.",
+            "success"
+        );
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Share Project
+     * ==========================================================
+     */
+
+    async function shareProject() {
+
+        if (!generatedProject.files) {
+
+            generateProject();
+
+        }
+
+        const shareText =
+            getEntireProjectText();
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        "Java Log4j2 Project - "
+                        + generatedProject.projectName,
+
+                    text: shareText
+
+                });
+
+                showStatus(
+                    "Project shared successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                if (error.name !== "AbortError") {
+
+                    showStatus(
+                        "Sharing was not completed.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+        } else {
+
+            await copyEntireProject();
+
+            showStatus(
+                "Web Share is not supported by this browser. Project copied to clipboard instead.",
+                "success"
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Reset
+     * ==========================================================
+     */
+
+    function resetGenerator() {
+
+        document.getElementById("projectName").value =
+            "JavaLog4jMainProject";
+
+        document.getElementById("className").value =
+            "Log4jMain";
+
+        document.getElementById("packageName").value =
+            "com.example.log4j";
+
+        document.getElementById("debugMessage").value =
+            "Application started successfully using Log4j2.";
+
+
+        generatedProject = {};
+
+
+        document.getElementById("generatedFiles")
+            .classList.add("hidden");
+
+
+        document.getElementById("projectTree").innerHTML =
+            'Click <strong>Generate Code</strong> to create the project.';
+
+
+        showStatus(
+            "Generator has been reset.",
+            "success"
+        );
+
+    }
+
+
+    /*
+     * ==========================================================
+     * Automatically generate initial project
+     * ==========================================================
+     */
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            generateProject();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
