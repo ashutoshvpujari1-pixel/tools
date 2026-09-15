@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Spring Boot Initialization Class Generator</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #173b57;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 11px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.92;
+        }
+
+        .generate-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .copy-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .download-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email-btn {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share-btn {
+            background: #0891b2;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #64748b;
+            color: white;
+        }
+
+        .output-section {
+            margin-top: 30px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .output-header h2 {
+            margin: 0;
+            color: #173b57;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 480px;
+            resize: vertical;
+            padding: 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #111827;
+            color: #e5e7eb;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .note {
+            margin-top: 25px;
+            padding: 18px;
+            border-left: 5px solid #2563eb;
+            background: #eff6ff;
+            border-radius: 5px;
+        }
+
+        .note h3 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .note code {
+            background: #dbeafe;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .status {
+            margin-top: 12px;
+            min-height: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .success {
+            color: #059669;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .button-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Spring Boot Initialization Class Generator</h1>
+
+        <p class="subtitle">
+            Generate a Spring Boot <code>@Component</code> initialization class
+            with Log4j2 logging and console output.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="className">Initialization Class Name</label>
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: ApplicationInitializer"
+                    value="ApplicationInitializer"
+                >
+
+                <span class="hint">
+                    Use a valid Java class name.
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="packageName">Package Name</label>
+
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.demo"
+                    value="com.example.demo"
+                >
+
+                <span class="hint">
+                    Example: com.company.project.config
+                </span>
+            </div>
+
+        </div>
+
+        <div class="button-row">
+
+            <button
+                class="generate-btn"
+                onclick="generateCode()">
+                Generate Code
+            </button>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode()">
+                Copy
+            </button>
+
+            <button
+                class="download-btn"
+                onclick="downloadCode()">
+                Download Java
+            </button>
+
+            <button
+                class="email-btn"
+                onclick="emailCode()">
+                Email
+            </button>
+
+            <button
+                class="share-btn"
+                onclick="shareCode()">
+                Share
+            </button>
+
+            <button
+                class="clear-btn"
+                onclick="clearForm()">
+                Clear
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="output-section">
+
+            <div class="output-header">
+                <h2>Generated Java Class</h2>
+            </div>
+
+            <textarea
+                id="outputCode"
+                readonly
+                spellcheck="false"
+                placeholder="Generated Java code will appear here..."></textarea>
+
+        </div>
+
+        <div class="note">
+
+            <h3>Log4j2 Setup / Configuration</h3>
+
+            <p>
+                This generated class uses Log4j2 through:
+            </p>
+
+            <ul>
+                <li>
+                    <code>org.apache.logging.log4j.Logger</code>
+                </li>
+                <li>
+                    <code>org.apache.logging.log4j.LogManager</code>
+                </li>
+            </ul>
+
+            <p>
+                For Maven-based Spring Boot applications, ensure that Log4j2
+                dependencies are available. If you are replacing Spring Boot's
+                default Logback implementation, exclude
+                <code>spring-boot-starter-logging</code> and add
+                <code>spring-boot-starter-log4j2</code>.
+            </p>
+
+            <p>
+                A typical Spring Boot configuration can be placed in
+                <code>src/main/resources/log4j2-spring.xml</code>.
+            </p>
+
+            <p>
+                Example Maven dependency:
+            </p>
+
+            <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-log4j2&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+            <p>
+                The generated class contains both
+                <code>logger.debug()</code> and
+                <code>System.out.println()</code> messages so that
+                initialization can be observed through both logging and
+                console output.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /**
+     * Validate Java class name.
+     */
+    function isValidJavaClassName(className) {
+
+        const javaClassNameRegex = /^[A-Z][A-Za-z0-9_]*$/;
+
+        return javaClassNameRegex.test(className);
+    }
+
+
+    /**
+     * Validate Java package name.
+     */
+    function isValidPackageName(packageName) {
+
+        const packageRegex =
+            /^[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)*$/;
+
+        return packageRegex.test(packageName);
+    }
+
+
+    /**
+     * Escape values used inside Java string literals.
+     */
+    function escapeJavaString(value) {
+
+        return value
+            .replace(/\\/g, "\\\\")
+            .replace(/"/g, '\\"');
+    }
+
+
+    /**
+     * Generate Spring Boot initialization class.
+     */
+    function generateCode() {
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        const packageName =
+            document.getElementById("packageName").value.trim();
+
+        const status =
+            document.getElementById("status");
+
+        if (!className) {
+
+            showStatus(
+                "Please enter an initialization class name.",
+                true
+            );
+
+            return;
+        }
+
+        if (!packageName) {
+
+            showStatus(
+                "Please enter a package name.",
+                true
+            );
+
+            return;
+        }
+
+        if (!isValidJavaClassName(className)) {
+
+            showStatus(
+                "Invalid Java class name. Example: ApplicationInitializer",
+                true
+            );
+
+            return;
+        }
+
+        if (!isValidPackageName(packageName)) {
+
+            showStatus(
+                "Invalid Java package name. Example: com.example.demo",
+                true
+            );
+
+            return;
+        }
+
+
+        const safeClassName =
+            escapeJavaString(className);
+
+
+        const javaCode = `package ${packageName};
+
+import jakarta.annotation.PostConstruct;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
+
+/**
+ * Spring Boot application initialization component.
+ *
+ * This component is automatically detected by Spring Boot
+ * through component scanning.
+ */
+@Component
+public class ${className} {
+
+    private static final Logger logger =
+            LogManager.getLogger(${className}.class);
+
+    /**
+     * Initialization method executed after Spring
+     * creates and initializes this component.
+     */
+    @PostConstruct
+    public void initialize() {
+
+        logger.debug(
+                "Starting initialization for ${safeClassName}"
+        );
+
+        System.out.println(
+                "Starting initialization for ${safeClassName}"
+        );
+
+        // Add application initialization logic here.
+
+        logger.debug(
+                "Completed initialization for ${safeClassName}"
+        );
+
+        System.out.println(
+                "Completed initialization for ${safeClassName}"
+        );
+    }
+}
+`;
+
+        document.getElementById("outputCode").value =
+            javaCode;
+
+        showStatus(
+            "Java initialization class generated successfully.",
+            false
+        );
+    }
+
+
+    /**
+     * Copy generated Java code.
+     */
+    async function copyCode() {
+
+        const code =
+            document.getElementById("outputCode").value;
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+        try {
+
+            await navigator.clipboard.writeText(code);
+
+            showStatus(
+                "Java code copied to clipboard.",
+                false
+            );
+
+        } catch (error) {
+
+            // Fallback for older browsers.
+            const output =
+                document.getElementById("outputCode");
+
+            output.removeAttribute("readonly");
+            output.select();
+
+            document.execCommand("copy");
+
+            output.setAttribute("readonly", true);
+
+            showStatus(
+                "Java code copied to clipboard.",
+                false
+            );
+        }
+    }
+
+
+    /**
+     * Download generated Java source file.
+     */
+    function downloadCode() {
+
+        const code =
+            document.getElementById("outputCode").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+        const blob =
+            new Blob(
+                [code],
+                { type: "text/plain;charset=utf-8" }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            `${className || "ApplicationInitializer"}.java`;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+        showStatus(
+            "Java file downloaded successfully.",
+            false
+        );
+    }
+
+
+    /**
+     * Open default email application with generated Java code.
+     */
+    function emailCode() {
+
+        const code =
+            document.getElementById("outputCode").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+        const subject =
+            encodeURIComponent(
+                `Spring Boot Initialization Class - ${className}`
+            );
+
+        const body =
+            encodeURIComponent(
+                `Generated Spring Boot initialization class:
+
+${code}
+
+--------------------------------------------------
+Log4j2 Setup Note
+--------------------------------------------------
+
+This class uses Log4j2 Logger and LogManager.
+
+For Spring Boot, add spring-boot-starter-log4j2
+and configure log4j2-spring.xml as required.
+`
+            );
+
+        window.location.href =
+            `mailto:?subject=${subject}&body=${body}`;
+
+        showStatus(
+            "Opening your default email application.",
+            false
+        );
+    }
+
+
+    /**
+     * Share generated Java class using Web Share API.
+     */
+    async function shareCode() {
+
+        const code =
+            document.getElementById("outputCode").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+
+        // Modern browsers supporting Web Share API.
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        `Spring Boot Initialization Class - ${className}`,
+
+                    text:
+                        code
+
+                });
+
+                showStatus(
+                    "Java class shared successfully.",
+                    false
+                );
+
+            } catch (error) {
+
+                if (error.name !== "AbortError") {
+
+                    showStatus(
+                        "Unable to share the generated code.",
+                        true
+                    );
+                }
+            }
+
+            return;
+        }
+
+
+        // Fallback if Web Share API is unavailable.
+        try {
+
+            await navigator.clipboard.writeText(code);
+
+            showStatus(
+                "Sharing is not supported by this browser. Code copied to clipboard instead.",
+                false
+            );
+
+        } catch (error) {
+
+            showStatus(
+                "Sharing is not supported by this browser.",
+                true
+            );
+        }
+    }
+
+
+    /**
+     * Clear form and generated output.
+     */
+    function clearForm() {
+
+        document.getElementById("className").value = "";
+
+        document.getElementById("packageName").value = "";
+
+        document.getElementById("outputCode").value = "";
+
+        document.getElementById("status").textContent = "";
+    }
+
+
+    /**
+     * Display status message.
+     */
+    function showStatus(message, isError) {
+
+        const status =
+            document.getElementById("status");
+
+        status.textContent =
+            message;
+
+        status.className =
+            isError
+                ? "status error"
+                : "status success";
+    }
+
+
+    // Generate an initial example when the page loads.
+    window.addEventListener("DOMContentLoaded", function () {
+
+        generateCode();
+
+    });
+
+</script>
+
+</body>
+</html>
