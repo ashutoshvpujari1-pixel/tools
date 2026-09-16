@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JUnit Unit Test Generator</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 17px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(15,23,42,0.10);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .generate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .copy {
+            background: #059669;
+            color: white;
+        }
+
+        .download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share {
+            background: #0891b2;
+            color: white;
+        }
+
+        .clear {
+            background: #64748b;
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 550px;
+            resize: vertical;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 22px;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 16px;
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+        .example {
+            margin-top: 15px;
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            background: #172554;
+            color: white;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 5px;
+        }
+
+        @media(max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>☕ JUnit Unit Test Generator</h1>
+
+    <p>
+        Generate Java JUnit 5 Unit Test Classes Instantly
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- INPUT SECTION -->
+
+    <div class="card">
+
+        <h2>Java Class Information</h2>
+
+        <div class="form-grid">
+
+            <div>
+
+                <label for="className">
+                    Java Class Name
+                </label>
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: EmployeeService"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="packageName">
+                    Package Name
+                </label>
+
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.service"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="example">
+
+            Example:
+
+            <br><br>
+
+            Class Name:
+            <strong>EmployeeService</strong>
+
+            <br>
+
+            Package:
+            <strong>com.example.service</strong>
+
+            <br><br>
+
+            Generated Test:
+            <strong>EmployeeServiceTest.java</strong>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="generate"
+                onclick="generateJUnitTest()">
+
+                ⚙ Generate JUnit Test
+
+            </button>
+
+
+            <button
+                class="clear"
+                onclick="clearAll()">
+
+                ✕ Clear
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status">
+        </div>
+
+
+        <div class="info">
+
+            <strong>Generated Framework:</strong>
+
+            JUnit 5 / JUnit Jupiter
+
+            <br>
+
+            The generated class contains:
+
+            <ul>
+                <li>Correct package declaration</li>
+                <li>JUnit 5 imports</li>
+                <li>Test class</li>
+                <li>@BeforeEach setup method</li>
+                <li>Sample @Test methods</li>
+                <li>Assertions</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- OUTPUT SECTION -->
+
+    <div class="card">
+
+        <h2>Generated JUnit Test Class</h2>
+
+
+        <textarea
+            id="output"
+            spellcheck="false"
+            placeholder="Generated JUnit Java code will appear here...">
+        </textarea>
+
+
+        <div class="buttons">
+
+            <button
+                class="copy"
+                onclick="copyCode()">
+
+                📋 Copy
+
+            </button>
+
+
+            <button
+                class="download"
+                onclick="downloadJavaFile()">
+
+                ⬇ Download Java
+
+            </button>
+
+
+            <button
+                class="email"
+                onclick="emailCode()">
+
+                ✉ Email
+
+            </button>
+
+
+            <button
+                class="share"
+                onclick="shareCode()">
+
+                🔗 Share
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        <strong>JUnit Unit Test Generator</strong>
+    </p>
+
+    <p>
+        Java Developer Productivity Tool
+    </p>
+
+</footer>
+
+
+
+<script>
+
+
+/*
+========================================================
+GENERATE JUNIT TEST CLASS
+========================================================
+*/
+
+function generateJUnitTest() {
+
+    let className =
+        document.getElementById("className")
+            .value
+            .trim();
+
+    let packageName =
+        document.getElementById("packageName")
+            .value
+            .trim();
+
+    const status =
+        document.getElementById("status");
+
+
+    /*
+    Remove .java if user enters it
+    */
+
+    className =
+        className.replace(/\.java$/i, "");
+
+
+    /*
+    Validate class name
+    */
+
+    if (!className) {
+
+        status.innerHTML =
+            "❌ Please enter Java class name.";
+
+        return;
+    }
+
+
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(className)) {
+
+        status.innerHTML =
+            "❌ Invalid Java class name.";
+
+        return;
+    }
+
+
+    /*
+    Validate package
+    */
+
+    if (!packageName) {
+
+        status.innerHTML =
+            "❌ Please enter package name.";
+
+        return;
+    }
+
+
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$/.test(packageName)) {
+
+        status.innerHTML =
+            "❌ Invalid Java package name.";
+
+        return;
+    }
+
+
+    /*
+    Test class name
+    */
+
+    const testClassName =
+        className + "Test";
+
+
+    /*
+    Java variable name
+    */
+
+    const objectName =
+        className.charAt(0).toLowerCase()
+        + className.substring(1);
+
+
+    /*
+    Generate Java source
+    */
+
+    const code =
+`package ${packageName};
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Unit test class for ${className}.
+ *
+ * Generated using JUnit Unit Test Generator.
+ */
+class ${testClassName} {
+
+    private ${className} ${objectName};
+
+    /**
+     * Initialize test object before every test.
+     */
+    @BeforeEach
+    void setUp() {
+
+        ${objectName} = new ${className}();
+
+    }
+
+    /**
+     * Verify that the ${className}
+     * object is created successfully.
+     */
+    @Test
+    void testClassInitialization() {
+
+        assertNotNull(${objectName});
+
+    }
+
+    /**
+     * Basic JUnit test.
+     *
+     * Replace this test with the actual
+     * business logic test for ${className}.
+     */
+    @Test
+    void testExample() {
+
+        boolean testResult = true;
+
+        assertTrue(testResult);
+
+    }
+
+}
+`;
+
+
+    /*
+    Put code into output area
+    */
+
+    document.getElementById("output").value =
+        code;
+
+
+    status.innerHTML =
+        "✅ Successfully generated "
+        + testClassName
+        + ".java";
+
+
+}
+
+
+/*
+========================================================
+COPY CODE
+========================================================
+*/
+
+async function copyCode() {
+
+    const output =
+        document.getElementById("output");
+
+    if (!output.value.trim()) {
+
+        alert(
+            "Please generate the JUnit test first."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            output.value
+        );
+
+        document.getElementById("status").innerHTML =
+            "✅ JUnit test code copied successfully.";
+
+    }
+    catch (error) {
+
+        output.select();
+
+        document.execCommand("copy");
+
+        document.getElementById("status").innerHTML =
+            "✅ JUnit test code copied successfully.";
+
+    }
+
+}
+
+
+/*
+========================================================
+DOWNLOAD JAVA FILE
+========================================================
+*/
+
+function downloadJavaFile() {
+
+    const code =
+        document.getElementById("output").value;
+
+
+    if (!code.trim()) {
+
+        alert(
+            "Please generate the JUnit test first."
+        );
+
+        return;
+    }
+
+
+    let className =
+        document.getElementById("className")
+            .value
+            .trim();
+
+
+    className =
+        className.replace(/\.java$/i, "");
+
+
+    const fileName =
+        className + "Test.java";
+
+
+    const blob =
+        new Blob(
+            [code],
+            {
+                type:
+                    "text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+    link.download = fileName;
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+
+    URL.revokeObjectURL(url);
+
+
+    document.getElementById("status").innerHTML =
+        "✅ Downloaded " + fileName;
+
+}
+
+
+/*
+========================================================
+EMAIL CODE
+========================================================
+*/
+
+function emailCode() {
+
+    const code =
+        document.getElementById("output").value;
+
+
+    if (!code.trim()) {
+
+        alert(
+            "Please generate the JUnit test first."
+        );
+
+        return;
+    }
+
+
+    let className =
+        document.getElementById("className")
+            .value
+            .trim();
+
+
+    className =
+        className.replace(/\.java$/i, "");
+
+
+    const subject =
+        encodeURIComponent(
+            className
+            + "Test.java - JUnit Test"
+        );
+
+
+    const body =
+        encodeURIComponent(code);
+
+
+    window.location.href =
+        "mailto:?subject="
+        + subject
+        + "&body="
+        + body;
+
+}
+
+
+/*
+========================================================
+SHARE CODE
+========================================================
+*/
+
+async function shareCode() {
+
+    const code =
+        document.getElementById("output").value;
+
+
+    if (!code.trim()) {
+
+        alert(
+            "Please generate the JUnit test first."
+        );
+
+        return;
+    }
+
+
+    let className =
+        document.getElementById("className")
+            .value
+            .trim();
+
+
+    className =
+        className.replace(/\.java$/i, "");
+
+
+    /*
+    Browser Web Share API
+    */
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title:
+                    className
+                    + "Test.java",
+
+                text:
+                    code
+
+            });
+
+
+            document.getElementById("status").innerHTML =
+                "✅ JUnit test shared successfully.";
+
+        }
+        catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                document.getElementById("status").innerHTML =
+                    "⚠ Sharing could not be completed.";
+
+            }
+
+        }
+
+    }
+
+    /*
+    Fallback
+    */
+
+    else {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                code
+            );
+
+
+            document.getElementById("status").innerHTML =
+                "ℹ Web Share is not supported. "
+                + "Generated code has been copied instead.";
+
+        }
+        catch (error) {
+
+            alert(
+                "Web Share is not supported in this browser. "
+                + "Please use the Copy button."
+            );
+
+        }
+
+    }
+
+}
+
+
+/*
+========================================================
+CLEAR
+========================================================
+*/
+
+function clearAll() {
+
+    document.getElementById("className").value =
+        "";
+
+    document.getElementById("packageName").value =
+        "";
+
+    document.getElementById("output").value =
+        "";
+
+    document.getElementById("status").innerHTML =
+        "";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

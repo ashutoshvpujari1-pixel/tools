@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Java Unit Test Class Generator</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #1d4ed8);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 17px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.10);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .generate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .copy {
+            background: #059669;
+            color: white;
+        }
+
+        .download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share {
+            background: #0891b2;
+            color: white;
+        }
+
+        .clear {
+            background: #64748b;
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 500px;
+            resize: vertical;
+            padding: 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .info {
+            margin-top: 18px;
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            padding: 15px;
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            background: #172554;
+            color: white;
+            padding: 22px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #bfdbfe;
+            text-decoration: none;
+        }
+
+        .status {
+            margin-top: 12px;
+            font-weight: bold;
+            min-height: 22px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 25px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>☕ Java Unit Test Class Generator</h1>
+    <p>Generate a ready-to-use JUnit 5 unit test class in seconds</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Enter Java Class Details</h2>
+
+        <div class="form-grid">
+
+            <div>
+                <label for="className">Java Class Name</label>
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: EmployeeService"
+                >
+            </div>
+
+            <div>
+                <label for="packageName">Package Name</label>
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.service"
+                >
+            </div>
+
+        </div>
+
+        <div class="button-container">
+
+            <button class="generate" onclick="generateTestClass()">
+                ⚙ Generate Unit Test
+            </button>
+
+            <button class="clear" onclick="clearAll()">
+                ✕ Clear
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="info">
+            <strong>Generated technology:</strong><br>
+            JUnit 5 (Jupiter) with optional Mockito support.<br>
+            The generated class is suitable for a standard Maven or Gradle Spring Boot/Java project.
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Generated Unit Test Class</h2>
+
+        <textarea
+            id="output"
+            spellcheck="false"
+            placeholder="Your generated Java unit test class will appear here..."
+        ></textarea>
+
+        <div class="button-container">
+
+            <button class="copy" onclick="copyCode()">
+                📋 Copy
+            </button>
+
+            <button class="download" onclick="downloadCode()">
+                ⬇ Download Java File
+            </button>
+
+            <button class="email" onclick="emailCode()">
+                ✉ Email
+            </button>
+
+            <button class="share" onclick="shareCode()">
+                🔗 Share
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div>
+        <strong>Java Unit Test Class Generator</strong>
+    </div>
+
+    <div style="margin-top:8px;">
+        Created for Java Developers
+    </div>
+
+</footer>
+
+
+<script>
+
+function generateTestClass() {
+
+    let className = document.getElementById("className").value.trim();
+    let packageName = document.getElementById("packageName").value.trim();
+
+    const status = document.getElementById("status");
+
+    if (!className) {
+        status.innerHTML = "❌ Please enter the Java class name.";
+        return;
+    }
+
+    if (!packageName) {
+        status.innerHTML = "❌ Please enter the package name.";
+        return;
+    }
+
+    // Remove accidental .java
+    className = className.replace(/\.java$/i, "");
+
+    // Basic Java class name validation
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(className)) {
+        status.innerHTML =
+            "❌ Invalid Java class name. Example: EmployeeService";
+        return;
+    }
+
+    // Basic package validation
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$/.test(packageName)) {
+        status.innerHTML =
+            "❌ Invalid package name. Example: com.example.service";
+        return;
+    }
+
+    const testClassName = className + "Test";
+
+    const generatedCode =
+`package ${packageName};
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+
+/**
+ * Unit test class for ${className}.
+ *
+ * Generated by Java Unit Test Class Generator.
+ */
+@ExtendWith(MockitoExtension.class)
+class ${testClassName} {
+
+    private ${className} ${toVariableName(className)};
+
+    /**
+     * Initialize test objects before each test.
+     */
+    @BeforeEach
+    void setUp() {
+
+        ${toVariableName(className)} = new ${className}();
+
+    }
+
+    /**
+     * Basic test to verify that the class can be initialized.
+     */
+    @Test
+    void testClassInitialization() {
+
+        assertNotNull(${toVariableName(className)});
+
+    }
+
+    /**
+     * Sample unit test.
+     *
+     * Replace this method with tests for the actual
+     * business methods of ${className}.
+     */
+    @Test
+    void testExample() {
+
+        boolean testExecuted = true;
+
+        assertTrue(testExecuted);
+
+    }
+
+}
+`;
+
+    document.getElementById("output").value = generatedCode;
+
+    status.innerHTML =
+        "✅ Unit test class generated successfully: " + testClassName + ".java";
+
+}
+
+
+/*
+ * Convert EmployeeService -> employeeService
+ * Convert Employee -> employee
+ */
+function toVariableName(className) {
+
+    if (className.length === 0) {
+        return "testObject";
+    }
+
+    return className.charAt(0).toLowerCase() + className.slice(1);
+}
+
+
+/*
+ * Copy generated Java code
+ */
+async function copyCode() {
+
+    const output = document.getElementById("output");
+
+    if (!output.value.trim()) {
+        alert("Please generate the unit test class first.");
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(output.value);
+
+        document.getElementById("status").innerHTML =
+            "✅ Java code copied to clipboard.";
+
+    } catch (error) {
+
+        output.select();
+        document.execCommand("copy");
+
+        document.getElementById("status").innerHTML =
+            "✅ Java code copied to clipboard.";
+
+    }
+
+}
+
+
+/*
+ * Download generated Java file
+ */
+function downloadCode() {
+
+    const code = document.getElementById("output").value;
+
+    if (!code.trim()) {
+        alert("Please generate the unit test class first.");
+        return;
+    }
+
+    let className = document.getElementById("className").value.trim();
+
+    className = className.replace(/\.java$/i, "");
+
+    const fileName = className + "Test.java";
+
+    const blob = new Blob(
+        [code],
+        { type: "text/plain;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    document.getElementById("status").innerHTML =
+        "✅ Downloaded: " + fileName;
+
+}
+
+
+/*
+ * Open default email client
+ */
+function emailCode() {
+
+    const code = document.getElementById("output").value;
+
+    if (!code.trim()) {
+        alert("Please generate the unit test class first.");
+        return;
+    }
+
+    let className = document.getElementById("className").value.trim();
+
+    className = className.replace(/\.java$/i, "");
+
+    const subject =
+        encodeURIComponent(className + "Test.java - Generated Unit Test");
+
+    const body =
+        encodeURIComponent(code);
+
+    window.location.href =
+        "mailto:?subject=" + subject + "&body=" + body;
+
+}
+
+
+/*
+ * Share generated code
+ *
+ * Uses Web Share API where supported.
+ * Falls back to copying the generated code.
+ */
+async function shareCode() {
+
+    const code = document.getElementById("output").value;
+
+    if (!code.trim()) {
+        alert("Please generate the unit test class first.");
+        return;
+    }
+
+    let className = document.getElementById("className").value.trim();
+
+    className = className.replace(/\.java$/i, "");
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+                title: className + "Test.java",
+                text: code
+            });
+
+            document.getElementById("status").innerHTML =
+                "✅ Code shared successfully.";
+
+        } catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                document.getElementById("status").innerHTML =
+                    "Sharing was cancelled or unavailable.";
+
+            }
+
+        }
+
+    } else {
+
+        try {
+
+            await navigator.clipboard.writeText(code);
+
+            document.getElementById("status").innerHTML =
+                "ℹ️ Web Share is not supported in this browser. Code copied instead.";
+
+        } catch (error) {
+
+            alert(
+                "Web Share is not supported in this browser. " +
+                "Please use the Copy button."
+            );
+
+        }
+
+    }
+
+}
+
+
+/*
+ * Clear form and generated code
+ */
+function clearAll() {
+
+    document.getElementById("className").value = "";
+    document.getElementById("packageName").value = "";
+    document.getElementById("output").value = "";
+    document.getElementById("status").innerHTML = "";
+
+}
+
+</script>
+
+</body>
+</html>
