@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JSON ↔ XML Converter | GenerateSourceCode</title>
+
+<meta name="description"
+      content="Convert JSON to XML and XML to JSON online. Copy, download, email and share generated output. Includes Spring Boot REST API integration example.">
+
+<meta name="keywords"
+      content="JSON to XML, XML to JSON, JSON XML Converter, Spring Boot REST API, Developer Tools">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    transition: 0.3s;
+}
+
+body.dark {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+header {
+    background: linear-gradient(135deg, #0f172a, #2563eb, #06b6d4);
+    color: white;
+    padding: 22px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo-area h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.logo-area p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.theme-btn {
+    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1400px;
+    margin: 25px auto;
+    padding: 0 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h2 {
+    font-size: 32px;
+    margin: 5px 0 10px;
+}
+
+.hero p {
+    font-size: 16px;
+    color: #64748b;
+}
+
+body.dark .hero p {
+    color: #cbd5e1;
+}
+
+.converter-card {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(15,23,42,0.12);
+}
+
+body.dark .converter-card {
+    background: #1f2937;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.toolbar label {
+    font-weight: bold;
+}
+
+select,
+button {
+    font-size: 15px;
+}
+
+select {
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+}
+
+body.dark select {
+    background: #111827;
+    color: white;
+    border-color: #475569;
+}
+
+.btn {
+    border: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+.generate {
+    background: #2563eb;
+    color: white;
+}
+
+.sample {
+    background: #64748b;
+    color: white;
+}
+
+.clear {
+    background: #dc2626;
+    color: white;
+}
+
+.copy {
+    background: #059669;
+    color: white;
+}
+
+.download {
+    background: #7c3aed;
+    color: white;
+}
+
+.email {
+    background: #ea580c;
+    color: white;
+}
+
+.share {
+    background: #0891b2;
+    color: white;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.editor-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.editor-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 430px;
+    resize: vertical;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #111827;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+body.dark textarea {
+    background: #0f172a;
+    color: #e5e7eb;
+    border-color: #475569;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    display: none;
+    font-weight: bold;
+}
+
+.status.success {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+body.dark .status.success {
+    background: #14532d;
+    color: #bbf7d0;
+}
+
+body.dark .status.error {
+    background: #7f1d1d;
+    color: #fecaca;
+}
+
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.info-card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 6px 25px rgba(15,23,42,0.10);
+}
+
+body.dark .info-card {
+    background: #1f2937;
+}
+
+.info-card h2 {
+    margin-top: 0;
+    color: #2563eb;
+}
+
+.info-card ol,
+.info-card ul {
+    line-height: 1.8;
+}
+
+.code {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 18px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+}
+
+footer {
+    margin-top: 35px;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+footer a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+@media(max-width: 900px) {
+
+    .workspace,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    textarea {
+        min-height: 350px;
+    }
+
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media(max-width: 600px) {
+
+    .hero h2 {
+        font-size: 25px;
+    }
+
+    .toolbar,
+    .action-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn,
+    select {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="header-container">
+
+<div class="logo-area">
+<h1>GenerateSourceCode</h1>
+<p>Developer Productivity Tools</p>
+</div>
+
+<button class="theme-btn" onclick="toggleTheme()">
+🌙 Dark / ☀️ Light
+</button>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<h2>JSON ↔ XML Converter</h2>
+
+<p>
+Convert JSON to XML or XML to JSON instantly.
+Copy, download, email or share the generated result.
+</p>
+
+</section>
+
+<section class="converter-card">
+
+<div class="toolbar">
+
+<label for="conversionType">Conversion:</label>
+
+<select id="conversionType">
+<option value="jsonToXml">JSON → XML</option>
+<option value="xmlToJson">XML → JSON</option>
+</select>
+
+<button class="btn generate" onclick="generateOutput()">
+⚡ Generate
+</button>
+
+<button class="btn sample" onclick="loadSample()">
+📄 Load Sample
+</button>
+
+<button class="btn clear" onclick="clearAll()">
+🗑 Clear
+</button>
+
+</div>
+
+<div class="workspace">
+
+<div class="editor-box">
+
+<div class="editor-header">
+<h3>Input</h3>
+<span>Paste JSON or XML</span>
+</div>
+
+<textarea id="inputText"
+placeholder='Paste your JSON or XML here...
+
+Example JSON:
+{
+  "employee": {
+    "id": 101,
+    "name": "Ashutosh",
+    "department": "IT",
+    "salary": 75000
+  }
+}'></textarea>
+
+</div>
+
+<div class="editor-box">
+
+<div class="editor-header">
+<h3>Output</h3>
+<span>Generated result</span>
+</div>
+
+<textarea id="outputText"
+placeholder="Generated output will appear here..."
+readonly></textarea>
+
+</div>
+
+</div>
+
+<div id="status" class="status"></div>
+
+<div class="action-bar">
+
+<button class="btn copy" onclick="copyOutput()">
+📋 Copy
+</button>
+
+<button class="btn download" onclick="downloadOutput()">
+⬇ Download
+</button>
+
+<button class="btn email" onclick="emailOutput()">
+✉ Email
+</button>
+
+<button class="btn share" onclick="shareOutput()">
+🔗 Share
+</button>
+
+</div>
+
+</section>
+
+
+<section class="info-grid">
+
+<div class="info-card">
+
+<h2>🚀 How to Use</h2>
+
+<ol>
+
+<li>Select <b>JSON → XML</b> or <b>XML → JSON</b>.</li>
+
+<li>Paste your input into the Input text area.</li>
+
+<li>Click <b>Generate</b>.</li>
+
+<li>The converted result will appear in the Output area.</li>
+
+<li>Use Copy, Download, Email or Share as required.</li>
+
+</ol>
+
+<h3>Supported Example</h3>
+
+<div class="code">{
+  "employee": {
+    "id": 101,
+    "name": "Ashutosh",
+    "department": "IT",
+    "skills": [
+      "Java",
+      "Spring Boot",
+      "REST API"
+    ]
+  }
+}</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h2>☕ Use RESTful Class in Spring Boot</h2>
+
+<p>
+The generated JSON/XML can be used while developing
+Spring Boot RESTful services.
+</p>
+
+<h3>1. Create REST Controller</h3>
+
+<div class="code">package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class EmployeeController {
+
+    @GetMapping(
+        value = "/employee",
+        produces = "application/json"
+    )
+    public Employee getEmployee() {
+
+        Employee employee = new Employee();
+
+        employee.setId(101L);
+        employee.setName("Ashutosh");
+        employee.setDepartment("IT");
+        employee.setSalary(75000);
+
+        return employee;
+    }
+}</div>
+
+<h3>2. Create POJO Class</h3>
+
+<div class="code">public class Employee {
+
+    private Long id;
+    private String name;
+    private String department;
+    private double salary;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+}</div>
+
+</div>
+
+
+<div class="info-card">
+
+<h2>📦 Spring Boot POST Example</h2>
+
+<p>
+If the converted JSON is required as the request body of
+a REST API, use <b>@RequestBody</b>.
+</p>
+
+<div class="code">@PostMapping(
+    value = "/employee",
+    consumes = "application/json",
+    produces = "application/json"
+)
+public Employee createEmployee(
+        @RequestBody Employee employee) {
+
+    return employee;
+}</div>
+
+<h3>Sample Request</h3>
+
+<div class="code">POST http://localhost:8080/api/employee
+
+Content-Type: application/json
+
+{
+  "id": 101,
+  "name": "Ashutosh",
+  "department": "IT",
+  "salary": 75000
+}</div>
+
+<h3>Test with Postman</h3>
+
+<ul>
+<li>Open Postman.</li>
+<li>Select POST.</li>
+<li>Enter the Spring Boot REST URL.</li>
+<li>Select Body → raw → JSON.</li>
+<li>Paste the generated JSON.</li>
+<li>Click Send.</li>
+</ul>
+
+</div>
+
+
+<div class="info-card">
+
+<h2>🔄 XML REST API Example</h2>
+
+<p>
+Spring Boot can also consume and produce XML when the appropriate
+XML message converter/dependency is configured.
+</p>
+
+<div class="code">@GetMapping(
+    value = "/employee",
+    produces = "application/xml"
+)
+public Employee getEmployeeXml() {
+
+    Employee employee = new Employee();
+
+    employee.setId(101L);
+    employee.setName("Ashutosh");
+    employee.setDepartment("IT");
+    employee.setSalary(75000);
+
+    return employee;
+}</div>
+
+<h3>Example XML</h3>
+
+<div class="code">&lt;employee&gt;
+    &lt;id&gt;101&lt;/id&gt;
+    &lt;name&gt;Ashutosh&lt;/name&gt;
+    &lt;department&gt;IT&lt;/department&gt;
+    &lt;salary&gt;75000&lt;/salary&gt;
+&lt;/employee&gt;</div>
+
+<p>
+The converter on this page can be used to quickly transform
+payloads between JSON and XML while developing or testing REST APIs.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<strong>GenerateSourceCode</strong>
+
+<br><br>
+
+JSON ↔ XML Converter | Spring Boot Developer Tools
+
+<br><br>
+
+Created by Ashutosh Pujari
+
+<br>
+
+<a href="mailto:ashutoshvpujari@rediffmail.com">
+ashutoshvpujari@rediffmail.com
+</a>
+
+</footer>
+
+
+<script>
+
+/* ============================================================
+   JSON → XML
+   ============================================================ */
+
+function jsonToXml(json, rootName = "root") {
+
+    function escapeXml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&apos;");
+    }
+
+    function convert(value, nodeName, level) {
+
+        const indent = "    ".repeat(level);
+        const childIndent = "    ".repeat(level + 1);
+
+        if (value === null) {
+            return `${indent}<${nodeName}/>`;
+        }
+
+        if (typeof value !== "object") {
+            return `${indent}<${nodeName}>${escapeXml(value)}</${nodeName}>`;
+        }
+
+        if (Array.isArray(value)) {
+
+            return value.map(item => {
+
+                return convert(
+                    item,
+                    nodeName,
+                    level
+                );
+
+            }).join("\n");
+        }
+
+        let result = `${indent}<${nodeName}>`;
+
+        const keys = Object.keys(value);
+
+        if (keys.length > 0) {
+
+            result += "\n";
+
+            keys.forEach(key => {
+
+                let xmlName = sanitizeXmlName(key);
+
+                result += convert(
+                    value[key],
+                    xmlName,
+                    level + 1
+                );
+
+                result += "\n";
+
+            });
+
+            result += `${indent}</${nodeName}>`;
+
+        } else {
+
+            result += `</${nodeName}>`;
+        }
+
+        return result;
+    }
+
+    return `<?xml version="1.0" encoding="UTF-8"?>\n`
+         + convert(json, rootName, 0);
+}
+
+
+/* ============================================================
+   XML NAME SANITIZATION
+   ============================================================ */
+
+function sanitizeXmlName(name) {
+
+    let result = String(name)
+        .trim()
+        .replace(/[^a-zA-Z0-9_.-]/g, "_");
+
+    if (!result) {
+        result = "item";
+    }
+
+    if (/^[0-9]/.test(result)) {
+        result = "_" + result;
+    }
+
+    return result;
+}
+
+
+/* ============================================================
+   XML → JSON
+   ============================================================ */
+
+function xmlToJson(xmlString) {
+
+    const parser = new DOMParser();
+
+    const xml = parser.parseFromString(
+        xmlString,
+        "application/xml"
+    );
+
+    const parserError = xml.querySelector("parsererror");
+
+    if (parserError) {
+        throw new Error("Invalid XML input.");
+    }
+
+    function nodeToObject(node) {
+
+        const children = Array.from(node.children);
+
+        if (children.length === 0) {
+
+            const text = node.textContent.trim();
+
+            if (text === "") {
+                return "";
+            }
+
+            if (text === "true") {
+                return true;
+            }
+
+            if (text === "false") {
+                return false;
+            }
+
+            if (!isNaN(text) && text !== "") {
+                return Number(text);
+            }
+
+            return text;
+        }
+
+        const object = {};
+
+        children.forEach(child => {
+
+            const key = child.nodeName;
+            const value = nodeToObject(child);
+
+            if (Object.prototype.hasOwnProperty.call(object, key)) {
+
+                if (!Array.isArray(object[key])) {
+                    object[key] = [object[key]];
+                }
+
+                object[key].push(value);
+
+            } else {
+
+                object[key] = value;
+            }
+
+        });
+
+        return object;
+    }
+
+    const root = xml.documentElement;
+
+    return {
+        [root.nodeName]: nodeToObject(root)
+    };
+}
+
+
+/* ============================================================
+   GENERATE
+   ============================================================ */
+
+function generateOutput() {
+
+    const input =
+        document.getElementById("inputText").value.trim();
+
+    const type =
+        document.getElementById("conversionType").value;
+
+    const output =
+        document.getElementById("outputText");
+
+    if (!input) {
+
+        showStatus(
+            "Please enter JSON or XML input.",
+            "error"
+        );
+
+        return;
+    }
+
+    try {
+
+        if (type === "jsonToXml") {
+
+            const json = JSON.parse(input);
+
+            let rootName = "root";
+
+            if (
+                typeof json === "object" &&
+                json !== null &&
+                !Array.isArray(json)
+            ) {
+
+                const keys = Object.keys(json);
+
+                if (keys.length === 1) {
+                    rootName = sanitizeXmlName(keys[0]);
+
+                    const rootValue = json[keys[0]];
+
+                    output.value =
+                        jsonToXml(
+                            rootValue,
+                            rootName
+                        );
+
+                    showStatus(
+                        "JSON successfully converted to XML.",
+                        "success"
+                    );
+
+                    return;
+                }
+            }
+
+            output.value = jsonToXml(
+                json,
+                rootName
+            );
+
+            showStatus(
+                "JSON successfully converted to XML.",
+                "success"
+            );
+
+        } else {
+
+            const result = xmlToJson(input);
+
+            output.value =
+                JSON.stringify(
+                    result,
+                    null,
+                    4
+                );
+
+            showStatus(
+                "XML successfully converted to JSON.",
+                "success"
+            );
+        }
+
+    } catch (error) {
+
+        output.value = "";
+
+        showStatus(
+            "Conversion failed: " + error.message,
+            "error"
+        );
+    }
+}
+
+
+/* ============================================================
+   SAMPLE
+   ============================================================ */
+
+function loadSample() {
+
+    const type =
+        document.getElementById("conversionType").value;
+
+    const input =
+        document.getElementById("inputText");
+
+    if (type === "jsonToXml") {
+
+        input.value = `{
+    "employee": {
+        "id": 101,
+        "name": "Ashutosh",
+        "department": "IT",
+        "salary": 75000,
+        "skills": [
+            "Java",
+            "Spring Boot",
+            "REST API"
+        ]
+    }
+}`;
+
+    } else {
+
+        input.value = `<?xml version="1.0" encoding="UTF-8"?>
+<employee>
+    <id>101</id>
+    <name>Ashutosh</name>
+    <department>IT</department>
+    <salary>75000</salary>
+    <skills>
+        <skill>Java</skill>
+        <skill>Spring Boot</skill>
+        <skill>REST API</skill>
+    </skills>
+</employee>`;
+    }
+
+    document.getElementById("outputText").value = "";
+
+    showStatus(
+        "Sample input loaded.",
+        "success"
+    );
+}
+
+
+/* ============================================================
+   COPY
+   ============================================================ */
+
+async function copyOutput() {
+
+    const output =
+        document.getElementById("outputText").value;
+
+    if (!output) {
+
+        showStatus(
+            "Nothing to copy. Generate output first.",
+            "error"
+        );
+
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(output);
+
+        showStatus(
+            "Output copied to clipboard.",
+            "success"
+        );
+
+    } catch (error) {
+
+        const textarea =
+            document.getElementById("outputText");
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        showStatus(
+            "Output copied to clipboard.",
+            "success"
+        );
+    }
+}
+
+
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+
+function downloadOutput() {
+
+    const output =
+        document.getElementById("outputText").value;
+
+    if (!output) {
+
+        showStatus(
+            "Nothing to download. Generate output first.",
+            "error"
+        );
+
+        return;
+    }
+
+    const type =
+        document.getElementById("conversionType").value;
+
+    const extension =
+        type === "jsonToXml"
+            ? "xml"
+            : "json";
+
+    const mime =
+        type === "jsonToXml"
+            ? "application/xml"
+            : "application/json";
+
+    const blob =
+        new Blob(
+            [output],
+            { type: mime }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        type === "jsonToXml"
+            ? "converted.xml"
+            : "converted.json";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    showStatus(
+        "File downloaded successfully.",
+        "success"
+    );
+}
+
+
+/* ============================================================
+   EMAIL
+   ============================================================ */
+
+function emailOutput() {
+
+    const output =
+        document.getElementById("outputText").value;
+
+    if (!output) {
+
+        showStatus(
+            "Nothing to email. Generate output first.",
+            "error"
+        );
+
+        return;
+    }
+
+    const type =
+        document.getElementById("conversionType").value;
+
+    const subject =
+        type === "jsonToXml"
+            ? "Generated XML"
+            : "Generated JSON";
+
+    const body =
+        encodeURIComponent(output);
+
+    window.location.href =
+        `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+    showStatus(
+        "Opening your email application...",
+        "success"
+    );
+}
+
+
+/* ============================================================
+   SHARE
+   ============================================================ */
+
+async function shareOutput() {
+
+    const output =
+        document.getElementById("outputText").value;
+
+    if (!output) {
+
+        showStatus(
+            "Nothing to share. Generate output first.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+                title: "JSON XML Converter Output",
+                text: output
+            });
+
+            showStatus(
+                "Output shared successfully.",
+                "success"
+            );
+
+        } catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                showStatus(
+                    "Sharing was cancelled or failed.",
+                    "error"
+                );
+            }
+        }
+
+    } else {
+
+        await copyOutput();
+
+        showStatus(
+            "Web Share is not supported in this browser. Output copied instead.",
+            "success"
+        );
+    }
+}
+
+
+/* ============================================================
+   CLEAR
+   ============================================================ */
+
+function clearAll() {
+
+    document.getElementById("inputText").value = "";
+
+    document.getElementById("outputText").value = "";
+
+    document.getElementById("status").style.display = "none";
+}
+
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+
+function showStatus(message, type) {
+
+    const status =
+        document.getElementById("status");
+
+    status.textContent = message;
+
+    status.className =
+        "status " + type;
+}
+
+
+/* ============================================================
+   DARK / LIGHT MODE
+   ============================================================ */
+
+function toggleTheme() {
+
+    document.body.classList.toggle("dark");
+
+    const isDark =
+        document.body.classList.contains("dark");
+
+    localStorage.setItem(
+        "converterTheme",
+        isDark ? "dark" : "light"
+    );
+}
+
+
+/* ============================================================
+   RESTORE THEME
+   ============================================================ */
+
+(function restoreTheme() {
+
+    const theme =
+        localStorage.getItem("converterTheme");
+
+    if (theme === "dark") {
+        document.body.classList.add("dark");
+    }
+
+})();
+
+
+/* ============================================================
+   KEYBOARD SHORTCUT
+   Ctrl + Enter = Generate
+   ============================================================ */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            generateOutput();
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>
