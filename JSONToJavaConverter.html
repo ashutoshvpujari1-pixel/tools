@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JSON to Java POJO Generator | Spring Boot REST API</title>
+
+<meta name="description"
+      content="Free online JSON to Java POJO generator. Convert JSON into Java POJO classes for Spring Boot REST APIs. Supports nested objects, arrays, getters, setters and constructors.">
+
+<meta name="keywords"
+      content="JSON to Java POJO, JSON to Java class, Spring Boot POJO generator, REST API POJO generator, Java DTO generator">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #eef4ff, #f8fbff);
+        color: #172033;
+    }
+
+    header {
+        background: linear-gradient(135deg, #0f172a, #1d4ed8);
+        color: white;
+        padding: 22px 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    header .header-container {
+        max-width: 1400px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .brand {
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .brand span {
+        color: #93c5fd;
+    }
+
+    .header-subtitle {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-top: 4px;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .hero h1 {
+        margin: 0;
+        font-size: 34px;
+        color: #0f172a;
+    }
+
+    .hero p {
+        font-size: 17px;
+        color: #475569;
+    }
+
+    .card {
+        background: white;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.09);
+        margin-bottom: 22px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #1e3a8a;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 500px;
+        resize: vertical;
+        border: 2px solid #cbd5e1;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        outline: none;
+        background: #f8fafc;
+        transition: 0.2s;
+    }
+
+    textarea:focus {
+        border-color: #2563eb;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.10);
+    }
+
+    #output {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+    .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .option-box {
+        background: #f1f5f9;
+        padding: 10px 14px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    input[type="text"] {
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        padding: 9px 11px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    input[type="text"]:focus {
+        border-color: #2563eb;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    button {
+        border: none;
+        border-radius: 9px;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .generate {
+        background: #2563eb;
+        color: white;
+    }
+
+    .sample {
+        background: #0f766e;
+        color: white;
+    }
+
+    .clear {
+        background: #64748b;
+        color: white;
+    }
+
+    .copy {
+        background: #7c3aed;
+        color: white;
+    }
+
+    .download {
+        background: #15803d;
+        color: white;
+    }
+
+    .email {
+        background: #ea580c;
+        color: white;
+    }
+
+    .share {
+        background: #0891b2;
+        color: white;
+    }
+
+    .instructions {
+        background: linear-gradient(135deg, #eff6ff, #f8fafc);
+        border-left: 6px solid #2563eb;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .instructions h2 {
+        margin-top: 0;
+        color: #1e3a8a;
+    }
+
+    .instructions h3 {
+        color: #334155;
+        margin-bottom: 5px;
+    }
+
+    .instructions pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+    }
+
+    .step {
+        background: white;
+        padding: 14px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #dbeafe;
+    }
+
+    .tip {
+        margin-top: 15px;
+        background: #fef3c7;
+        padding: 14px;
+        border-radius: 8px;
+        color: #78350f;
+        font-weight: 600;
+    }
+
+    .status {
+        margin-top: 12px;
+        font-weight: 600;
+        color: #15803d;
+        min-height: 20px;
+    }
+
+    footer {
+        background: #0f172a;
+        color: #cbd5e1;
+        text-align: center;
+        padding: 25px 15px;
+        margin-top: 35px;
+    }
+
+    footer strong {
+        color: white;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: bold;
+        margin: 3px;
+    }
+
+    @media (max-width: 900px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        textarea {
+            min-height: 400px;
+        }
+
+        .hero h1 {
+            font-size: 27px;
+        }
+
+        header .header-container {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-container">
+        <div>
+            <div class="brand">Generate<span>SourceCode</span></div>
+            <div class="header-subtitle">
+                Developer Productivity Tools
+            </div>
+        </div>
+
+        <div>
+            <span class="badge">Java</span>
+            <span class="badge">Spring Boot</span>
+            <span class="badge">REST API</span>
+            <span class="badge">JSON</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>JSON → Java POJO Generator</h1>
+        <p>
+            Convert JSON input into ready-to-use Java POJO classes
+            for Spring Boot RESTful applications.
+        </p>
+    </div>
+
+    <div class="card">
+
+        <div class="grid">
+
+            <!-- INPUT -->
+            <div>
+                <div class="section-title">
+                    1. Enter JSON
+                </div>
+
+                <textarea id="jsonInput"
+placeholder='Paste JSON here...
+
+Example:
+{
+  "id": 101,
+  "name": "John",
+  "salary": 75000,
+  "active": true,
+  "department": {
+    "id": 10,
+    "name": "IT"
+  }
+}'></textarea>
+
+                <div class="options">
+
+                    <div class="option-box">
+                        <label for="className">
+                            Root Class:
+                        </label>
+
+                        <input
+                            type="text"
+                            id="className"
+                            value="Employee"
+                            placeholder="Employee">
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+
+                    <button class="sample"
+                            onclick="loadSample()">
+                        Load Sample
+                    </button>
+
+                    <button class="generate"
+                            onclick="generatePOJO()">
+                        Generate Code
+                    </button>
+
+                    <button class="clear"
+                            onclick="clearAll()">
+                        Clear
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- OUTPUT -->
+            <div>
+                <div class="section-title">
+                    2. Generated Java POJO
+                </div>
+
+                <textarea id="output"
+                          readonly
+                          placeholder="Generated Java POJO will appear here..."></textarea>
+
+                <div class="buttons">
+
+                    <button class="copy"
+                            onclick="copyCode()">
+                        📋 Copy
+                    </button>
+
+                    <button class="download"
+                            onclick="downloadCode()">
+                        ⬇ Download Java
+                    </button>
+
+                    <button class="email"
+                            onclick="emailCode()">
+                        ✉ Email
+                    </button>
+
+                    <button class="share"
+                            onclick="shareCode()">
+                        🔗 Share
+                    </button>
+
+                </div>
+
+                <div id="status"
+                     class="status"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SPRING BOOT INSTRUCTIONS -->
+
+    <div class="card">
+
+        <div class="instructions">
+
+            <h2>
+                How to Copy Generated POJO into a Spring Boot Project
+            </h2>
+
+            <div class="step">
+                <strong>Step 1 — Create a package</strong>
+
+                <p>
+                    In your Spring Boot project, create a package such as:
+                </p>
+
+                <pre>src/main/java
+└── com.example.demo
+    ├── controller
+    ├── service
+    ├── repository
+    └── model</pre>
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 2 — Create the POJO Java file</strong>
+
+                <p>
+                    Create a Java class under the
+                    <strong>model</strong> or <strong>dto</strong>
+                    package.
+                </p>
+
+                <pre>src/main/java/com/example/demo/model/Employee.java</pre>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 3 — Copy the generated code</strong>
+
+                <p>
+                    Click the <strong>Copy</strong> button above.
+                    Open the Java file in Eclipse, IntelliJ IDEA or
+                    another IDE and paste the generated code.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 4 — Add the package declaration</strong>
+
+                <p>
+                    Make sure the package name matches the directory.
+                </p>
+
+                <pre>package com.example.demo.model;</pre>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 5 — Use the POJO in your REST Controller</strong>
+
+                <pre>
+@RestController
+@RequestMapping("/api/employees")
+public class EmployeeController {
+
+    @PostMapping
+    public Employee createEmployee(
+            @RequestBody Employee employee) {
+
+        System.out.println(employee);
+
+        return employee;
+    }
+}
+</pre>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 6 — Send JSON from Postman</strong>
+
+                <pre>
+POST http://localhost:8080/api/employees
+
+Content-Type: application/json
+
+{
+    "id": 101,
+    "name": "John",
+    "salary": 75000,
+    "active": true
+}
+</pre>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Step 7 — Spring Boot automatically converts JSON</strong>
+
+                <p>
+                    Spring Boot uses Jackson to deserialize the incoming
+                    JSON into the generated Java POJO.
+                </p>
+
+                <pre>
+JSON
+ ↓
+Jackson
+ ↓
+Employee POJO
+ ↓
+REST Controller
+ ↓
+Service
+ ↓
+Repository
+</pre>
+
+            </div>
+
+
+            <div class="tip">
+
+                💡 Tip:
+                For REST APIs, it is recommended to place request/response
+                classes in a dedicated <strong>dto</strong> package.
+
+                Example:
+
+                <pre>
+src/main/java/com/example/demo/dto/EmployeeRequest.java
+src/main/java/com/example/demo/dto/EmployeeResponse.java
+</pre>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div>
+        <strong>GenerateSourceCode</strong>
+    </div>
+
+    <div style="margin-top:8px;">
+        JSON to Java POJO Generator |
+        Spring Boot Developer Tool
+    </div>
+
+    <div style="margin-top:10px;">
+        Created by <strong>Ashutosh Pujari</strong>
+    </div>
+
+</footer>
+
+
+<script>
+
+/*
+=========================================================
+ JSON TO JAVA POJO GENERATOR
+=========================================================
+*/
+
+let generatedClasses = [];
+
+
+/* =========================
+   SAMPLE JSON
+========================= */
+
+function loadSample() {
+
+    const sample = {
+        id: 101,
+        name: "John",
+        salary: 75000,
+        active: true,
+        email: "john@example.com",
+        department: {
+            id: 10,
+            name: "IT"
+        },
+        skills: [
+            "Java",
+            "Spring Boot",
+            "REST API"
+        ],
+        address: {
+            city: "Pune",
+            country: "India"
+        }
+    };
+
+    document.getElementById("jsonInput").value =
+        JSON.stringify(sample, null, 2);
+
+    document.getElementById("className").value =
+        "Employee";
+
+    setStatus("Sample JSON loaded.");
+
+}
+
+
+/* =========================
+   GENERATE POJO
+========================= */
+
+function generatePOJO() {
+
+    const input =
+        document.getElementById("jsonInput").value.trim();
+
+    let rootClass =
+        document.getElementById("className").value.trim();
+
+    if (!input) {
+
+        alert("Please enter JSON.");
+
+        return;
+    }
+
+    if (!rootClass) {
+
+        rootClass = "Root";
+
+    }
+
+    try {
+
+        const json = JSON.parse(input);
+
+        generatedClasses = [];
+
+        const result =
+            generateClass(json, toClassName(rootClass));
+
+        let output = "";
+
+        output += "package com.example.demo.model;\n\n";
+
+        output += "import java.util.List;\n\n";
+
+        output += result;
+
+        document.getElementById("output").value =
+            output;
+
+        setStatus(
+            "Java POJO generated successfully."
+        );
+
+    } catch (error) {
+
+        alert(
+            "Invalid JSON.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================
+   GENERATE CLASS
+========================= */
+
+function generateClass(obj, className) {
+
+    if (!obj || typeof obj !== "object") {
+
+        return "";
+    }
+
+    let fields = [];
+
+    let nestedClasses = [];
+
+    Object.keys(obj).forEach(key => {
+
+        const value = obj[key];
+
+        const fieldName =
+            toJavaFieldName(key);
+
+        let type = "Object";
+
+        if (Array.isArray(value)) {
+
+            if (value.length === 0) {
+
+                type = "List<Object>";
+
+            } else {
+
+                const first = value[0];
+
+                if (
+                    first !== null &&
+                    typeof first === "object" &&
+                    !Array.isArray(first)
+                ) {
+
+                    const nestedClass =
+                        toClassName(
+                            key.replace(/s$/, "")
+                        );
+
+                    type =
+                        "List<" +
+                        nestedClass +
+                        ">";
+
+                    nestedClasses.push(
+                        generateClass(
+                            first,
+                            nestedClass
+                        )
+                    );
+
+                } else {
+
+                    type =
+                        "List<" +
+                        getJavaType(first) +
+                        ">";
+
+                }
+
+            }
+
+        } else if (
+            value !== null &&
+            typeof value === "object"
+        ) {
+
+            const nestedClass =
+                toClassName(key);
+
+            type = nestedClass;
+
+            nestedClasses.push(
+                generateClass(
+                    value,
+                    nestedClass
+                )
+            );
+
+        } else {
+
+            type = getJavaType(value);
+
+        }
+
+        fields.push({
+            name: fieldName,
+            type: type
+        });
+
+    });
+
+
+    let code = "";
+
+    code +=
+        "/**\n" +
+        " * Generated POJO class from JSON.\n" +
+        " * Generated using JSON to Java POJO Generator.\n" +
+        " */\n";
+
+    code +=
+        "public class " +
+        className +
+        " {\n\n";
+
+
+    /* Fields */
+
+    fields.forEach(field => {
+
+        code +=
+            "    private " +
+            field.type +
+            " " +
+            field.name +
+            ";\n";
+
+    });
+
+
+    code += "\n";
+
+
+    /* No argument constructor */
+
+    code +=
+        "    public " +
+        className +
+        "() {\n" +
+        "    }\n\n";
+
+
+    /* All argument constructor */
+
+    code +=
+        "    public " +
+        className +
+        "(";
+
+    code += fields
+        .map(field =>
+            field.type +
+            " " +
+            field.name
+        )
+        .join(", ");
+
+    code += ") {\n";
+
+    fields.forEach(field => {
+
+        code +=
+            "        this." +
+            field.name +
+            " = " +
+            field.name +
+            ";\n";
+
+    });
+
+    code +=
+        "    }\n\n";
+
+
+    /* Getters */
+
+    fields.forEach(field => {
+
+        const methodName =
+            capitalize(field.name);
+
+        code +=
+            "    public " +
+            field.type +
+            " get" +
+            methodName +
+            "() {\n" +
+            "        return " +
+            field.name +
+            ";\n" +
+            "    }\n\n";
+
+    });
+
+
+    /* Setters */
+
+    fields.forEach(field => {
+
+        const methodName =
+            capitalize(field.name);
+
+        code +=
+            "    public void set" +
+            methodName +
+            "(" +
+            field.type +
+            " " +
+            field.name +
+            ") {\n" +
+            "        this." +
+            field.name +
+            " = " +
+            field.name +
+            ";\n" +
+            "    }\n\n";
+
+    });
+
+
+    /* toString */
+
+    code +=
+        "    @Override\n" +
+        "    public String toString() {\n" +
+        "        return \"" +
+        className +
+        "{\" +\n";
+
+    fields.forEach((field, index) => {
+
+        const prefix =
+            index === 0
+                ? ""
+                : " + ";
+
+        code +=
+            "                \"" +
+            prefix +
+            field.name +
+            "='\" + " +
+            field.name +
+            " + '\\''";
+
+        if (index <
+            fields.length - 1) {
+
+            code += " +\n";
+
+        } else {
+
+            code += "\n";
+
+        }
+
+    });
+
+    code +=
+        "                + '}';\n" +
+        "    }\n";
+
+    code +=
+        "}\n\n";
+
+
+    /* Nested classes */
+
+    nestedClasses.forEach(
+        nestedClass => {
+
+            code +=
+                "\n" +
+                nestedClass;
+
+        }
+    );
+
+
+    return code;
+
+}
+
+
+/* =========================
+   JAVA TYPE DETECTION
+========================= */
+
+function getJavaType(value) {
+
+    if (value === null) {
+
+        return "Object";
+
+    }
+
+    if (typeof value === "string") {
+
+        return "String";
+
+    }
+
+    if (typeof value === "boolean") {
+
+        return "Boolean";
+
+    }
+
+    if (typeof value === "number") {
+
+        if (Number.isInteger(value)) {
+
+            if (
+                value > 2147483647 ||
+                value < -2147483648
+            ) {
+
+                return "Long";
+
+            }
+
+            return "Integer";
+
+        }
+
+        return "Double";
+
+    }
+
+    return "Object";
+
+}
+
+
+/* =========================
+   FIELD NAME CONVERSION
+========================= */
+
+function toJavaFieldName(name) {
+
+    name = name
+        .replace(/[^a-zA-Z0-9_$]/g, "_");
+
+    if (/^\d/.test(name)) {
+
+        name = "_" + name;
+
+    }
+
+    return name.charAt(0).toLowerCase() +
+           name.slice(1);
+
+}
+
+
+/* =========================
+   CLASS NAME CONVERSION
+========================= */
+
+function toClassName(name) {
+
+    name = name
+        .replace(/[^a-zA-Z0-9]/g, " ");
+
+    const parts =
+        name.trim().split(/\s+/);
+
+    return parts
+        .map(part =>
+            capitalize(part)
+        )
+        .join("") || "Root";
+
+}
+
+
+/* =========================
+   CAPITALIZE
+========================= */
+
+function capitalize(value) {
+
+    if (!value) return "";
+
+    return value.charAt(0).toUpperCase() +
+           value.slice(1);
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+function copyCode() {
+
+    const output =
+        document.getElementById("output");
+
+    if (!output.value) {
+
+        alert("Please generate the Java code first.");
+
+        return;
+
+    }
+
+    navigator.clipboard.writeText(
+        output.value
+    ).then(() => {
+
+        setStatus(
+            "Java POJO copied to clipboard."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   DOWNLOAD
+========================= */
+
+function downloadCode() {
+
+    const code =
+        document.getElementById("output").value;
+
+    if (!code) {
+
+        alert("Please generate the Java code first.");
+
+        return;
+
+    }
+
+    const className =
+        document.getElementById("className")
+        .value.trim() || "GeneratedPOJO";
+
+    const blob =
+        new Blob(
+            [code],
+            { type: "text/plain;charset=utf-8" }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        className + ".java";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    setStatus(
+        "Java file downloaded successfully."
+    );
+
+}
+
+
+/* =========================
+   EMAIL
+========================= */
+
+function emailCode() {
+
+    const code =
+        document.getElementById("output").value;
+
+    if (!code) {
+
+        alert("Please generate the Java code first.");
+
+        return;
+
+    }
+
+    const className =
+        document.getElementById("className")
+        .value.trim() || "GeneratedPOJO";
+
+    const subject =
+        encodeURIComponent(
+            "Generated Java POJO - " +
+            className
+        );
+
+    const body =
+        encodeURIComponent(
+            "Generated Java POJO:\n\n" +
+            code
+        );
+
+    window.location.href =
+        "mailto:?subject=" +
+        subject +
+        "&body=" +
+        body;
+
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+async function shareCode() {
+
+    const code =
+        document.getElementById("output").value;
+
+    if (!code) {
+
+        alert("Please generate the Java code first.");
+
+        return;
+
+    }
+
+    const className =
+        document.getElementById("className")
+        .value.trim() || "GeneratedPOJO";
+
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title:
+                    "Java POJO - " +
+                    className,
+
+                text:
+                    code
+
+            });
+
+            setStatus(
+                "Java POJO shared successfully."
+            );
+
+        } catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                alert(
+                    "Unable to share the code."
+                );
+
+            }
+
+        }
+
+    } else {
+
+        await navigator.clipboard.writeText(code);
+
+        alert(
+            "Sharing is not supported by this browser.\n\n" +
+            "Generated code has been copied to the clipboard."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearAll() {
+
+    document.getElementById("jsonInput")
+        .value = "";
+
+    document.getElementById("output")
+        .value = "";
+
+    document.getElementById("className")
+        .value = "Employee";
+
+    setStatus("");
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function setStatus(message) {
+
+    document.getElementById("status")
+        .textContent = message;
+
+}
+
+
+/* =========================
+   INITIAL SAMPLE
+========================= */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        loadSample();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
