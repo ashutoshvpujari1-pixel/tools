@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Voice to Text Converter | GenerateSourceCode</title>
+
+<meta name="description"
+   content="Free online Voice to Text Converter. Convert your speech into text using your browser microphone. Copy, download, email and share the generated text.">
+
+<meta name="keywords"
+   content="voice to text, speech to text, speech recognition, voice typing, online voice converter, developer tools">
+
+<meta name="author" content="Ashutosh Pujari">
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #243b55, transparent 35%),
+        radial-gradient(circle at bottom right, #141e30, transparent 40%),
+        #0f172a;
+    color: #ffffff;
+}
+
+/* HEADER */
+
+header {
+    padding: 22px 5%;
+    background: rgba(15, 23, 42, 0.92);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #38bdf8;
+}
+
+.header-right {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* MAIN */
+
+.container {
+    width: min(1150px, 94%);
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    color: #38bdf8;
+}
+
+.hero p {
+    color: #cbd5e1;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* TOOL */
+
+.tool-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.controls-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.language-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-box label {
+    font-weight: bold;
+}
+
+select {
+    background: #0f172a;
+    color: white;
+    border: 1px solid #475569;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+/* MIC */
+
+.mic-area {
+    text-align: center;
+    margin: 20px 0 30px;
+}
+
+.mic-button {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    color: white;
+    font-size: 42px;
+    cursor: pointer;
+    box-shadow: 0 10px 35px rgba(14,165,233,0.4);
+    transition: 0.25s;
+}
+
+.mic-button:hover {
+    transform: scale(1.06);
+}
+
+.mic-button.recording {
+    animation: pulse 1.2s infinite;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@keyframes pulse {
+
+    0% {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 25px rgba(239,68,68,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0);
+    }
+}
+
+.status {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
+.status.active {
+    color: #f87171;
+    font-weight: bold;
+}
+
+/* TEXTAREA */
+
+.output-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.output-title h2 {
+    font-size: 21px;
+}
+
+.counter {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 330px;
+    resize: vertical;
+    background: #020617;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 18px;
+    line-height: 1.7;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+}
+
+/* BUTTONS */
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+button.action {
+    border: none;
+    padding: 14px 12px;
+    border-radius: 11px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button.action:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.copy {
+    background: #2563eb;
+}
+
+.download {
+    background: #059669;
+}
+
+.email {
+    background: #7c3aed;
+}
+
+.share {
+    background: #ea580c;
+}
+
+.clear {
+    background: #475569;
+}
+
+/* INFO */
+
+.info-section {
+    margin-top: 28px;
+    padding: 22px;
+    border-radius: 16px;
+    background: rgba(15,23,42,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.info-section h3 {
+    color: #38bdf8;
+    margin-bottom: 12px;
+}
+
+.info-section ol {
+    padding-left: 22px;
+}
+
+.info-section li {
+    margin: 9px 0;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+/* SPRING BOOT */
+
+.spring-section {
+    margin-top: 20px;
+    padding: 22px;
+    border-radius: 16px;
+    background: rgba(2,6,23,0.8);
+    border-left: 4px solid #38bdf8;
+}
+
+.spring-section h3 {
+    margin-bottom: 10px;
+    color: #38bdf8;
+}
+
+.spring-section p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+
+footer {
+    margin-top: 50px;
+    padding: 25px;
+    text-align: center;
+    background: rgba(2,6,23,0.85);
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+footer strong {
+    color: white;
+}
+
+/* MOBILE */
+
+@media(max-width: 800px) {
+
+    .action-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .tool-card {
+        padding: 18px;
+    }
+
+}
+
+@media(max-width: 480px) {
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    textarea {
+        min-height: 280px;
+        font-size: 16px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+```
+<div class="logo">
+    Generate<span>SourceCode</span>
+</div>
+
+<div class="header-right">
+    Developer Productivity Tools
+</div>
+```
+
+</header>
+
+<main class="container">
+
+```
+<section class="hero">
+
+    <h1>
+        🎙️ Voice <span>to Text</span>
+    </h1>
+
+    <p>
+        Speak naturally and convert your voice into text instantly.
+        No installation or backend required.
+    </p>
+
+</section>
+
+
+<section class="tool-card">
+
+    <div class="controls-top">
+
+        <div class="language-box">
+
+            <label for="language">
+                🌐 Language
+            </label>
+
+            <select id="language">
+
+                <option value="en-US">
+                    English (US)
+                </option>
+
+                <option value="en-IN">
+                    English (India)
+                </option>
+
+                <option value="en-GB">
+                    English (UK)
+                </option>
+
+                <option value="hi-IN">
+                    Hindi
+                </option>
+
+                <option value="mr-IN">
+                    Marathi
+                </option>
+
+                <option value="gu-IN">
+                    Gujarati
+                </option>
+
+                <option value="bn-IN">
+                    Bengali
+                </option>
+
+                <option value="ta-IN">
+                    Tamil
+                </option>
+
+                <option value="te-IN">
+                    Telugu
+                </option>
+
+                <option value="kn-IN">
+                    Kannada
+                </option>
+
+                <option value="ml-IN">
+                    Malayalam
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="mic-area">
+
+        <button
+            id="micButton"
+            class="mic-button"
+            title="Start voice input">
+
+            🎙️
+
+        </button>
+
+        <div
+            id="status"
+            class="status">
+
+            Click the microphone and start speaking
+
+        </div>
+
+    </div>
+
+
+    <div class="output-title">
+
+        <h2>
+            📝 Generated Text
+        </h2>
+
+        <div
+            id="counter"
+            class="counter">
+
+            Words: 0 | Characters: 0
+
+        </div>
+
+    </div>
+
+
+    <textarea
+        id="output"
+        placeholder="Your spoken words will appear here..."
+        spellcheck="true"></textarea>
+
+
+    <div class="action-buttons">
+
+        <button
+            class="action copy"
+            onclick="copyText()">
+
+            📋 Copy
+
+        </button>
+
+        <button
+            class="action download"
+            onclick="downloadText()">
+
+            💾 Download
+
+        </button>
+
+        <button
+            class="action email"
+            onclick="emailText()">
+
+            📧 Email
+
+        </button>
+
+        <button
+            class="action share"
+            onclick="shareText()">
+
+            📤 Share
+
+        </button>
+
+        <button
+            class="action clear"
+            onclick="clearText()">
+
+            🗑️ Clear
+
+        </button>
+
+    </div>
+
+
+    <div class="info-section">
+
+        <h3>
+            How to use
+        </h3>
+
+        <ol>
+
+            <li>
+                Select your preferred language.
+            </li>
+
+            <li>
+                Click the microphone button.
+            </li>
+
+            <li>
+                Allow microphone permission when your browser asks.
+            </li>
+
+            <li>
+                Start speaking clearly.
+            </li>
+
+            <li>
+                Click the microphone again to stop recording.
+            </li>
+
+            <li>
+                Copy, download, email or share the generated text.
+            </li>
+
+        </ol>
+
+    </div>
+
+
+</section>
+```
+
+</main>
+
+<footer>
+
+```
+<div>
+    <strong>GenerateSourceCode</strong>
+    — Developer Productivity Tools
+</div>
+
+<div style="margin-top:8px;">
+    Created by Ashutosh Pujari |
+    Software Development & Java Technologies
+</div>
+```
+
+</footer>
+
+<script>
+
+/* =====================================================
+   VOICE TO TEXT
+   ===================================================== */
+
+const micButton = document.getElementById("micButton");
+const output = document.getElementById("output");
+const statusText = document.getElementById("status");
+const language = document.getElementById("language");
+const counter = document.getElementById("counter");
+
+let recognition;
+let isRecording = false;
+
+let finalTranscript = "";
+
+
+/* =====================================================
+   CHECK BROWSER SUPPORT
+   ===================================================== */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+
+    statusText.innerHTML =
+        "❌ Voice recognition is not supported by this browser. Please use Google Chrome or Microsoft Edge.";
+
+    micButton.disabled = true;
+
+}
+
+
+/* =====================================================
+   INITIALIZE SPEECH RECOGNITION
+   ===================================================== */
+
+if (SpeechRecognition) {
+
+    recognition = new SpeechRecognition();
+
+    recognition.continuous = true;
+
+    recognition.interimResults = true;
+
+    recognition.lang = language.value;
+
+
+    /* LANGUAGE CHANGE */
+
+    language.addEventListener("change", function () {
+
+        recognition.lang = this.value;
+
+        if (isRecording) {
+
+            recognition.stop();
+
+        }
+
+    });
+
+
+    /* RESULT */
+
+    recognition.onresult = function(event) {
+
+        let interimTranscript = "";
+
+        let currentFinal = "";
+
+        for (
+            let i = event.resultIndex;
+            i < event.results.length;
+            i++
+        ) {
+
+            const transcript =
+                event.results[i][0].transcript;
+
+            if (event.results[i].isFinal) {
+
+                currentFinal += transcript + " ";
+
+            } else {
+
+                interimTranscript += transcript;
+
+            }
+
+        }
+
+
+        if (currentFinal) {
+
+            finalTranscript += currentFinal;
+
+        }
+
+
+        output.value =
+            finalTranscript + interimTranscript;
+
+        updateCounter();
+
+    };
+
+
+    /* START */
+
+    recognition.onstart = function() {
+
+        isRecording = true;
+
+        micButton.classList.add("recording");
+
+        micButton.innerHTML = "⏹️";
+
+        statusText.innerHTML =
+            "🔴 Listening... Speak now";
+
+        statusText.classList.add("active");
+
+    };
+
+
+    /* END */
+
+    recognition.onend = function() {
+
+        isRecording = false;
+
+        micButton.classList.remove("recording");
+
+        micButton.innerHTML = "🎙️";
+
+        statusText.innerHTML =
+            "✅ Voice input completed";
+
+        statusText.classList.remove("active");
+
+    };
+
+
+    /* ERROR */
+
+    recognition.onerror = function(event) {
+
+        isRecording = false;
+
+        micButton.classList.remove("recording");
+
+        micButton.innerHTML = "🎙️";
+
+        statusText.classList.remove("active");
+
+
+        if (event.error === "not-allowed") {
+
+            statusText.innerHTML =
+                "❌ Microphone permission was denied.";
+
+        }
+
+        else if (event.error === "no-speech") {
+
+            statusText.innerHTML =
+                "⚠️ No speech detected. Please try again.";
+
+        }
+
+        else {
+
+            statusText.innerHTML =
+                "❌ Voice recognition error: " +
+                event.error;
+
+        }
+
+    };
+
+}
+
+
+/* =====================================================
+   MICROPHONE BUTTON
+   ===================================================== */
+
+micButton.addEventListener("click", function() {
+
+    if (!recognition) {
+
+        return;
+
+    }
+
+
+    if (!isRecording) {
+
+        finalTranscript = output.value.trim();
+
+        if (finalTranscript) {
+
+            finalTranscript += " ";
+
+        }
+
+
+        recognition.lang = language.value;
+
+        recognition.start();
+
+    }
+
+    else {
+
+        recognition.stop();
+
+    }
+
+});
+
+
+/* =====================================================
+   COPY
+   ===================================================== */
+
+function copyText() {
+
+    const text = output.value.trim();
+
+    if (!text) {
+
+        alert("Please generate some text first.");
+
+        return;
+
+    }
+
+
+    navigator.clipboard.writeText(text)
+        .then(function() {
+
+            alert("Text copied successfully!");
+
+        })
+        .catch(function() {
+
+            output.select();
+
+            document.execCommand("copy");
+
+            alert("Text copied successfully!");
+
+        });
+
+}
+
+
+/* =====================================================
+   DOWNLOAD
+   ===================================================== */
+
+function downloadText() {
+
+    const text = output.value.trim();
+
+    if (!text) {
+
+        alert("Please generate some text first.");
+
+        return;
+
+    }
+
+
+    const blob =
+        new Blob([text], {
+            type: "text/plain;charset=utf-8"
+        });
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+    link.download =
+        "voice-to-text.txt";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   EMAIL
+   ===================================================== */
+
+function emailText() {
+
+    const text = output.value.trim();
+
+    if (!text) {
+
+        alert("Please generate some text first.");
+
+        return;
+
+    }
+
+
+    const subject =
+        encodeURIComponent("Voice to Text");
+
+
+    const body =
+        encodeURIComponent(text);
+
+
+    window.location.href =
+        "mailto:?subject=" +
+        subject +
+        "&body=" +
+        body;
+
+}
+
+
+/* =====================================================
+   SHARE
+   ===================================================== */
+
+async function shareText() {
+
+    const text = output.value.trim();
+
+    if (!text) {
+
+        alert("Please generate some text first.");
+
+        return;
+
+    }
+
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title: "Voice to Text",
+
+                text: text
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.log(
+                "Share cancelled."
+            );
+
+        }
+
+    }
+
+    else {
+
+        try {
+
+            await navigator.clipboard.writeText(text);
+
+            alert(
+                "Native sharing is not supported by this browser. Text has been copied to the clipboard."
+            );
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Sharing is not supported by this browser."
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR
+   ===================================================== */
+
+function clearText() {
+
+    if (isRecording && recognition) {
+
+        recognition.stop();
+
+    }
+
+
+    finalTranscript = "";
+
+    output.value = "";
+
+    updateCounter();
+
+    statusText.innerHTML =
+        "Click the microphone and start speaking";
+
+}
+
+
+/* =====================================================
+   COUNTER
+   ===================================================== */
+
+function updateCounter() {
+
+    const text =
+        output.value.trim();
+
+
+    const characters =
+        text.length;
+
+
+    const words =
+        text
+        ? text.split(/\s+/).length
+        : 0;
+
+
+    counter.innerHTML =
+        "Words: " +
+        words +
+        " | Characters: " +
+        characters;
+
+}
+
+
+output.addEventListener(
+    "input",
+    updateCounter
+);
+
+
+/* =====================================================
+   KEYBOARD SHORTCUT
+   Ctrl + Enter = Start / Stop
+   ===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            micButton.click();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIALIZE
+   ===================================================== */
+
+updateCounter();
+
+</script>
+
+</body>
+</html>
