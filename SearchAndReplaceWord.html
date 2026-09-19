@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search & Replace Tool</title>
+
+    <meta name="description"
+          content="Free online Search and Replace tool to quickly find and replace words or sentences in text.">
+
+    <meta name="keywords"
+          content="search replace, find replace, text replace tool, online text editor, search replace online, find replace online, text replace tool online, online text editor online">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.10);
+            border: 1px solid #e2e8f0;
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 13px 14px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.25s;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+        }
+
+        textarea {
+            min-height: 280px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .input-section {
+            margin-bottom: 22px;
+        }
+
+        .input-section label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .options {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 15px 0 22px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .checkbox-container input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(0,0,0,0.15);
+        }
+
+        .replace-all {
+            background: #2563eb;
+            color: white;
+        }
+
+        .replace-first {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .copy {
+            background: #059669;
+            color: white;
+        }
+
+        .clear {
+            background: #dc2626;
+            color: white;
+        }
+
+        .result-info {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 15px;
+            border-left: 5px solid #6366f1;
+        }
+
+        .result-info strong {
+            color: #4f46e5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 30px;
+            background: #0f172a;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .fields {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🔍 Search & Replace Tool</h1>
+    <p>Quickly find and replace words or sentences in your text</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <!-- Search / Replace Fields -->
+        <div class="fields">
+
+            <div class="field">
+                <label for="searchText">
+                    🔎 Search Word / Sentence
+                </label>
+
+                <input
+                    type="text"
+                    id="searchText"
+                    placeholder="Enter word or sentence to search..."
+                >
+            </div>
+
+            <div class="field">
+                <label for="replaceText">
+                    ✏️ Replace With
+                </label>
+
+                <input
+                    type="text"
+                    id="replaceText"
+                    placeholder="Enter replacement word or sentence..."
+                >
+            </div>
+
+        </div>
+
+        <!-- Text Area -->
+        <div class="input-section">
+
+            <label for="mainText">
+                📝 Enter Your Text
+            </label>
+
+            <textarea
+                id="mainText"
+                placeholder="Paste or type your text here..."
+            ></textarea>
+
+        </div>
+
+        <!-- Options -->
+        <div class="options">
+
+            <label class="checkbox-container">
+                <input
+                    type="checkbox"
+                    id="caseInsensitive"
+                >
+                Case Insensitive
+            </label>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+
+            <button
+                class="replace-all"
+                onclick="replaceAllText()">
+                🔄 Replace All
+            </button>
+
+            <button
+                class="replace-first"
+                onclick="replaceFirstText()">
+                ➡️ Replace First
+            </button>
+
+            <button
+                class="copy"
+                onclick="copyResult()">
+                📋 Copy Result
+            </button>
+
+            <button
+                class="clear"
+                onclick="clearAll()">
+                🗑️ Clear
+            </button>
+
+        </div>
+
+        <!-- Result Information -->
+        <div class="result-info">
+            <strong>Result:</strong>
+            <span id="resultMessage">
+                Enter your text and search word to begin.
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <strong>Search & Replace Tool</strong>
+    <br>
+    A simple browser-based productivity utility
+</footer>
+
+
+<script>
+
+    function getValues() {
+
+        const search = document.getElementById("searchText").value;
+        const replace = document.getElementById("replaceText").value;
+        const text = document.getElementById("mainText").value;
+        const caseInsensitive =
+            document.getElementById("caseInsensitive").checked;
+
+        return {
+            search,
+            replace,
+            text,
+            caseInsensitive
+        };
+    }
+
+
+    function replaceAllText() {
+
+        const values = getValues();
+
+        if (values.search === "") {
+            showMessage("Please enter a search word or sentence.");
+            return;
+        }
+
+        if (values.text === "") {
+            showMessage("Please enter some text to process.");
+            return;
+        }
+
+        let flags = "g";
+
+        if (values.caseInsensitive) {
+            flags += "i";
+        }
+
+        // Escape special regular-expression characters
+        const escapedSearch =
+            values.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+        const regex = new RegExp(escapedSearch, flags);
+
+        const matches = values.text.match(regex);
+        const count = matches ? matches.length : 0;
+
+        const result = values.text.replace(regex, values.replace);
+
+        document.getElementById("mainText").value = result;
+
+        if (count > 0) {
+            showMessage(
+                count +
+                (count === 1
+                    ? " occurrence replaced successfully."
+                    : " occurrences replaced successfully.")
+            );
+        } else {
+            showMessage("Search word or sentence was not found.");
+        }
+    }
+
+
+    function replaceFirstText() {
+
+        const values = getValues();
+
+        if (values.search === "") {
+            showMessage("Please enter a search word or sentence.");
+            return;
+        }
+
+        if (values.text === "") {
+            showMessage("Please enter some text to process.");
+            return;
+        }
+
+        let flags = "";
+
+        if (values.caseInsensitive) {
+            flags = "i";
+        }
+
+        const escapedSearch =
+            values.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+        const regex = new RegExp(escapedSearch, flags);
+
+        if (!regex.test(values.text)) {
+            showMessage("Search word or sentence was not found.");
+            return;
+        }
+
+        const result =
+            values.text.replace(regex, values.replace);
+
+        document.getElementById("mainText").value = result;
+
+        showMessage("First occurrence replaced successfully.");
+    }
+
+
+    function copyResult() {
+
+        const text =
+            document.getElementById("mainText").value;
+
+        if (text === "") {
+            showMessage("There is no text to copy.");
+            return;
+        }
+
+        navigator.clipboard.writeText(text)
+            .then(function () {
+
+                showMessage("Result copied to clipboard.");
+
+            })
+            .catch(function () {
+
+                showMessage(
+                    "Unable to copy automatically. Please copy the text manually."
+                );
+
+            });
+    }
+
+
+    function clearAll() {
+
+        document.getElementById("searchText").value = "";
+        document.getElementById("replaceText").value = "";
+        document.getElementById("mainText").value = "";
+        document.getElementById("caseInsensitive").checked = false;
+
+        showMessage(
+            "All fields have been cleared."
+        );
+    }
+
+
+    function showMessage(message) {
+
+        document.getElementById("resultMessage").textContent = message;
+
+    }
+
+
+    // Keyboard shortcut:
+    // Ctrl + Enter = Replace All
+
+    document.addEventListener("keydown", function(event) {
+
+        if (event.ctrlKey && event.key === "Enter") {
+
+            event.preventDefault();
+
+            replaceAllText();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
