@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Free online JSON and XML Validator. Validate, format, copy, download, email and share JSON or XML data.">
+
+    <meta name="keywords"
+          content="JSON Validator, XML Validator, JSON Formatter, XML Formatter, JSON XML Tool">
+
+    <meta name="author" content="GenerateSourceCode">
+
+    <title>JSON & XML Validator | GenerateSourceCode</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark {
+            background: #111827;
+            color: #e5e7eb;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb, #06b6d4);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 18px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .validate-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .json-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .xml-btn {
+            background: #ea580c;
+            color: white;
+        }
+
+        .sample-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .theme-btn {
+            background: #374151;
+            color: white;
+        }
+
+        .copy-btn {
+            background: #0891b2;
+            color: white;
+        }
+
+        .download-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .email-btn {
+            background: #be123c;
+            color: white;
+        }
+
+        .share-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        body.dark .card {
+            background: #1f2937;
+            border-color: #374151;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 390px;
+            resize: vertical;
+            border: 2px solid #d1d5db;
+            border-radius: 10px;
+            padding: 16px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            line-height: 1.6;
+            outline: none;
+            background: #fafafa;
+            color: #111827;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        body.dark textarea {
+            background: #111827;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+
+        .status {
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 18px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        body.dark .success {
+            background: #064e3b;
+            color: #d1fae5;
+            border-color: #047857;
+        }
+
+        body.dark .error {
+            background: #7f1d1d;
+            color: #fee2e2;
+            border-color: #b91c1c;
+        }
+
+        .format-info {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        body.dark .badge {
+            background: #312e81;
+            color: #e0e7ff;
+        }
+
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        body.dark .info-box {
+            background: #172554;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .spinner {
+            display: none;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 25px;
+            }
+
+            textarea {
+                min-height: 300px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .toolbar,
+            .action-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🔍 JSON & XML Validator</h1>
+    <p>Validate • Format • Copy • Download • Email • Share</p>
+</header>
+
+<div class="container">
+
+    <div class="toolbar">
+        <button class="validate-btn" onclick="validateInput()">
+            ✅ Validate
+        </button>
+
+        <button class="json-btn" onclick="loadJSONSample()">
+            📋 JSON Sample
+        </button>
+
+        <button class="xml-btn" onclick="loadXMLSample()">
+            📄 XML Sample
+        </button>
+
+        <button class="clear-btn" onclick="clearAll()">
+            🗑 Clear
+        </button>
+
+        <button class="theme-btn" onclick="toggleTheme()">
+            🌙 Dark / Light
+        </button>
+    </div>
+
+    <div class="card">
+
+        <h2>Input JSON / XML</h2>
+
+        <div class="format-info">
+            <span class="badge">JSON Supported</span>
+            <span class="badge">XML Supported</span>
+            <span class="badge">Automatic Detection</span>
+        </div>
+
+        <textarea
+            id="inputData"
+            placeholder="Paste your JSON or XML here...
+
+Example JSON:
+{
+  &quot;name&quot;: &quot;Ashutosh&quot;,
+  &quot;age&quot;: 40
+}
+
+Example XML:
+&lt;employee&gt;
+    &lt;name&gt;Ashutosh&lt;/name&gt;
+    &lt;age&gt;40&lt;/age&gt;
+&lt;/employee&gt;"></textarea>
+
+        <div id="status" class="status"></div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Formatted / Validation Result</h2>
+
+        <textarea
+            id="outputData"
+            readonly
+            placeholder="Validation result and formatted content will appear here..."></textarea>
+
+        <div class="action-bar">
+
+            <button class="copy-btn"
+                    onclick="copyResult()">
+                📋 Copy
+            </button>
+
+            <button class="download-btn"
+                    onclick="downloadResult()">
+                ⬇ Download
+            </button>
+
+            <button class="email-btn"
+                    onclick="emailResult()">
+                ✉ Email
+            </button>
+
+            <button class="share-btn"
+                    onclick="shareResult()">
+                🔗 Share
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>How to Use</h2>
+
+        <div class="info-box">
+
+            <strong>Step 1:</strong>
+            Paste JSON or XML into the input box.
+
+            <br><br>
+
+            <strong>Step 2:</strong>
+            Click <strong>Validate</strong>.
+
+            <br><br>
+
+            <strong>Step 3:</strong>
+            The tool automatically identifies JSON or XML.
+
+            <br><br>
+
+            <strong>Step 4:</strong>
+            If valid, the content is formatted and displayed.
+
+            <br><br>
+
+            <strong>Step 5:</strong>
+            Copy, download, email or share the result.
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+
+    <div>
+        <strong>GenerateSourceCode</strong>
+    </div>
+
+    <div style="margin-top:8px;">
+        Online Developer Tools for Java, Spring Boot, JSON, XML and more.
+    </div>
+
+    <div style="margin-top:10px;">
+        © 2026 GenerateSourceCode. All Rights Reserved.
+    </div>
+
+</footer>
+
+<script>
+
+    const inputData = document.getElementById("inputData");
+    const outputData = document.getElementById("outputData");
+    const statusBox = document.getElementById("status");
+
+    /*
+     * Main validation function
+     */
+    function validateInput() {
+
+        const input = inputData.value.trim();
+
+        statusBox.className = "status";
+        statusBox.innerHTML = "";
+        outputData.value = "";
+
+        if (!input) {
+
+            showError(
+                "❌ Please enter JSON or XML data."
+            );
+
+            return;
+        }
+
+        /*
+         * JSON usually starts with {
+         * or [
+         */
+        if (input.startsWith("{") || input.startsWith("[")) {
+
+            validateJSON(input);
+
+            return;
+        }
+
+        /*
+         * XML normally starts with <.
+         */
+        if (input.startsWith("<")) {
+
+            validateXML(input);
+
+            return;
+        }
+
+        /*
+         * Try JSON first.
+         */
+        try {
+
+            validateJSON(input);
+
+            return;
+
+        } catch (e) {
+
+            /*
+             * Try XML.
+             */
+            try {
+
+                validateXML(input);
+
+                return;
+
+            } catch (xmlError) {
+
+                showError(
+                    "❌ Unable to identify the input as valid JSON or XML."
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /*
+     * Validate JSON
+     */
+    function validateJSON(input) {
+
+        try {
+
+            const parsed = JSON.parse(input);
+
+            const formatted =
+                JSON.stringify(parsed, null, 4);
+
+            outputData.value = formatted;
+
+            showSuccess(
+                "✅ Valid JSON — JSON format is correct."
+            );
+
+        } catch (error) {
+
+            showError(
+                "❌ Invalid JSON\n\n" +
+                getJSONErrorMessage(error)
+            );
+
+            outputData.value =
+                "JSON Validation Failed\n\n" +
+                error.message;
+        }
+
+    }
+
+
+    /*
+     * Validate XML
+     */
+    function validateXML(input) {
+
+        const parser = new DOMParser();
+
+        const xmlDocument =
+            parser.parseFromString(
+                input,
+                "application/xml"
+            );
+
+        const parserError =
+            xmlDocument.getElementsByTagName(
+                "parsererror"
+            );
+
+        if (parserError.length > 0) {
+
+            const errorMessage =
+                parserError[0].textContent.trim();
+
+            showError(
+                "❌ Invalid XML\n\n" +
+                errorMessage
+            );
+
+            outputData.value =
+                "XML Validation Failed\n\n" +
+                errorMessage;
+
+            return;
+        }
+
+        /*
+         * Format XML.
+         */
+        const formatted =
+            formatXML(xmlDocument);
+
+        outputData.value = formatted;
+
+        showSuccess(
+            "✅ Valid XML — XML format is correct."
+        );
+
+    }
+
+
+    /*
+     * Pretty-print XML
+     */
+    function formatXML(xmlDocument) {
+
+        const serializer =
+            new XMLSerializer();
+
+        const xmlString =
+            serializer.serializeToString(
+                xmlDocument
+            );
+
+        let formatted = "";
+        let indent = "";
+
+        const nodes =
+            xmlString
+                .replace(/>\s*</g, "><")
+                .replace(/</g, "~::~<")
+                .split("~::~");
+
+        nodes.forEach(function(node) {
+
+            if (!node.trim()) {
+                return;
+            }
+
+            if (node.match(/<\/\w/)) {
+
+                indent =
+                    indent.substring(
+                        0,
+                        Math.max(0, indent.length - 4)
+                    );
+
+            }
+
+            formatted +=
+                indent + node.trim() + "\n";
+
+            if (
+                node.match(
+                    /<\w[^>]*[^\/]>.*$/
+                ) &&
+                !node.match(
+                    /<\/\w+>$/
+                )
+            ) {
+
+                indent += "    ";
+
+            }
+
+        });
+
+        return formatted.trim();
+
+    }
+
+
+    /*
+     * Display success message
+     */
+    function showSuccess(message) {
+
+        statusBox.className =
+            "status success";
+
+        statusBox.innerHTML =
+            message;
+
+    }
+
+
+    /*
+     * Display error message
+     */
+    function showError(message) {
+
+        statusBox.className =
+            "status error";
+
+        statusBox.innerText =
+            message;
+
+    }
+
+
+    /*
+     * Better JSON error message.
+     */
+    function getJSONErrorMessage(error) {
+
+        let message =
+            error.message || "Unknown JSON error.";
+
+        /*
+         * Try extracting position information.
+         */
+        const position =
+            message.match(
+                /position\s+(\d+)/i
+            );
+
+        if (position) {
+
+            const index =
+                parseInt(position[1]);
+
+            const input =
+                inputData.value;
+
+            const start =
+                Math.max(0, index - 25);
+
+            const end =
+                Math.min(
+                    input.length,
+                    index + 25
+                );
+
+            const context =
+                input.substring(
+                    start,
+                    end
+                );
+
+            return (
+                message +
+                "\n\nNear:\n" +
+                context
+            );
+
+        }
+
+        return message;
+
+    }
+
+
+    /*
+     * Copy result.
+     */
+    async function copyResult() {
+
+        const result =
+            outputData.value.trim();
+
+        if (!result) {
+
+            alert(
+                "Please validate JSON/XML first."
+            );
+
+            return;
+        }
+
+        try {
+
+            await navigator.clipboard.writeText(
+                result
+            );
+
+            alert(
+                "✅ Result copied to clipboard."
+            );
+
+        } catch (error) {
+
+            outputData.select();
+
+            document.execCommand("copy");
+
+            alert(
+                "✅ Result copied to clipboard."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Download result.
+     */
+    function downloadResult() {
+
+        const result =
+            outputData.value.trim();
+
+        if (!result) {
+
+            alert(
+                "Please validate JSON/XML first."
+            );
+
+            return;
+        }
+
+        const input =
+            inputData.value.trim();
+
+        let extension = "txt";
+        let mimeType = "text/plain";
+
+        if (
+            input.startsWith("{") ||
+            input.startsWith("[")
+        ) {
+
+            extension = "json";
+            mimeType = "application/json";
+
+        } else if (
+            input.startsWith("<")
+        ) {
+
+            extension = "xml";
+            mimeType = "application/xml";
+
+        }
+
+        const blob =
+            new Blob(
+                [result],
+                { type: mimeType }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            "validated-result." +
+            extension;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+    }
+
+
+    /*
+     * Email result.
+     */
+    function emailResult() {
+
+        const result =
+            outputData.value.trim();
+
+        if (!result) {
+
+            alert(
+                "Please validate JSON/XML first."
+            );
+
+            return;
+        }
+
+        const subject =
+            encodeURIComponent(
+                "JSON / XML Validation Result"
+            );
+
+        const body =
+            encodeURIComponent(result);
+
+        window.location.href =
+            "mailto:?subject=" +
+            subject +
+            "&body=" +
+            body;
+
+    }
+
+
+    /*
+     * Share result using Web Share API.
+     */
+    async function shareResult() {
+
+        const result =
+            outputData.value.trim();
+
+        if (!result) {
+
+            alert(
+                "Please validate JSON/XML first."
+            );
+
+            return;
+        }
+
+        const shareData = {
+
+            title:
+                "JSON / XML Validation Result",
+
+            text:
+                result
+
+        };
+
+        if (
+            navigator.share
+        ) {
+
+            try {
+
+                await navigator.share(
+                    shareData
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "Share cancelled."
+                );
+
+            }
+
+        } else {
+
+            /*
+             * Fallback.
+             */
+            await copyResult();
+
+            alert(
+                "Sharing is not supported by this browser. " +
+                "The result has been copied instead."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * JSON sample.
+     */
+    function loadJSONSample() {
+
+        const sample = {
+
+            employee: {
+
+                id: 101,
+
+                name: "Ashutosh Pujari",
+
+                department: "IT",
+
+                salary: 75000,
+
+                technologies: [
+
+                    "Java",
+
+                    "Spring Boot",
+
+                    "REST API",
+
+                    "Microservices"
+
+                ],
+
+                active: true
+
+            }
+
+        };
+
+        inputData.value =
+            JSON.stringify(
+                sample,
+                null,
+                4
+            );
+
+        outputData.value = "";
+
+        statusBox.className =
+            "status";
+
+        statusBox.innerHTML = "";
+
+    }
+
+
+    /*
+     * XML sample.
+     */
+    function loadXMLSample() {
+
+        inputData.value =
+`<?xml version="1.0" encoding="UTF-8"?>
+<employee>
+    <id>101</id>
+    <name>Ashutosh Pujari</name>
+    <department>IT</department>
+    <salary>75000</salary>
+    <technologies>
+        <technology>Java</technology>
+        <technology>Spring Boot</technology>
+        <technology>REST API</technology>
+        <technology>Microservices</technology>
+    </technologies>
+    <active>true</active>
+</employee>`;
+
+        outputData.value = "";
+
+        statusBox.className =
+            "status";
+
+        statusBox.innerHTML = "";
+
+    }
+
+
+    /*
+     * Clear everything.
+     */
+    function clearAll() {
+
+        inputData.value = "";
+
+        outputData.value = "";
+
+        statusBox.className =
+            "status";
+
+        statusBox.innerHTML = "";
+
+    }
+
+
+    /*
+     * Dark/light mode.
+     */
+    function toggleTheme() {
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+        const isDark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+        localStorage.setItem(
+            "validatorTheme",
+            isDark ? "dark" : "light"
+        );
+
+    }
+
+
+    /*
+     * Restore theme.
+     */
+    window.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "validatorTheme"
+                );
+
+            if (savedTheme === "dark") {
+
+                document.body.classList.add(
+                    "dark"
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
