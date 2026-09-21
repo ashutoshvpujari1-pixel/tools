@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Generate a Java Base64 Encoder Decoder class from class name and package name. Copy, download, share or email generated Java source code.">
+
+    <meta name="keywords"
+          content="Java Base64 Encoder Decoder Generator, Base64 Java Class Generator, Java Developer Tool, Base64 Encoder">
+
+    <title>Base64 Encoder Decoder Java Class Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fbff);
+            color: #172033;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            padding: 22px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header .header-content {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 27px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        main {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 30px rgba(30, 64, 175, 0.10);
+            border: 1px solid #e3e9f5;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #172554;
+            font-size: 21px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #27324a;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .hint {
+            margin-top: 7px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.93;
+        }
+
+        .generate {
+            background: #2563eb;
+            color: white;
+            padding: 14px 24px;
+        }
+
+        .copy {
+            background: #059669;
+            color: white;
+        }
+
+        .download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .share {
+            background: #ea580c;
+            color: white;
+        }
+
+        .email {
+            background: #dc2626;
+            color: white;
+        }
+
+        .clear {
+            background: #475569;
+            color: white;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 560px;
+            resize: vertical;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.55;
+            background: #0f172a;
+            color: #e2e8f0;
+            outline: none;
+        }
+
+        .status {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            padding: 18px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature strong {
+            display: block;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .feature span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 16px;
+            border-radius: 7px;
+            margin-top: 18px;
+            color: #1e3a8a;
+            font-size: 14px;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 22px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            header .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 500px) {
+            main {
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            textarea {
+                min-height: 500px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div>
+            <h1>Base64 Encoder / Decoder Java Class Generator</h1>
+            <p>Generate a ready-to-use Java Base64 utility class instantly.</p>
+        </div>
+
+        <div class="badge">
+            Java Developer Tool
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <!-- Input Section -->
+    <section class="card">
+
+        <h2>Generate Java Class</h2>
+
+        <div class="input-grid">
+
+            <div>
+                <label for="className">Class Name</label>
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: Base64Util"
+                    value="Base64Util"
+                >
+
+                <div class="hint">
+                    Use a valid Java class name, for example: Base64Util
+                </div>
+            </div>
+
+            <div>
+                <label for="packageName">Package Name</label>
+
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.utility"
+                    value="com.example.utility"
+                >
+
+                <div class="hint">
+                    Example: com.mycompany.utility
+                </div>
+            </div>
+
+        </div>
+
+        <div class="button-row">
+
+            <button class="generate" onclick="generateJavaClass()">
+                ⚡ Generate Java Class
+            </button>
+
+            <button class="clear" onclick="clearForm()">
+                ✕ Clear
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="info">
+            The generated class uses Java's built-in
+            <strong>java.util.Base64</strong> API and does not require
+            any third-party dependency.
+        </div>
+
+    </section>
+
+
+    <!-- Output Section -->
+    <section class="card">
+
+        <div class="output-header">
+
+            <h2>Generated Java Source Code</h2>
+
+            <div class="button-row" style="margin-top:0">
+
+                <button class="copy" onclick="copyCode()">
+                    📋 Copy
+                </button>
+
+                <button class="download" onclick="downloadCode()">
+                    ⬇ Download
+                </button>
+
+                <button class="share" onclick="shareCode()">
+                    🔗 Share
+                </button>
+
+                <button class="email" onclick="emailCode()">
+                    ✉ Email
+                </button>
+
+            </div>
+
+        </div>
+
+        <textarea
+            id="output"
+            spellcheck="false"
+            placeholder="Generated Java source code will appear here..."
+        ></textarea>
+
+    </section>
+
+
+    <!-- Features -->
+    <section class="card">
+
+        <h2>Generated Class Features</h2>
+
+        <div class="features">
+
+            <div class="feature">
+                <strong>Encode</strong>
+                <span>Converts text into Base64 encoded format.</span>
+            </div>
+
+            <div class="feature">
+                <strong>Decode</strong>
+                <span>Converts Base64 encoded data back to text.</span>
+            </div>
+
+            <div class="feature">
+                <strong>No Dependency</strong>
+                <span>Uses Java's standard Base64 API.</span>
+            </div>
+
+            <div class="feature">
+                <strong>Reusable</strong>
+                <span>Static utility methods can be used directly.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Base64 Encoder / Decoder Java Class Generator
+    <br>
+    Useful for Java, Spring Boot and backend development.
+</footer>
+
+
+<script>
+
+    function showStatus(message, type) {
+
+        const status = document.getElementById("status");
+
+        status.textContent = message;
+
+        status.className = "status " + type;
+
+        setTimeout(() => {
+            status.className = "status";
+        }, 3500);
+    }
+
+
+    function isValidJavaClassName(name) {
+
+        /*
+         * Java identifier validation.
+         *
+         * Allows:
+         * Base64Util
+         * MyEncoder
+         * Base64_Utility
+         */
+
+        const regex = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+
+        if (!regex.test(name)) {
+            return false;
+        }
+
+        const javaKeywords = [
+            "abstract",
+            "assert",
+            "boolean",
+            "break",
+            "byte",
+            "case",
+            "catch",
+            "char",
+            "class",
+            "const",
+            "continue",
+            "default",
+            "do",
+            "double",
+            "else",
+            "enum",
+            "extends",
+            "final",
+            "finally",
+            "float",
+            "for",
+            "goto",
+            "if",
+            "implements",
+            "import",
+            "instanceof",
+            "int",
+            "interface",
+            "long",
+            "native",
+            "new",
+            "package",
+            "private",
+            "protected",
+            "public",
+            "return",
+            "short",
+            "static",
+            "strictfp",
+            "super",
+            "switch",
+            "synchronized",
+            "this",
+            "throw",
+            "throws",
+            "transient",
+            "try",
+            "void",
+            "volatile",
+            "while",
+            "true",
+            "false",
+            "null"
+        ];
+
+        return !javaKeywords.includes(name);
+    }
+
+
+    function isValidPackageName(packageName) {
+
+        if (!packageName) {
+            return true;
+        }
+
+        const parts = packageName.split(".");
+
+        const regex = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+
+        return parts.every(part => {
+            return regex.test(part);
+        });
+    }
+
+
+    function generateJavaClass() {
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        const packageName =
+            document.getElementById("packageName").value.trim();
+
+
+        if (!className) {
+
+            showStatus(
+                "Please enter a Java class name.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!isValidJavaClassName(className)) {
+
+            showStatus(
+                "Please enter a valid Java class name.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!isValidPackageName(packageName)) {
+
+            showStatus(
+                "Please enter a valid Java package name.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        let javaCode = "";
+
+
+        if (packageName) {
+
+            javaCode +=
+`package ${packageName};
+
+`;
+        }
+
+
+        javaCode +=
+`import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+/**
+ * Utility class for Base64 encoding and decoding.
+ *
+ * Generated by Base64 Encoder / Decoder Java Class Generator.
+ */
+public class ${className} {
+
+    /**
+     * Private constructor to prevent object creation.
+     */
+    private ${className}() {
+        // Utility class
+    }
+
+    /**
+     * Encodes the supplied text into Base64.
+     *
+     * @param input input text
+     * @return Base64 encoded value
+     */
+    public static String encode(String input) {
+
+        if (input == null) {
+            return null;
+        }
+
+        return Base64.getEncoder()
+                .encodeToString(
+                        input.getBytes(StandardCharsets.UTF_8)
+                );
+    }
+
+    /**
+     * Decodes a Base64 value into normal text.
+     *
+     * @param encodedInput Base64 encoded value
+     * @return decoded text
+     */
+    public static String decode(String encodedInput) {
+
+        if (encodedInput == null) {
+            return null;
+        }
+
+        byte[] decodedBytes =
+                Base64.getDecoder().decode(encodedInput);
+
+        return new String(
+                decodedBytes,
+                StandardCharsets.UTF_8
+        );
+    }
+
+    /**
+     * Example usage.
+     */
+    public static void main(String[] args) {
+
+        String originalText =
+                "Hello Java Base64!";
+
+        String encodedText =
+                encode(originalText);
+
+        String decodedText =
+                decode(encodedText);
+
+        System.out.println(
+                "Original : " + originalText
+        );
+
+        System.out.println(
+                "Encoded  : " + encodedText
+        );
+
+        System.out.println(
+                "Decoded  : " + decodedText
+        );
+    }
+}
+`;
+
+
+        document.getElementById("output").value =
+            javaCode;
+
+        showStatus(
+            className + ".java generated successfully.",
+            "success"
+        );
+    }
+
+
+    function copyCode() {
+
+        const output =
+            document.getElementById("output");
+
+        if (!output.value.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        navigator.clipboard.writeText(output.value)
+            .then(() => {
+
+                showStatus(
+                    "Java source code copied to clipboard.",
+                    "success"
+                );
+
+            })
+            .catch(() => {
+
+                output.select();
+
+                document.execCommand("copy");
+
+                showStatus(
+                    "Java source code copied.",
+                    "success"
+                );
+
+            });
+    }
+
+
+    function downloadCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const blob =
+            new Blob(
+                [code],
+                {
+                    type: "text/plain;charset=utf-8"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            (className || "Base64Util") + ".java";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+
+        showStatus(
+            "Java source file downloaded.",
+            "success"
+        );
+    }
+
+
+    async function shareCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        className +
+                        " - Base64 Encoder Decoder",
+
+                    text:
+                        "Generated Java Base64 Encoder/Decoder class:\n\n" +
+                        code
+
+                });
+
+
+                showStatus(
+                    "Java source shared successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                if (error.name !== "AbortError") {
+
+                    showStatus(
+                        "Unable to share the Java source.",
+                        "error"
+                    );
+                }
+            }
+
+        } else {
+
+            await copyCode();
+
+            showStatus(
+                "Web Share is not supported by this browser. Code copied instead.",
+                "success"
+            );
+        }
+    }
+
+
+    function emailCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showStatus(
+                "Generate the Java class first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const subject =
+            encodeURIComponent(
+                className +
+                " - Base64 Encoder Decoder Java Class"
+            );
+
+
+        const body =
+            encodeURIComponent(
+                "Please find the generated Java Base64 Encoder/Decoder class below.\n\n" +
+                code +
+                "\n\nGenerated using Base64 Encoder / Decoder Java Class Generator."
+            );
+
+
+        window.location.href =
+            "mailto:?subject=" +
+            subject +
+            "&body=" +
+            body;
+    }
+
+
+    function clearForm() {
+
+        document.getElementById("className").value =
+            "";
+
+        document.getElementById("packageName").value =
+            "";
+
+        document.getElementById("output").value =
+            "";
+
+        document.getElementById("status").className =
+            "status";
+    }
+
+
+    /*
+     * Generate default class when page loads.
+     */
+    window.addEventListener("DOMContentLoaded", function() {
+
+        generateJavaClass();
+
+    });
+
+</script>
+
+</body>
+</html>
