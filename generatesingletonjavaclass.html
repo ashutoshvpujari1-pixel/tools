@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Java Singleton Class Generator | Generate Singleton Java Code</title>
+
+    <meta name="description"
+          content="Generate Java Singleton classes instantly. Enter class name and package name to generate ready-to-use Singleton Java code. Copy, download, email or share the generated code.">
+
+    <meta name="keywords"
+          content="Java Singleton Generator, Singleton Class Generator, Java Code Generator, Java Singleton Pattern, Generate Java Class, Java Developer Tools">
+
+    <meta name="author" content="Ashutosh Pujari">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Java Singleton Class Generator">
+    <meta property="og:description"
+          content="Generate Java Singleton classes instantly with this free online developer tool.">
+    <meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb, #0ea5e9);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #facc15;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .theme-button {
+            border: none;
+            background: rgba(255,255,255,0.18);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .theme-button:hover {
+            background: rgba(255,255,255,0.30);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 35px 20px 20px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .generator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.10);
+        }
+
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        .generate-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .copy-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .download-btn {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email-btn {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share-btn {
+            background: #0891b2;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #64748b;
+            color: white;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .output-header h2 {
+            font-size: 20px;
+            color: #172554;
+        }
+
+        .status {
+            font-size: 13px;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        #output {
+            width: 100%;
+            min-height: 500px;
+            resize: vertical;
+            padding: 20px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        .info-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            border-radius: 8px;
+        }
+
+        .info-section h3 {
+            margin-bottom: 10px;
+            color: #172554;
+        }
+
+        .info-section ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            background: #172554;
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #16a34a;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            z-index: 9999;
+        }
+
+        /* Dark Mode */
+
+        body.dark {
+            background: #020617;
+            color: #e2e8f0;
+        }
+
+        body.dark .hero h1 {
+            color: #e2e8f0;
+        }
+
+        body.dark .hero p {
+            color: #94a3b8;
+        }
+
+        body.dark .generator-card {
+            background: #0f172a;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+        }
+
+        body.dark .input-group label,
+        body.dark .output-header h2 {
+            color: #e2e8f0;
+        }
+
+        body.dark .input-group input {
+            background: #1e293b;
+            color: white;
+            border-color: #475569;
+        }
+
+        body.dark .hint {
+            color: #94a3b8;
+        }
+
+        body.dark .info-section {
+            background: #172554;
+        }
+
+        body.dark .info-section h3 {
+            color: #bfdbfe;
+        }
+
+        @media (max-width: 800px) {
+
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            #output {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-container">
+
+        <div>
+            <div class="logo">
+                Generate<span>SourceCode</span>
+            </div>
+
+            <div class="header-subtitle">
+                Developer Productivity Tools
+            </div>
+        </div>
+
+        <button class="theme-button" onclick="toggleTheme()">
+            🌙 Dark / Light
+        </button>
+
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <h1>Java Singleton Class Generator</h1>
+
+    <p>
+        Generate a ready-to-use Java Singleton class in seconds.
+    </p>
+
+</section>
+
+
+<main class="main-container">
+
+    <div class="generator-card">
+
+        <div class="input-section">
+
+            <div class="input-group">
+
+                <label for="className">
+                    Java Class Name
+                </label>
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: DatabaseManager"
+                    autocomplete="off">
+
+                <span class="hint">
+                    Enter a valid Java class name.
+                </span>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="packageName">
+                    Package Name
+                </label>
+
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.util"
+                    autocomplete="off">
+
+                <span class="hint">
+                    Example: com.company.project.service
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                class="generate-btn"
+                onclick="generateSingleton()">
+                ⚡ Generate Code
+            </button>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode()">
+                📋 Copy
+            </button>
+
+            <button
+                class="download-btn"
+                onclick="downloadCode()">
+                ⬇ Download Java
+            </button>
+
+            <button
+                class="email-btn"
+                onclick="emailCode()">
+                ✉ Email
+            </button>
+
+            <button
+                class="share-btn"
+                onclick="shareCode()">
+                🔗 Share
+            </button>
+
+            <button
+                class="clear-btn"
+                onclick="clearAll()">
+                🗑 Clear
+            </button>
+
+        </div>
+
+
+        <div class="output-header">
+
+            <h2>Generated Java Code</h2>
+
+            <span id="status" class="status"></span>
+
+        </div>
+
+
+        <textarea
+            id="output"
+            spellcheck="false"
+            placeholder="Generated Singleton Java code will appear here..."></textarea>
+
+
+        <div class="info-section">
+
+            <h3>About Java Singleton Pattern</h3>
+
+            <ul>
+                <li>Creates a private constructor.</li>
+                <li>Creates a private static instance.</li>
+                <li>Provides a public getInstance() method.</li>
+                <li>Uses lazy initialization.</li>
+                <li>Uses synchronized access for thread safety.</li>
+                <li>Generated class can be copied directly into a Java project.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 GenerateSourceCode | Java Developer Tools
+    </p>
+
+    <p style="margin-top:8px;">
+        Created by Ashutosh Pujari
+    </p>
+
+</footer>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+    /*
+     * Generate Java Singleton Class
+     */
+
+    function generateSingleton() {
+
+        const className =
+            document.getElementById("className").value.trim();
+
+        const packageName =
+            document.getElementById("packageName").value.trim();
+
+
+        if (!className) {
+
+            showToast("Please enter a Java class name.", true);
+
+            document.getElementById("className").focus();
+
+            return;
+        }
+
+
+        /*
+         * Validate Java class name.
+         */
+
+        const classNamePattern =
+            /^[A-Z][A-Za-z0-9_]*$/;
+
+        if (!classNamePattern.test(className)) {
+
+            showToast(
+                "Class name must start with an uppercase letter and contain only letters, numbers or underscore.",
+                true
+            );
+
+            return;
+        }
+
+
+        /*
+         * Validate package name if provided.
+         */
+
+        if (packageName) {
+
+            const packagePattern =
+                /^[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)*$/;
+
+            if (!packagePattern.test(packageName)) {
+
+                showToast(
+                    "Please enter a valid Java package name.",
+                    true
+                );
+
+                return;
+            }
+        }
+
+
+        let javaCode = "";
+
+
+        if (packageName) {
+
+            javaCode +=
+                "package " + packageName + ";";
+        }
+
+
+        javaCode +=
+`
+
+/**
+ * Singleton class: ${className}
+ *
+ * Generated by GenerateSourceCode
+ */
+public class ${className} {
+
+    /*
+     * Singleton instance.
+     */
+    private static ${className} instance;
+
+    /*
+     * Private constructor prevents
+     * direct object creation.
+     */
+    private ${className}() {
+    }
+
+    /*
+     * Returns the Singleton instance.
+     */
+    public static synchronized ${className} getInstance() {
+
+        if (instance == null) {
+            instance = new ${className}();
+        }
+
+        return instance;
+    }
+
+    /*
+     * Add your business methods below.
+     */
+
+}
+`;
+
+
+        document.getElementById("output").value = javaCode;
+
+        document.getElementById("status").textContent =
+            "✓ Code generated successfully";
+
+        showToast("Java Singleton class generated successfully.");
+
+    }
+
+
+    /*
+     * Copy generated code.
+     */
+
+    async function copyCode() {
+
+        const output =
+            document.getElementById("output").value;
+
+        if (!output.trim()) {
+
+            showToast(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(output);
+
+            showToast("Java code copied to clipboard.");
+
+        } catch (error) {
+
+            const textarea =
+                document.getElementById("output");
+
+            textarea.select();
+
+            document.execCommand("copy");
+
+            showToast("Java code copied to clipboard.");
+
+        }
+
+    }
+
+
+    /*
+     * Download Java source file.
+     */
+
+    function downloadCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showToast(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+
+        const fileName =
+            (className || "Singleton") + ".java";
+
+
+        const blob =
+            new Blob(
+                [code],
+                {
+                    type: "text/plain;charset=utf-8"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download = fileName;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+
+        showToast(
+            fileName + " downloaded successfully."
+        );
+
+    }
+
+
+    /*
+     * Open default email application.
+     */
+
+    function emailCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showToast(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+
+        const subject =
+            encodeURIComponent(
+                "Generated Java Singleton Class - " +
+                (className || "Singleton")
+            );
+
+
+        const body =
+            encodeURIComponent(
+                "Java Singleton Class\\n\\n" +
+                code
+            );
+
+
+        window.location.href =
+            "mailto:?subject=" +
+            subject +
+            "&body=" +
+            body;
+
+    }
+
+
+    /*
+     * Share generated code.
+     */
+
+    async function shareCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+        const className =
+            document.getElementById("className").value.trim();
+
+
+        if (!code.trim()) {
+
+            showToast(
+                "Generate the Java class first.",
+                true
+            );
+
+            return;
+        }
+
+
+        const shareText =
+            "Java Singleton Class - " +
+            (className || "Singleton") +
+            "\\n\\n" +
+            code;
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        "Java Singleton Class Generator",
+
+                    text:
+                        shareText
+
+                });
+
+                showToast("Shared successfully.");
+
+            } catch (error) {
+
+                /*
+                 * User cancelled sharing.
+                 */
+
+            }
+
+        } else {
+
+            await copyCode();
+
+            showToast(
+                "Web Share is not supported. Code copied instead."
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Clear all fields.
+     */
+
+    function clearAll() {
+
+        document.getElementById("className").value = "";
+
+        document.getElementById("packageName").value = "";
+
+        document.getElementById("output").value = "";
+
+        document.getElementById("status").textContent = "";
+
+        showToast("All fields cleared.");
+
+    }
+
+
+    /*
+     * Dark / Light mode.
+     */
+
+    function toggleTheme() {
+
+        document.body.classList.toggle("dark");
+
+        const isDark =
+            document.body.classList.contains("dark");
+
+        localStorage.setItem(
+            "singletonGeneratorTheme",
+            isDark ? "dark" : "light"
+        );
+
+    }
+
+
+    /*
+     * Restore theme.
+     */
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "singletonGeneratorTheme"
+                );
+
+            if (savedTheme === "dark") {
+
+                document.body.classList.add("dark");
+
+            }
+
+        }
+    );
+
+
+    /*
+     * Toast notification.
+     */
+
+    function showToast(message, error = false) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.style.background =
+            error ? "#dc2626" : "#16a34a";
+
+        toast.style.display = "block";
+
+
+        setTimeout(
+            function() {
+
+                toast.style.display = "none";
+
+            },
+            3000
+        );
+
+    }
+
+
+    /*
+     * Allow Ctrl + Enter to generate code.
+     */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.ctrlKey &&
+                event.key === "Enter"
+            ) {
+
+                generateSingleton();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+<!--
+==========================================================
+GOOGLE ANALYTICS
+==========================================================
+
+Replace G-XXXXXXXXXX with your Google Analytics Measurement ID.
+
+<script async
+src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX">
+</script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){
+    dataLayer.push(arguments);
+}
+
+gtag('js', new Date());
+
+gtag(
+    'config',
+    'G-XXXXXXXXXX'
+);
+</script>
+
+==========================================================
+-->
+
+</body>
+</html>
