@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XML to Java POJO Generator | GenerateSourceCode</title>
+
+    <meta name="description"
+          content="Convert XML to Java POJO classes online. Generate Java POJO classes from XML with nested objects, lists, attributes, getters and setters.">
+
+    <meta name="keywords"
+          content="XML to POJO, XML to Java, Java POJO Generator, XML Java Class Generator, XML converter">
+
+    <meta property="og:title" content="XML to Java POJO Generator">
+    <meta property="og:description"
+          content="Generate Java POJO classes from XML online.">
+    <meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        header {
+            background: linear-gradient(135deg, #111827, #2563eb);
+            color: white;
+            padding: 22px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .toolbar-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .toolbar label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            min-width: 220px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2563eb;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            font-size: 19px;
+            color: #1e3a8a;
+        }
+
+        textarea {
+            width: 100%;
+            height: 580px;
+            resize: vertical;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
+        }
+
+        #output {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 7px;
+            padding: 11px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.92;
+        }
+
+        .generate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .sample {
+            background: #64748b;
+            color: white;
+        }
+
+        .copy {
+            background: #059669;
+            color: white;
+        }
+
+        .download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .email {
+            background: #ea580c;
+            color: white;
+        }
+
+        .share {
+            background: #0891b2;
+            color: white;
+        }
+
+        .clear {
+            background: #dc2626;
+            color: white;
+        }
+
+        .status {
+            margin-top: 12px;
+            min-height: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #059669;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 22px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .info {
+            margin-top: 18px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 12px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>XML → Java POJO Generator</h1>
+    <p>Convert XML input into ready-to-use Java POJO classes</p>
+</header>
+
+<div class="container">
+
+    <div class="toolbar">
+
+        <div class="toolbar-row">
+
+            <label for="className">Root Class Name:</label>
+
+            <input
+                type="text"
+                id="className"
+                value="Root"
+                placeholder="Example: Employee">
+
+            <button class="generate" onclick="generatePOJO()">
+                ⚡ Generate Code
+            </button>
+
+            <button class="sample" onclick="loadSample()">
+                📄 Load Sample
+            </button>
+
+            <button class="clear" onclick="clearAll()">
+                🗑 Clear
+            </button>
+
+        </div>
+
+        <div class="info">
+            Enter XML on the left and click <b>Generate Code</b>.
+            Nested XML elements, attributes and repeated elements are converted
+            into Java fields and supporting POJO classes.
+        </div>
+
+    </div>
+
+    <div class="workspace">
+
+        <div class="panel">
+
+            <h2>📥 XML Input</h2>
+
+            <textarea
+                id="xmlInput"
+                placeholder="Paste your XML here..."></textarea>
+
+        </div>
+
+        <div class="panel">
+
+            <h2>📤 Generated Java POJO</h2>
+
+            <textarea
+                id="output"
+                placeholder="Generated Java POJO classes will appear here..."
+                readonly></textarea>
+
+            <div class="buttons">
+
+                <button class="copy" onclick="copyCode()">
+                    📋 Copy
+                </button>
+
+                <button class="download" onclick="downloadCode()">
+                    ⬇ Download
+                </button>
+
+                <button class="email" onclick="emailCode()">
+                    ✉ Email
+                </button>
+
+                <button class="share" onclick="shareCode()">
+                    🔗 Share
+                </button>
+
+            </div>
+
+            <div id="status" class="status"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <div>
+        XML → Java POJO Generator
+    </div>
+
+    <div style="margin-top:8px;">
+        Created by
+        <a href="https://www.generatesourcecode.co.in/"
+           target="_blank">
+            GenerateSourceCode
+        </a>
+    </div>
+</footer>
+
+
+<script>
+
+    /*
+     * ==========================================================
+     * XML TO JAVA POJO GENERATOR
+     * ==========================================================
+     */
+
+    let generatedCode = "";
+
+
+    function showStatus(message, type) {
+
+        const status = document.getElementById("status");
+
+        status.textContent = message;
+
+        status.className = "status " + type;
+
+        setTimeout(() => {
+            status.textContent = "";
+        }, 4000);
+    }
+
+
+    function sanitizeClassName(name) {
+
+        name = name || "Root";
+
+        name = name
+            .replace(/[^a-zA-Z0-9_$]/g, " ")
+            .trim();
+
+        if (!name) {
+            return "Root";
+        }
+
+        name = name
+            .split(/\s+/)
+            .map(word =>
+                word.charAt(0).toUpperCase() +
+                word.substring(1)
+            )
+            .join("");
+
+        if (/^\d/.test(name)) {
+            name = "Class" + name;
+        }
+
+        return name;
+    }
+
+
+    function sanitizeFieldName(name) {
+
+        name = name
+            .replace(/[^a-zA-Z0-9_$]/g, "_");
+
+        if (/^\d/.test(name)) {
+            name = "_" + name;
+        }
+
+        return name;
+    }
+
+
+    function capitalize(name) {
+
+        return name.charAt(0).toUpperCase() +
+               name.substring(1);
+
+    }
+
+
+    function detectJavaType(value) {
+
+        if (value === null || value === undefined) {
+            return "String";
+        }
+
+        value = value.trim();
+
+        if (value === "") {
+            return "String";
+        }
+
+        if (/^-?\d+$/.test(value)) {
+
+            const number = Number(value);
+
+            if (number >= -2147483648 &&
+                number <= 2147483647) {
+
+                return "Integer";
+            }
+
+            return "Long";
+        }
+
+        if (/^-?\d+\.\d+$/.test(value)) {
+            return "Double";
+        }
+
+        if (/^(true|false)$/i.test(value)) {
+            return "Boolean";
+        }
+
+        return "String";
+    }
+
+
+    function elementChildren(element) {
+
+        return Array.from(element.children || []);
+    }
+
+
+    function getTextContent(element) {
+
+        let text = "";
+
+        Array.from(element.childNodes).forEach(node => {
+
+            if (node.nodeType === Node.TEXT_NODE) {
+                text += node.nodeValue;
+            }
+
+        });
+
+        return text.trim();
+    }
+
+
+    function collectElements(root, classes) {
+
+        const children = elementChildren(root);
+
+        /*
+         * Attributes
+         */
+
+        Array.from(root.attributes || []).forEach(attribute => {
+
+            if (!classes[root.tagName]) {
+                classes[root.tagName] = {
+                    fields: [],
+                    attributes: []
+                };
+            }
+
+            classes[root.tagName].attributes.push({
+                name: attribute.name,
+                type: detectJavaType(attribute.value)
+            });
+
+        });
+
+
+        /*
+         * Text-only element
+         */
+
+        if (children.length === 0) {
+
+            if (!classes[root.tagName]) {
+
+                classes[root.tagName] = {
+                    fields: [],
+                    attributes: [],
+                    textType: detectJavaType(
+                        getTextContent(root)
+                    )
+                };
+
+            }
+
+            return;
+        }
+
+
+        /*
+         * Current class
+         */
+
+        if (!classes[root.tagName]) {
+
+            classes[root.tagName] = {
+                fields: [],
+                attributes: []
+            };
+
+        }
+
+
+        /*
+         * Group children by tag name
+         */
+
+        const groups = {};
+
+        children.forEach(child => {
+
+            if (!groups[child.tagName]) {
+                groups[child.tagName] = [];
+            }
+
+            groups[child.tagName].push(child);
+
+        });
+
+
+        Object.keys(groups).forEach(tagName => {
+
+            const group = groups[tagName];
+
+            const fieldName =
+                sanitizeFieldName(
+                    tagName
+                );
+
+            const javaClassName =
+                sanitizeClassName(
+                    tagName
+                );
+
+            let type;
+
+
+            /*
+             * Repeated element
+             */
+
+            if (group.length > 1) {
+
+                const first = group[0];
+
+                if (elementChildren(first).length === 0 &&
+                    first.attributes.length === 0) {
+
+                    const value =
+                        getTextContent(first);
+
+                    type =
+                        "List<" +
+                        detectJavaType(value) +
+                        ">";
+
+                } else {
+
+                    type =
+                        "List<" +
+                        javaClassName +
+                        ">";
+
+                }
+
+            }
+
+            /*
+             * Single child
+             */
+
+            else {
+
+                const child = group[0];
+
+                if (elementChildren(child).length === 0 &&
+                    child.attributes.length === 0) {
+
+                    type =
+                        detectJavaType(
+                            getTextContent(child)
+                        );
+
+                } else {
+
+                    type = javaClassName;
+
+                }
+
+            }
+
+
+            classes[root.tagName].fields.push({
+                name: fieldName,
+                type: type
+            });
+
+
+            /*
+             * Recursively process complex objects
+             */
+
+            group.forEach(child => {
+
+                if (elementChildren(child).length > 0 ||
+                    child.attributes.length > 0) {
+
+                    collectElements(child, classes);
+
+                }
+
+            });
+
+        });
+
+    }
+
+
+    function generateClassCode(className, data) {
+
+        let code = "";
+
+        code += "public class " + className + " {\n\n";
+
+
+        /*
+         * Fields
+         */
+
+        if (data.attributes) {
+
+            data.attributes.forEach(attribute => {
+
+                const fieldName =
+                    sanitizeFieldName(
+                        attribute.name
+                    );
+
+                code +=
+                    "    private " +
+                    attribute.type +
+                    " " +
+                    fieldName +
+                    ";\n";
+
+            });
+
+        }
+
+
+        if (data.fields) {
+
+            data.fields.forEach(field => {
+
+                code +=
+                    "    private " +
+                    field.type +
+                    " " +
+                    field.name +
+                    ";\n";
+
+            });
+
+        }
+
+
+        code += "\n";
+
+
+        /*
+         * Getters / Setters
+         */
+
+        const allFields = [];
+
+
+        if (data.attributes) {
+
+            data.attributes.forEach(attribute => {
+
+                allFields.push({
+                    name:
+                        sanitizeFieldName(
+                            attribute.name
+                        ),
+                    type:
+                        attribute.type
+                });
+
+            });
+
+        }
+
+
+        if (data.fields) {
+
+            data.fields.forEach(field => {
+                allFields.push(field);
+            });
+
+        }
+
+
+        allFields.forEach(field => {
+
+            const methodName =
+                capitalize(field.name);
+
+
+            /*
+             * Getter
+             */
+
+            code +=
+                "    public " +
+                field.type +
+                " get" +
+                methodName +
+                "() {\n";
+
+            code +=
+                "        return " +
+                field.name +
+                ";\n";
+
+            code +=
+                "    }\n\n";
+
+
+            /*
+             * Setter
+             */
+
+            code +=
+                "    public void set" +
+                methodName +
+                "(" +
+                field.type +
+                " " +
+                field.name +
+                ") {\n";
+
+            code +=
+                "        this." +
+                field.name +
+                " = " +
+                field.name +
+                ";\n";
+
+            code +=
+                "    }\n\n";
+
+        });
+
+
+        /*
+         * toString()
+         */
+
+        code +=
+            "    @Override\n" +
+            "    public String toString() {\n" +
+            "        return \"" +
+            className +
+            "{\" +\n";
+
+
+        if (allFields.length === 0) {
+
+            code +=
+                "                \"}\";\n";
+
+        } else {
+
+            allFields.forEach((field, index) => {
+
+                code +=
+                    "                \"" +
+                    field.name +
+                    "=\" + " +
+                    field.name;
+
+                if (index < allFields.length - 1) {
+
+                    code +=
+                        " + \", \" +\n";
+
+                } else {
+
+                    code +=
+                        " +\n" +
+                        "                \"}\";\n";
+
+                }
+
+            });
+
+        }
+
+
+        code +=
+            "    }\n\n";
+
+        code += "}";
+
+        return code;
+    }
+
+
+    function generatePOJO() {
+
+        const xml =
+            document.getElementById("xmlInput").value.trim();
+
+        let rootClassName =
+            document.getElementById("className").value.trim();
+
+
+        if (!xml) {
+
+            showStatus(
+                "Please enter XML input.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        rootClassName =
+            sanitizeClassName(rootClassName);
+
+
+        try {
+
+            const parser =
+                new DOMParser();
+
+            const xmlDocument =
+                parser.parseFromString(
+                    xml,
+                    "application/xml"
+                );
+
+
+            const parserError =
+                xmlDocument.querySelector(
+                    "parsererror"
+                );
+
+
+            if (parserError) {
+
+                throw new Error(
+                    "Invalid XML format."
+                );
+
+            }
+
+
+            const root =
+                xmlDocument.documentElement;
+
+
+            if (!root) {
+
+                throw new Error(
+                    "XML root element not found."
+                );
+
+            }
+
+
+            const classes = {};
+
+
+            collectElements(
+                root,
+                classes
+            );
+
+
+            /*
+             * Rename root XML element
+             * to requested Java class name.
+             */
+
+            if (root.tagName !== rootClassName) {
+
+                classes[rootClassName] =
+                    classes[root.tagName];
+
+                delete classes[root.tagName];
+
+
+                /*
+                 * Update references to root class.
+                 */
+
+                Object.keys(classes).forEach(className => {
+
+                    classes[className].fields.forEach(field => {
+
+                        if (field.type ===
+                            sanitizeClassName(root.tagName)) {
+
+                            field.type =
+                                rootClassName;
+
+                        }
+
+                        if (field.type ===
+                            "List<" +
+                            sanitizeClassName(root.tagName) +
+                            ">") {
+
+                            field.type =
+                                "List<" +
+                                rootClassName +
+                                ">";
+
+                        }
+
+                    });
+
+                });
+
+            }
+
+
+            /*
+             * Generate imports.
+             */
+
+            let needsList = false;
+
+            Object.keys(classes).forEach(className => {
+
+                classes[className].fields.forEach(field => {
+
+                    if (field.type.startsWith("List<")) {
+                        needsList = true;
+                    }
+
+                });
+
+            });
+
+
+            let finalCode = "";
+
+            if (needsList) {
+
+                finalCode +=
+                    "import java.util.List;\n\n";
+
+            }
+
+
+            /*
+             * Generate each class.
+             */
+
+            const orderedClasses = [];
+
+
+            /*
+             * Root class first.
+             */
+
+            orderedClasses.push(rootClassName);
+
+
+            Object.keys(classes).forEach(className => {
+
+                if (className !== rootClassName) {
+
+                    orderedClasses.push(className);
+
+                }
+
+            });
+
+
+            orderedClasses.forEach((className, index) => {
+
+                if (index > 0) {
+
+                    finalCode +=
+                        "\n\n";
+                }
+
+
+                finalCode +=
+                    generateClassCode(
+                        className,
+                        classes[className]
+                    );
+
+            });
+
+
+            generatedCode = finalCode;
+
+            document.getElementById("output").value =
+                finalCode;
+
+
+            showStatus(
+                "Java POJO generated successfully.",
+                "success"
+            );
+
+        } catch (error) {
+
+            document.getElementById("output").value = "";
+
+            generatedCode = "";
+
+            showStatus(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ==========================================================
+     * COPY
+     * ==========================================================
+     */
+
+    async function copyCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+
+        if (!code) {
+
+            showStatus(
+                "Generate Java code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(code);
+
+            showStatus(
+                "Java code copied to clipboard.",
+                "success"
+            );
+
+        } catch (error) {
+
+            const textarea =
+                document.getElementById("output");
+
+            textarea.select();
+
+            document.execCommand("copy");
+
+            showStatus(
+                "Java code copied.",
+                "success"
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ==========================================================
+     * DOWNLOAD
+     * ==========================================================
+     */
+
+    function downloadCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+
+        if (!code) {
+
+            showStatus(
+                "Generate Java code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const className =
+            sanitizeClassName(
+                document.getElementById("className").value
+            );
+
+
+        const blob =
+            new Blob(
+                [code],
+                {
+                    type:
+                        "text/plain;charset=utf-8"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download =
+            className + ".java";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+
+
+        showStatus(
+            "Java file downloaded.",
+            "success"
+        );
+
+    }
+
+
+    /*
+     * ==========================================================
+     * EMAIL
+     * ==========================================================
+     */
+
+    function emailCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+
+        if (!code) {
+
+            showStatus(
+                "Generate Java code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const className =
+            sanitizeClassName(
+                document.getElementById("className").value
+            );
+
+
+        const subject =
+            encodeURIComponent(
+                "Generated Java POJO - " +
+                className
+            );
+
+
+        const body =
+            encodeURIComponent(
+                "Generated Java POJO:\n\n" +
+                code
+            );
+
+
+        window.location.href =
+            "mailto:?subject=" +
+            subject +
+            "&body=" +
+            body;
+
+    }
+
+
+    /*
+     * ==========================================================
+     * SHARE
+     * ==========================================================
+     */
+
+    async function shareCode() {
+
+        const code =
+            document.getElementById("output").value;
+
+
+        if (!code) {
+
+            showStatus(
+                "Generate Java code first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        "Generated Java POJO",
+
+                    text:
+                        code
+
+                });
+
+                showStatus(
+                    "Code shared successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                if (error.name !== "AbortError") {
+
+                    showStatus(
+                        "Sharing was cancelled.",
+                        "error"
+                    );
+
+                }
+
+            }
+
+        } else {
+
+            await copyCode();
+
+            showStatus(
+                "Web Share is not supported. Code copied instead.",
+                "success"
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ==========================================================
+     * SAMPLE XML
+     * ==========================================================
+     */
+
+    function loadSample() {
+
+        document.getElementById("className").value =
+            "Employee";
+
+
+        document.getElementById("xmlInput").value =
+`<employee id="101">
+    <name>Ashutosh Pujari</name>
+    <age>45</age>
+    <active>true</active>
+    <salary>125000.50</salary>
+
+    <department>
+        <id>10</id>
+        <name>Technology</name>
+    </department>
+
+    <address>
+        <city>Pune</city>
+        <state>Maharashtra</state>
+        <country>India</country>
+    </address>
+
+    <skills>
+        <skill>Java</skill>
+        <skill>Spring Boot</skill>
+        <skill>Microservices</skill>
+    </skills>
+</employee>`;
+
+
+        document.getElementById("output").value = "";
+
+        generatedCode = "";
+
+        showStatus(
+            "Sample XML loaded.",
+            "success"
+        );
+
+    }
+
+
+    /*
+     * ==========================================================
+     * CLEAR
+     * ==========================================================
+     */
+
+    function clearAll() {
+
+        document.getElementById("xmlInput").value = "";
+
+        document.getElementById("output").value = "";
+
+        document.getElementById("className").value =
+            "Root";
+
+        generatedCode = "";
+
+        showStatus(
+            "Cleared.",
+            "success"
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
