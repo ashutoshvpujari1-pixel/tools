@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPTX to MP4 Converter</title>
+<meta name="description" content="Convert a PowerPoint PPTX presentation into an MP4 video directly in your browser.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#07111f,#102a43);color:#fff;min-height:100vh}
+header{padding:28px 20px;text-align:center;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.12)}
+h1{margin:0 0 8px;font-size:32px}
+header p{margin:0;color:#cbd5e1}
+.container{width:min(1100px,94%);margin:28px auto}
+.card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:block;font-weight:700;margin-bottom:7px}
+input[type=file],input[type=number],select{width:100%;padding:12px;border-radius:10px;border:1px solid #64748b;background:#fff;color:#111;font-size:15px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+button,.download{border:0;border-radius:10px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;display:inline-block}
+button{background:#22c55e;color:#06120a}
+button.secondary{background:#334155;color:#fff}
+button:disabled{opacity:.5;cursor:not-allowed}
+#status{margin-top:18px;padding:13px;border-radius:10px;background:rgba(0,0,0,.22);min-height:46px}
+.progress{height:10px;background:#334155;border-radius:20px;overflow:hidden;margin-top:12px}
+#bar{height:100%;width:0;background:#22c55e;transition:width .2s}
+#preview{margin-top:20px;background:#020617;border-radius:12px;padding:12px;min-height:100px;overflow:auto}
+#pptxRender{position:absolute;left:-100000px;top:0;width:1280px;height:720px;overflow:hidden;background:#fff}
+video{width:100%;max-height:500px;margin-top:18px;border-radius:12px;background:#000}
+.note{color:#cbd5e1;font-size:13px;line-height:1.55;margin-top:16px}
+footer{text-align:center;color:#94a3b8;padding:25px}
+@media(max-width:750px){.grid{grid-template-columns:1fr}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎬 PowerPoint → MP4 Converter</h1>
+  <p>Upload a PPTX, choose slide duration, and create an MP4 video in your browser.</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="pptxFile">PowerPoint file (.pptx)</label>
+        <input id="pptxFile" type="file" accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation">
+      </div>
+      <div>
+        <label for="duration">Seconds per slide</label>
+        <input id="duration" type="number" min="1" max="60" step="0.5" value="5">
+      </div>
+      <div>
+        <label for="resolution">Video resolution</label>
+        <select id="resolution">
+          <option value="1280x720">1280 × 720 (HD)</option>
+          <option value="1920x1080">1920 × 1080 (Full HD)</option>
+          <option value="960x540">960 × 540</option>
+        </select>
+      </div>
+      <div>
+        <label for="fps">Frame rate</label>
+        <select id="fps">
+          <option value="30">30 FPS</option>
+          <option value="24">24 FPS</option>
+          <option value="15">15 FPS</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="convertBtn">Create MP4</button>
+      <button class="secondary" id="clearBtn">Clear</button>
+    </div>
+
+    <div id="status">Select a PPTX file to begin.</div>
+    <div class="progress"><div id="bar"></div></div>
+
+    <div id="preview"></div>
+    <video id="video" controls style="display:none"></video>
+    <div class="actions">
+      <a id="download" class="download" style="display:none;background:#3b82f6;color:white" download="presentation.mp4">⬇ Download MP4</a>
+    </div>
+
+    <div class="note">
+      <b>Important:</b> This is a client-side converter. The PPTX is processed in your browser.
+      Slide rendering is done with a browser PPTX renderer and the final MP4 is encoded with FFmpeg WebAssembly.
+      Complex PowerPoint animations, transitions, embedded media, fonts, SmartArt, and some advanced Office effects
+      may not reproduce exactly. Large presentations can require substantial RAM and CPU.
+    </div>
+  </div>
+</div>
+
+<div id="pptxRender"></div>
+<footer>Browser-based PPTX to MP4 Converter</footer>
+
+<script type="module">
+import { init } from "https://cdn.jsdelivr.net/npm/pptx-preview@1.0.7/dist/pptx-preview.es.js";
+import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
+import { fetchFile, toBlobURL } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
+
+const fileInput = document.getElementById("pptxFile");
+const durationInput = document.getElementById("duration");
+const resolutionInput = document.getElementById("resolution");
+const fpsInput = document.getElementById("fps");
+const convertBtn = document.getElementById("convertBtn");
+const clearBtn = document.getElementById("clearBtn");
+const status = document.getElementById("status");
+const bar = document.getElementById("bar");
+const preview = document.getElementById("preview");
+const renderHost = document.getElementById("pptxRender");
+const video = document.getElementById("video");
+const download = document.getElementById("download");
+
+let ffmpeg = null;
+let ffmpegLoaded = false;
+
+function setStatus(text, percent=null){
+  status.textContent = text;
+  if(percent !== null) bar.style.width = Math.max(0,Math.min(100,percent)) + "%";
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+async function loadFFmpeg(){
+  if(ffmpegLoaded) return;
+  setStatus("Loading FFmpeg WebAssembly. The first load may take some time...",5);
+  ffmpeg = new FFmpeg();
+  ffmpeg.on("log", ({message}) => console.log("[FFmpeg]",message));
+  const baseURL = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm")
+  });
+  ffmpegLoaded = true;
+}
+
+function getRenderedSlides(){
+  // pptx-preview creates one slide wrapper per slide. We intentionally inspect
+  // the generated DOM rather than depending on private library internals.
+  const candidates = [...renderHost.children];
+  return candidates.filter(el => {
+    const r = el.getBoundingClientRect();
+    return r.width > 100 && r.height > 100;
+  });
+}
+
+async function renderPptx(arrayBuffer){
+  renderHost.innerHTML = "";
+  const width = parseInt(resolutionInput.value.split("x")[0],10);
+  const height = parseInt(resolutionInput.value.split("x")[1],10);
+
+  const viewer = init(renderHost,{width,height});
+  await viewer.preview(arrayBuffer);
+  await sleep(1200);
+
+  const slides = getRenderedSlides();
+  if(!slides.length) throw new Error("The PPTX renderer did not produce any slide elements.");
+  return slides;
+}
+
+async function elementToCanvas(element, width, height){
+  // SVG is handled natively by the browser. HTML content is rasterized using
+  // an SVG foreignObject, which keeps this tool dependency-light.
+  const clone = element.cloneNode(true);
+  clone.style.width = width + "px";
+  clone.style.height = height + "px";
+  clone.style.margin = "0";
+  clone.style.position = "static";
+  clone.style.transform = "none";
+
+  const html = new XMLSerializer().serializeToString(clone);
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+    <foreignObject width="100%" height="100%">
+      <div xmlns="http://www.w3.org/1999/xhtml"
+           style="width:${width}px;height:${height}px;overflow:hidden;background:white;">
+        ${html}
+      </div>
+    </foreignObject>
+  </svg>`;
+
+  const blob = new Blob([svg],{type:"image/svg+xml"});
+  const url = URL.createObjectURL(blob);
+  const img = new Image();
+  img.src = url;
+
+  await new Promise((resolve,reject)=>{
+    img.onload=resolve; img.onerror=()=>reject(new Error("Could not rasterize a slide."));
+  });
+
+  const canvas=document.createElement("canvas");
+  canvas.width=width; canvas.height=height;
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,width,height);
+  ctx.drawImage(img,0,0,width,height);
+  URL.revokeObjectURL(url);
+  return canvas;
+}
+
+async function canvasToWebM(canvases, seconds, fps){
+  const canvas = document.createElement("canvas");
+  canvas.width = canvases[0].width;
+  canvas.height = canvases[0].height;
+  const ctx = canvas.getContext("2d");
+
+  const stream = canvas.captureStream(fps);
+  const mimeCandidates = [
+    "video/webm;codecs=vp9",
+    "video/webm;codecs=vp8",
+    "video/webm"
+  ];
+  const mime = mimeCandidates.find(x=>MediaRecorder.isTypeSupported(x));
+  if(!mime) throw new Error("This browser does not support WebM MediaRecorder.");
+
+  const recorder = new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:8_000_000});
+  const chunks=[];
+  recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+
+  const stopped = new Promise(resolve=>recorder.onstop=resolve);
+  recorder.start(250);
+
+  for(let i=0;i<canvases.length;i++){
+    ctx.drawImage(canvases[i],0,0);
+    setStatus(`Recording slide ${i+1} of ${canvases.length}...`,60 + (i/canvases.length)*25);
+    await sleep(seconds*1000);
+  }
+
+  recorder.stop();
+  await stopped;
+  return new Blob(chunks,{type:mime});
+}
+
+async function webmToMp4(webmBlob){
+  await loadFFmpeg();
+  await ffmpeg.writeFile("input.webm",await fetchFile(webmBlob));
+  setStatus("Encoding MP4 with FFmpeg WebAssembly...",88);
+  await ffmpeg.exec([
+    "-i","input.webm",
+    "-c:v","mpeg4",
+    "-pix_fmt","yuv420p",
+    "-movflags","+faststart",
+    "-preset","veryfast",
+    "-crf","22",
+    "output.mp4"
+  ]);
+  const data=await ffmpeg.readFile("output.mp4");
+  return new Blob([data.buffer],{type:"video/mp4"});
+}
+
+convertBtn.addEventListener("click",async()=>{
+  const file=fileInput.files[0];
+  if(!file){setStatus("Please select a .pptx file first.");return;}
+  if(location.protocol === "file:"){
+    setStatus("Please open this page through http:// or https:// (for example GitHub Pages). FFmpeg WebAssembly workers do not reliably run from file://.");
+    return;
+  }
+
+  convertBtn.disabled=true;
+  download.style.display="none";
+  video.style.display="none";
+  preview.innerHTML="";
+  bar.style.width="0%";
+
+  try{
+    const seconds=parseFloat(durationInput.value);
+    const fps=parseInt(fpsInput.value,10);
+    const [width,height]=resolutionInput.value.split("x").map(Number);
+
+    if(!seconds || seconds<1) throw new Error("Slide duration must be at least 1 second.");
+
+    setStatus("Reading PowerPoint file...",10);
+    const buffer=await file.arrayBuffer();
+
+    setStatus("Rendering PowerPoint slides...",20);
+    const slides=await renderPptx(buffer);
+
+    preview.textContent=`Detected ${slides.length} slide(s). Preparing video...`;
+
+    const canvases=[];
+    for(let i=0;i<slides.length;i++){
+      setStatus(`Preparing slide ${i+1} of ${slides.length}...`,20+(i/slides.length)*35);
+      canvases.push(await elementToCanvas(slides[i],width,height));
+      await sleep(50);
+    }
+
+    const webm=await canvasToWebM(canvases,seconds,fps);
+    const mp4=await webmToMp4(webm);
+
+    const url=URL.createObjectURL(mp4);
+    video.src=url;
+    video.style.display="block";
+    download.href=url;
+    download.download=file.name.replace(/\.pptx$/i,"")+".mp4";
+    download.style.display="inline-block";
+
+    setStatus(`Done! Created ${file.name.replace(/\.pptx$/i,"")}.mp4`,100);
+    preview.textContent=`${slides.length} slide(s) × ${seconds} second(s) = approximately ${(slides.length*seconds).toFixed(1)} seconds.`;
+  }catch(err){
+    console.error(err);
+    setStatus("Conversion failed: " + (err?.message || err));
+    bar.style.width="0%";
+  }finally{
+    convertBtn.disabled=false;
+  }
+});
+
+clearBtn.addEventListener("click",()=>{
+  fileInput.value="";
+  preview.innerHTML="";
+  video.pause();
+  video.removeAttribute("src");
+  video.style.display="none";
+  download.style.display="none";
+  renderHost.innerHTML="";
+  setStatus("Select a PPTX file to begin.",0);
+});
+</script>
+</body>
+</html>
