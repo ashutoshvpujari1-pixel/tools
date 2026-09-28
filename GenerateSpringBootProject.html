@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Spring Boot Project Structure Generator</title>
+
+<meta name="description"
+      content="Generate a basic Spring Boot Gradle or Maven project structure instantly. Download, copy, email or share your generated Spring Boot project.">
+
+<meta name="keywords"
+      content="Spring Boot Project Generator, Spring Boot Generator, Gradle Project Generator, Maven Project Generator, Java Project Generator">
+
+<meta property="og:title" content="Spring Boot Project Structure Generator">
+<meta property="og:description"
+      content="Generate a basic Spring Boot Gradle or Maven project structure online.">
+<meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef5ff, #ffffff);
+    color: #1e293b;
+}
+
+header {
+    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 8px 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 25px auto;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #1d4ed8;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+.radio-group {
+    display: flex;
+    gap: 25px;
+    padding-top: 10px;
+}
+
+.radio-group label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.radio-group input {
+    margin-right: 6px;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+
+.generate-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.copy-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.download-btn {
+    background: #9333ea;
+    color: white;
+}
+
+.email-btn {
+    background: #ea580c;
+    color: white;
+}
+
+.share-btn {
+    background: #0891b2;
+    color: white;
+}
+
+.clear-btn {
+    background: #64748b;
+    color: white;
+}
+
+.structure {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    white-space: pre;
+    line-height: 1.6;
+}
+
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+}
+
+.file-card {
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8fafc;
+}
+
+.file-header {
+    background: #1e3a8a;
+    color: white;
+    padding: 10px 14px;
+    font-weight: bold;
+}
+
+.file-content {
+    padding: 12px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 260px;
+    resize: vertical;
+    border: none;
+    outline: none;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    display: none;
+    background: #dcfce7;
+    color: #166534;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #0f172a;
+    color: white;
+    margin-top: 40px;
+}
+
+footer a {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+@media(max-width: 600px) {
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🚀 Spring Boot Project Structure Generator</h1>
+
+<p>
+Generate a basic Spring Boot Gradle or Maven project instantly
+</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Project Details</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label for="projectName">
+Project Name
+</label>
+
+<input
+    type="text"
+    id="projectName"
+    placeholder="Example: EmployeeManagement"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="packageName">
+Package Name
+</label>
+
+<input
+    type="text"
+    id="packageName"
+    value="com.example.demo"
+    placeholder="Example: com.company.project"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="artifactName">
+Artifact Name
+</label>
+
+<input
+    type="text"
+    id="artifactName"
+    placeholder="Example: employee-management"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="javaVersion">
+Java Version
+</label>
+
+<select id="javaVersion">
+
+<option value="17">Java 17</option>
+<option value="21">Java 21</option>
+<option value="25">Java 25</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="springBootVersion">
+Spring Boot Version
+</label>
+
+<select id="springBootVersion">
+
+<option value="3.5.5">3.5.5</option>
+<option value="3.5.4">3.5.4</option>
+<option value="3.4.9">3.4.9</option>
+<option value="3.4.8">3.4.8</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Build Tool</label>
+
+<div class="radio-group">
+
+<label>
+<input
+    type="radio"
+    name="buildTool"
+    value="gradle"
+    checked
+>
+Gradle
+</label>
+
+<label>
+<input
+    type="radio"
+    name="buildTool"
+    value="maven"
+>
+Maven
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="button-row">
+
+<button
+    class="generate-btn"
+    onclick="generateProject()"
+>
+⚙️ Generate Project
+</button>
+
+<button
+    class="clear-btn"
+    onclick="clearAll()"
+>
+🗑 Clear
+</button>
+
+</div>
+
+<div id="status" class="status"></div>
+
+</div>
+
+
+<div class="card" id="resultSection" style="display:none">
+
+<h2>📁 Project Structure</h2>
+
+<div id="projectStructure" class="structure"></div>
+
+<div class="button-row">
+
+<button
+    class="copy-btn"
+    onclick="copyAll()"
+>
+📋 Copy All
+</button>
+
+<button
+    class="download-btn"
+    onclick="downloadZip()"
+>
+⬇️ Download ZIP
+</button>
+
+<button
+    class="email-btn"
+    onclick="emailProject()"
+>
+📧 Email
+</button>
+
+<button
+    class="share-btn"
+    onclick="shareProject()"
+>
+🔗 Share
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card" id="filesSection" style="display:none">
+
+<h2>📄 Generated Files</h2>
+
+<div id="fileGrid" class="file-grid"></div>
+
+</div>
+
+</div>
+
+
+<footer>
+
+<div>
+<strong>GenerateSourceCode</strong>
+</div>
+
+<div style="margin-top:8px">
+Created few tools which could help in day to day activities.
+</div>
+
+<div style="margin-top:10px">
+
+<a href="https://www.generatesourcecode.co.in/"
+   target="_blank">
+GenerateSourceCode
+</a>
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   GLOBAL PROJECT DATA
+========================================================= */
+
+let generatedFiles = {};
+let currentProjectName = "";
+
+
+/* =========================================================
+   UTILITY FUNCTIONS
+========================================================= */
+
+function getBuildTool() {
+
+    return document.querySelector(
+        'input[name="buildTool"]:checked'
+    ).value;
+
+}
+
+
+function packageToPath(packageName) {
+
+    return packageName.replace(/\./g, "/");
+
+}
+
+
+function packageToClassName(packageName) {
+
+    return packageName
+        .split(".")
+        .map(function(part) {
+
+            return part.charAt(0).toUpperCase() +
+                   part.substring(1);
+
+        })
+        .join("");
+
+}
+
+
+function showStatus(message) {
+
+    const status = document.getElementById("status");
+
+    status.innerText = message;
+
+    status.style.display = "block";
+
+    setTimeout(function() {
+
+        status.style.display = "none";
+
+    }, 3000);
+
+}
+
+
+/* =========================================================
+   GENERATE PROJECT
+========================================================= */
+
+function generateProject() {
+
+    let projectName =
+        document.getElementById("projectName").value.trim();
+
+    let packageName =
+        document.getElementById("packageName").value.trim();
+
+    let artifactName =
+        document.getElementById("artifactName").value.trim();
+
+    let javaVersion =
+        document.getElementById("javaVersion").value;
+
+    let springBootVersion =
+        document.getElementById("springBootVersion").value;
+
+    let buildTool = getBuildTool();
+
+
+    if (!projectName) {
+
+        alert("Please enter Project Name.");
+
+        return;
+
+    }
+
+
+    if (!packageName) {
+
+        alert("Please enter Package Name.");
+
+        return;
+
+    }
+
+
+    if (!artifactName) {
+
+        artifactName =
+            projectName
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-");
+
+        document.getElementById("artifactName").value =
+            artifactName;
+
+    }
+
+
+    currentProjectName = projectName;
+
+
+    let safeClassName =
+        projectName
+            .replace(/[^a-zA-Z0-9]/g, " ")
+            .split(" ")
+            .filter(Boolean)
+            .map(function(word) {
+
+                return word.charAt(0).toUpperCase() +
+                       word.substring(1);
+
+            })
+            .join("");
+
+
+    if (!safeClassName) {
+
+        safeClassName = "Application";
+
+    }
+
+
+    let packagePath =
+        packageToPath(packageName);
+
+
+    generatedFiles = {};
+
+
+    /* =====================================================
+       MAIN APPLICATION CLASS
+    ===================================================== */
+
+    let mainClass =
+`package ${packageName};
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ${safeClassName}Application {
+
+    public static void main(String[] args) {
+
+        SpringApplication.run(${safeClassName}Application.class, args);
+
+    }
+}`;
+
+
+    generatedFiles[
+        "src/main/java/" +
+        packagePath +
+        "/" +
+        safeClassName +
+        "Application.java"
+    ] = mainClass;
+
+
+    /* =====================================================
+       CONTROLLER
+    ===================================================== */
+
+    let controller =
+`package ${packageName}.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String hello() {
+
+        return "Hello from ${projectName}";
+
+    }
+}`;
+
+
+    generatedFiles[
+        "src/main/java/" +
+        packagePath +
+        "/controller/HelloController.java"
+    ] = controller;
+
+
+    /* =====================================================
+       SERVICE
+    ===================================================== */
+
+    let service =
+`package ${packageName}.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class HelloService {
+
+    public String getMessage() {
+
+        return "Hello from ${projectName}";
+
+    }
+}`;
+
+
+    generatedFiles[
+        "src/main/java/" +
+        packagePath +
+        "/service/HelloService.java"
+    ] = service;
+
+
+    /* =====================================================
+       APPLICATION.PROPERTIES
+    ===================================================== */
+
+    let properties =
+`spring.application.name=${artifactName}
+
+server.port=8080
+
+# Logging
+logging.level.root=INFO
+logging.level.${packageName}=DEBUG
+`;
+
+
+    generatedFiles[
+        "src/main/resources/application.properties"
+    ] = properties;
+
+
+    /* =====================================================
+       README
+    ===================================================== */
+
+    let readme =
+`# ${projectName}
+
+Basic Spring Boot project generated using GenerateSourceCode.
+
+## Project Details
+
+- Project Name: ${projectName}
+- Package: ${packageName}
+- Java Version: ${javaVersion}
+- Spring Boot Version: ${springBootVersion}
+- Build Tool: ${buildTool}
+
+## API
+
+GET:
+
+/api/hello
+
+Example:
+
+http://localhost:8080/api/hello
+
+## Run
+
+${buildTool === "gradle"
+? "./gradlew bootRun"
+: "mvn spring-boot:run"}
+
+`;
+
+
+    generatedFiles["README.md"] = readme;
+
+
+    /* =====================================================
+       BUILD FILE
+    ===================================================== */
+
+    if (buildTool === "gradle") {
+
+        let buildGradle =
+`plugins {
+    id 'java'
+    id 'org.springframework.boot' version '${springBootVersion}'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = '${packageName}'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(${javaVersion})
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+`;
+
+
+        generatedFiles["build.gradle"] =
+            buildGradle;
+
+
+        generatedFiles["settings.gradle"] =
+`rootProject.name = '${artifactName}'
+`;
+
+
+        generatedFiles["gradle.properties"] =
+`# Gradle properties
+`;
+
+
+        generatedFiles[".gitignore"] =
+`build/
+.gradle/
+.idea/
+*.iml
+out/
+`;
+
+    }
+
+    else {
+
+        let pom =
+`<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>${springBootVersion}</version>
+        <relativePath/>
+
+    </parent>
+
+    <groupId>${packageName}</groupId>
+
+    <artifactId>${artifactName}</artifactId>
+
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>${projectName}</name>
+
+    <description>Basic Spring Boot project</description>
+
+    <properties>
+
+        <java.version>${javaVersion}</java.version>
+
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-web</artifactId>
+
+        </dependency>
+
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+
+            <artifactId>spring-boot-starter-test</artifactId>
+
+            <scope>test</scope>
+
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+
+                <groupId>org.springframework.boot</groupId>
+
+                <artifactId>spring-boot-maven-plugin</artifactId>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
+`;
+
+
+        generatedFiles["pom.xml"] =
+            pom;
+
+
+        generatedFiles[".gitignore"] =
+`target/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+`;
+
+    }
+
+
+    /* =====================================================
+       BASIC TEST CLASS
+    ===================================================== */
+
+    let testClass =
+`package ${packageName};
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ${safeClassName}ApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}`;
+
+
+    generatedFiles[
+        "src/test/java/" +
+        packagePath +
+        "/" +
+        safeClassName +
+        "ApplicationTests.java"
+    ] = testClass;
+
+
+    renderStructure();
+
+    renderFiles();
+
+    document.getElementById("resultSection")
+        .style.display = "block";
+
+    document.getElementById("filesSection")
+        .style.display = "block";
+
+    showStatus(
+        "Spring Boot project generated successfully!"
+    );
+
+}
+
+
+/* =========================================================
+   RENDER PROJECT TREE
+========================================================= */
+
+function renderStructure() {
+
+    const container =
+        document.getElementById("projectStructure");
+
+    let tree = currentProjectName + "/\n";
+
+
+    let paths =
+        Object.keys(generatedFiles);
+
+
+    paths.forEach(function(path, index) {
+
+        let parts = path.split("/");
+
+        let indent = "";
+
+        for (let i = 0; i < parts.length - 1; i++) {
+
+            indent += "│   ";
+
+        }
+
+        let connector =
+            index === paths.length - 1
+                ? "└── "
+                : "├── ";
+
+
+        tree +=
+            indent +
+            connector +
+            parts[parts.length - 1] +
+            "\n";
+
+    });
+
+
+    container.textContent = tree;
+
+}
+
+
+/* =========================================================
+   RENDER FILES
+========================================================= */
+
+function renderFiles() {
+
+    const fileGrid =
+        document.getElementById("fileGrid");
+
+    fileGrid.innerHTML = "";
+
+
+    Object.keys(generatedFiles)
+        .forEach(function(fileName) {
+
+            let card =
+                document.createElement("div");
+
+            card.className = "file-card";
+
+
+            let header =
+                document.createElement("div");
+
+            header.className = "file-header";
+
+            header.innerText = fileName;
+
+
+            let content =
+                document.createElement("div");
+
+            content.className = "file-content";
+
+
+            let textarea =
+                document.createElement("textarea");
+
+            textarea.readOnly = true;
+
+            textarea.value =
+                generatedFiles[fileName];
+
+
+            content.appendChild(textarea);
+
+            card.appendChild(header);
+
+            card.appendChild(content);
+
+            fileGrid.appendChild(card);
+
+        });
+
+}
+
+
+/* =========================================================
+   COPY ALL
+========================================================= */
+
+async function copyAll() {
+
+    let text = "";
+
+    Object.keys(generatedFiles)
+        .forEach(function(fileName) {
+
+            text +=
+`\n========================================
+${fileName}
+========================================
+
+`;
+
+            text +=
+                generatedFiles[fileName];
+
+            text += "\n\n";
+
+        });
+
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+        showStatus("All generated code copied to clipboard.");
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Clipboard access failed. Please copy manually."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DOWNLOAD SINGLE FILE
+========================================================= */
+
+function downloadFile(fileName, content) {
+
+    const blob =
+        new Blob(
+            [content],
+            {type: "text/plain;charset=utf-8"}
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        fileName.split("/").pop();
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   DOWNLOAD ZIP
+   Uses JSZip CDN
+========================================================= */
+
+function downloadZip() {
+
+    if (typeof JSZip === "undefined") {
+
+        loadJSZip();
+
+        return;
+
+    }
+
+
+    createZip();
+
+}
+
+
+function loadJSZip() {
+
+    const script =
+        document.createElement("script");
+
+    script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+
+    script.onload = function() {
+
+        createZip();
+
+    };
+
+    script.onerror = function() {
+
+        alert(
+            "Unable to load ZIP library. Please check your internet connection."
+        );
+
+    };
+
+    document.head.appendChild(script);
+
+}
+
+
+function createZip() {
+
+    const zip = new JSZip();
+
+    const root =
+        zip.folder(currentProjectName);
+
+
+    Object.keys(generatedFiles)
+        .forEach(function(fileName) {
+
+            root.file(
+                fileName,
+                generatedFiles[fileName]
+            );
+
+        });
+
+
+    zip.generateAsync({
+        type: "blob"
+    })
+    .then(function(content) {
+
+        const url =
+            URL.createObjectURL(content);
+
+
+        const a =
+            document.createElement("a");
+
+        a.href = url;
+
+        a.download =
+            currentProjectName +
+            "-SpringBoot-Project.zip";
+
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+
+        showStatus("Project ZIP downloaded.");
+
+    });
+
+}
+
+
+/* =========================================================
+   EMAIL
+========================================================= */
+
+function emailProject() {
+
+    if (!Object.keys(generatedFiles).length) {
+
+        alert("Please generate a project first.");
+
+        return;
+
+    }
+
+
+    let body =
+        "Spring Boot Project: " +
+        currentProjectName +
+        "\n\n";
+
+
+    body +=
+        "Generated Project Structure:\n\n";
+
+
+    Object.keys(generatedFiles)
+        .forEach(function(fileName) {
+
+            body +=
+                fileName +
+                "\n";
+
+        });
+
+
+    body +=
+`\n\nPlease use the Download ZIP option to download the complete project.
+`;
+
+
+    const subject =
+        encodeURIComponent(
+            "Spring Boot Project - " +
+            currentProjectName
+        );
+
+
+    const encodedBody =
+        encodeURIComponent(body);
+
+
+    window.location.href =
+        "mailto:?subject=" +
+        subject +
+        "&body=" +
+        encodedBody;
+
+}
+
+
+/* =========================================================
+   SHARE
+========================================================= */
+
+async function shareProject() {
+
+    if (!Object.keys(generatedFiles).length) {
+
+        alert("Please generate a project first.");
+
+        return;
+
+    }
+
+
+    const shareData = {
+
+        title:
+            "Spring Boot Project Generator",
+
+        text:
+            "I generated a Spring Boot project named " +
+            currentProjectName +
+            " using GenerateSourceCode.",
+
+        url:
+            window.location.href
+
+    };
+
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share(shareData);
+
+            showStatus("Project shared successfully.");
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    else {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                window.location.href
+            );
+
+            showStatus(
+                "Sharing is not supported. Page URL copied."
+            );
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Sharing is not supported by this browser."
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearAll() {
+
+    document.getElementById("projectName").value = "";
+
+    document.getElementById("artifactName").value = "";
+
+    document.getElementById("packageName").value =
+        "com.example.demo";
+
+
+    document.getElementById("resultSection")
+        .style.display = "none";
+
+
+    document.getElementById("filesSection")
+        .style.display = "none";
+
+
+    document.getElementById("projectStructure")
+        .innerText = "";
+
+
+    document.getElementById("fileGrid")
+        .innerHTML = "";
+
+
+    generatedFiles = {};
+
+    currentProjectName = "";
+
+}
+
+
+/* =========================================================
+   AUTO GENERATE ARTIFACT NAME
+========================================================= */
+
+document.getElementById("projectName")
+    .addEventListener("input", function() {
+
+        const projectName =
+            this.value.trim();
+
+
+        if (!document.getElementById("artifactName").value) {
+
+            document.getElementById("artifactName").value =
+                projectName
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-");
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
