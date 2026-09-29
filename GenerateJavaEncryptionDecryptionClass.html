@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Java Encryption & Decryption Class Generator | GenerateSourceCode</title>
+
+    <meta name="description"
+          content="Generate a Java Encryption and Decryption class using AES GCM encryption. Enter class name and package name and generate ready-to-use Java source code.">
+
+    <meta name="keywords"
+          content="Java encryption generator, Java decryption generator, AES Java code generator, AES GCM Java, Java Encryption class, Java Decryption class, GenerateSourceCode">
+
+    <meta name="author" content="Ashutosh Pujari">
+
+    <meta property="og:title"
+          content="Java Encryption & Decryption Class Generator">
+
+    <meta property="og:description"
+          content="Generate ready-to-use Java AES Encryption and Decryption class code.">
+
+    <meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef4ff, #f8fbff);
+            color: #1f2937;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 22px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-container {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .brand span {
+            color: #93c5fd;
+        }
+
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        main {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .title-section h1 {
+            margin: 0;
+            font-size: 34px;
+            color: #0f172a;
+        }
+
+        .title-section p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.10);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input {
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.92;
+        }
+
+        .btn-generate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-copy {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-download {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .btn-email {
+            background: #ea580c;
+            color: white;
+        }
+
+        .btn-share {
+            background: #0891b2;
+            color: white;
+        }
+
+        .btn-clear {
+            background: #64748b;
+            color: white;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+
+        .output-header h2 {
+            margin: 0;
+            color: #0f172a;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 620px;
+            resize: vertical;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 16px;
+            border-left: 5px solid #2563eb;
+            background: #eff6ff;
+            border-radius: 8px;
+            color: #334155;
+        }
+
+        .info-box strong {
+            color: #1d4ed8;
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        .status {
+            margin-top: 12px;
+            min-height: 20px;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        @media (max-width: 800px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .title-section h1 {
+                font-size: 27px;
+            }
+
+            .button-row button {
+                width: 100%;
+            }
+
+            textarea {
+                min-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-container">
+        <div>
+            <div class="brand">
+                Generate<span>SourceCode</span>
+            </div>
+            <div class="tagline">
+                Create useful source code for everyday development
+            </div>
+        </div>
+
+        <div>
+            Java Tools
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <section class="title-section">
+        <h1>Java Encryption & Decryption Class Generator</h1>
+
+        <p>
+            Generate a ready-to-use Java AES-GCM Encryption and Decryption class
+            instantly.
+        </p>
+    </section>
+
+    <section class="card">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="className">Java Class Name</label>
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Example: EncryptionUtil"
+                    value="EncryptionUtil">
+
+                <div class="help-text">
+                    Enter a valid Java class name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="packageName">Package Name</label>
+
+                <input
+                    type="text"
+                    id="packageName"
+                    placeholder="Example: com.example.security"
+                    value="com.example.security">
+
+                <div class="help-text">
+                    Example: com.mycompany.security
+                </div>
+            </div>
+
+        </div>
+
+        <div class="button-row">
+
+            <button class="btn-generate"
+                    onclick="generateJavaCode()">
+                Generate Code
+            </button>
+
+            <button class="btn-clear"
+                    onclick="clearForm()">
+                Clear
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
+
+    </section>
+
+    <section class="card">
+
+        <div class="output-header">
+            <h2>Generated Java Code</h2>
+        </div>
+
+        <textarea id="outputCode"
+                  placeholder="Generated Java code will appear here..."
+                  spellcheck="false"></textarea>
+
+        <div class="button-row">
+
+            <button class="btn-copy"
+                    onclick="copyCode()">
+                Copy Code
+            </button>
+
+            <button class="btn-download"
+                    onclick="downloadCode()">
+                Download .java
+            </button>
+
+            <button class="btn-email"
+                    onclick="emailCode()">
+                Email
+            </button>
+
+            <button class="btn-share"
+                    onclick="shareCode()">
+                Share
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Generated Class Features</h2>
+
+        <div class="info-box">
+
+            <strong>Encryption Algorithm:</strong>
+            AES/GCM/NoPadding
+
+            <br><br>
+
+            <strong>Key Size:</strong>
+            256-bit AES
+
+            <br><br>
+
+            <strong>IV:</strong>
+            Secure random 12-byte IV generated for every encryption operation.
+
+            <br><br>
+
+            <strong>Output:</strong>
+            Base64 encoded IV + encrypted data.
+
+            <br><br>
+
+            <strong>Java APIs:</strong>
+            javax.crypto, java.security, java.util.Base64
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+
+    <div>
+        © 2026 GenerateSourceCode
+    </div>
+
+    <div style="margin-top:8px;">
+        Created by Ashutosh Pujari
+    </div>
+
+    <div style="margin-top:8px;">
+        <a href="https://www.generatesourcecode.co.in/"
+           target="_blank">
+            GenerateSourceCode
+        </a>
+    </div>
+
+</footer>
+
+
+<script>
+
+function getClassName() {
+
+    return document
+        .getElementById("className")
+        .value
+        .trim();
+}
+
+
+function getPackageName() {
+
+    return document
+        .getElementById("packageName")
+        .value
+        .trim();
+}
+
+
+function validateInput() {
+
+    const className = getClassName();
+    const packageName = getPackageName();
+
+    if (!className) {
+
+        alert("Please enter Java class name.");
+        return false;
+    }
+
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(className)) {
+
+        alert(
+            "Invalid Java class name.\n\n" +
+            "Example: EncryptionUtil"
+        );
+
+        return false;
+    }
+
+    if (!packageName) {
+
+        alert("Please enter package name.");
+        return false;
+    }
+
+    if (!/^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$/
+        .test(packageName)) {
+
+        alert(
+            "Invalid Java package name.\n\n" +
+            "Example: com.example.security"
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+
+function generateJavaCode() {
+
+    if (!validateInput()) {
+        return;
+    }
+
+    const className = getClassName();
+    const packageName = getPackageName();
+
+    const code = `package ${packageName};
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+/**
+ * Utility class providing AES-GCM Encryption and Decryption.
+ *
+ * <p>
+ * AES/GCM/NoPadding is used because GCM provides both
+ * confidentiality and integrity.
+ * </p>
+ *
+ * <p>
+ * The encrypted result contains:
+ * <ul>
+ *     <li>12-byte IV</li>
+ *     <li>Encrypted data + authentication tag</li>
+ * </ul>
+ * </p>
+ *
+ * @author GenerateSourceCode
+ */
+public class ${className} {
+
+    private static final String ALGORITHM = "AES/GCM/NoPadding";
+
+    private static final int AES_KEY_SIZE = 256;
+
+    private static final int GCM_IV_LENGTH = 12;
+
+    private static final int GCM_TAG_LENGTH = 128;
+
+    private static final SecureRandom SECURE_RANDOM =
+            new SecureRandom();
+
+    private final SecretKey secretKey;
+
+
+    /**
+     * Creates an encryption utility using the supplied Base64 key.
+     *
+     * @param base64Key Base64 encoded AES key
+     */
+    public ${className}(String base64Key) {
+
+        byte[] keyBytes =
+                Base64.getDecoder().decode(base64Key);
+
+        this.secretKey =
+                new SecretKeySpec(keyBytes, "AES");
+    }
+
+
+    /**
+     * Creates a new ${className} instance using
+     * a randomly generated AES-256 key.
+     *
+     * @return ${className} instance
+     */
+    public static ${className} createWithGeneratedKey()
+            throws Exception {
+
+        KeyGenerator keyGenerator =
+                KeyGenerator.getInstance("AES");
+
+        keyGenerator.init(AES_KEY_SIZE);
+
+        SecretKey key =
+                keyGenerator.generateKey();
+
+        String base64Key =
+                Base64.getEncoder()
+                      .encodeToString(key.getEncoded());
+
+        return new ${className}(base64Key);
+    }
+
+
+    /**
+     * Encrypts plain text using AES-GCM.
+     *
+     * @param plainText text to encrypt
+     * @return Base64 encoded encrypted value
+     */
+    public String encrypt(String plainText)
+            throws Exception {
+
+        byte[] iv =
+                new byte[GCM_IV_LENGTH];
+
+        SECURE_RANDOM.nextBytes(iv);
+
+        Cipher cipher =
+                Cipher.getInstance(ALGORITHM);
+
+        GCMParameterSpec parameterSpec =
+                new GCMParameterSpec(
+                        GCM_TAG_LENGTH,
+                        iv
+                );
+
+        cipher.init(
+                Cipher.ENCRYPT_MODE,
+                secretKey,
+                parameterSpec
+        );
+
+        byte[] encryptedBytes =
+                cipher.doFinal(
+                        plainText.getBytes(
+                                StandardCharsets.UTF_8
+                        )
+                );
+
+        /*
+         * Store IV together with encrypted data.
+         *
+         * Format:
+         *
+         * [IV length][IV][Encrypted Data]
+         */
+
+        ByteBuffer byteBuffer =
+                ByteBuffer.allocate(
+                        4 +
+                        iv.length +
+                        encryptedBytes.length
+                );
+
+        byteBuffer.putInt(iv.length);
+
+        byteBuffer.put(iv);
+
+        byteBuffer.put(encryptedBytes);
+
+        return Base64.getEncoder()
+                .encodeToString(
+                        byteBuffer.array()
+                );
+    }
+
+
+    /**
+     * Decrypts a Base64 encoded encrypted value.
+     *
+     * @param encryptedText Base64 encoded encrypted value
+     * @return decrypted plain text
+     */
+    public String decrypt(String encryptedText)
+            throws Exception {
+
+        byte[] decodedBytes =
+                Base64.getDecoder()
+                        .decode(encryptedText);
+
+        ByteBuffer byteBuffer =
+                ByteBuffer.wrap(decodedBytes);
+
+        int ivLength =
+                byteBuffer.getInt();
+
+        byte[] iv =
+                new byte[ivLength];
+
+        byteBuffer.get(iv);
+
+        byte[] encryptedBytes =
+                new byte[byteBuffer.remaining()];
+
+        byteBuffer.get(encryptedBytes);
+
+        Cipher cipher =
+                Cipher.getInstance(ALGORITHM);
+
+        GCMParameterSpec parameterSpec =
+                new GCMParameterSpec(
+                        GCM_TAG_LENGTH,
+                        iv
+                );
+
+        cipher.init(
+                Cipher.DECRYPT_MODE,
+                secretKey,
+                parameterSpec
+        );
+
+        byte[] decryptedBytes =
+                cipher.doFinal(encryptedBytes);
+
+        return new String(
+                decryptedBytes,
+                StandardCharsets.UTF_8
+        );
+    }
+
+
+    /**
+     * Returns the Base64 encoded AES key.
+     *
+     * IMPORTANT:
+     * Store this key securely.
+     *
+     * @return Base64 encoded AES key
+     */
+    public String getBase64Key() {
+
+        return Base64.getEncoder()
+                .encodeToString(
+                        secretKey.getEncoded()
+                );
+    }
+
+
+    /**
+     * Example usage.
+     */
+    public static void main(String[] args)
+            throws Exception {
+
+        ${className} encryptionUtil =
+                ${className}.createWithGeneratedKey();
+
+        String originalText =
+                "Hello, this is a secret message.";
+
+        String encryptedText =
+                encryptionUtil.encrypt(
+                        originalText
+                );
+
+        String decryptedText =
+                encryptionUtil.decrypt(
+                        encryptedText
+                );
+
+        System.out.println(
+                "Original : " + originalText
+        );
+
+        System.out.println(
+                "Encrypted: " + encryptedText
+        );
+
+        System.out.println(
+                "Decrypted: " + decryptedText
+        );
+
+        System.out.println(
+                "AES Key  : " +
+                encryptionUtil.getBase64Key()
+        );
+    }
+}
+`;
+
+    document.getElementById("outputCode").value = code;
+
+    document.getElementById("status").innerText =
+        "Java Encryption & Decryption class generated successfully.";
+
+}
+
+
+async function copyCode() {
+
+    const code =
+        document.getElementById("outputCode").value;
+
+    if (!code.trim()) {
+
+        alert("Please generate code first.");
+        return;
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(code);
+
+        document.getElementById("status").innerText =
+            "Code copied to clipboard.";
+
+    } catch (error) {
+
+        const textarea =
+            document.getElementById("outputCode");
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        document.getElementById("status").innerText =
+            "Code copied to clipboard.";
+    }
+}
+
+
+function downloadCode() {
+
+    const code =
+        document.getElementById("outputCode").value;
+
+    const className =
+        getClassName();
+
+    if (!code.trim()) {
+
+        alert("Please generate code first.");
+        return;
+    }
+
+    const blob =
+        new Blob(
+            [code],
+            { type: "text/plain;charset=utf-8" }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        className + ".java";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    document.getElementById("status").innerText =
+        "Java file downloaded successfully.";
+}
+
+
+function emailCode() {
+
+    const code =
+        document.getElementById("outputCode").value;
+
+    const className =
+        getClassName();
+
+    if (!code.trim()) {
+
+        alert("Please generate code first.");
+        return;
+    }
+
+    const subject =
+        encodeURIComponent(
+            "Java Encryption & Decryption Class - " +
+            className
+        );
+
+    const body =
+        encodeURIComponent(
+            "Generated Java Encryption & Decryption Class\n\n" +
+            code
+        );
+
+    window.location.href =
+        "mailto:?subject=" +
+        subject +
+        "&body=" +
+        body;
+}
+
+
+async function shareCode() {
+
+    const code =
+        document.getElementById("outputCode").value;
+
+    const className =
+        getClassName();
+
+    if (!code.trim()) {
+
+        alert("Please generate code first.");
+        return;
+    }
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title:
+                    "Java Encryption & Decryption Class",
+
+                text:
+                    code
+
+            });
+
+            document.getElementById("status").innerText =
+                "Code shared successfully.";
+
+        } catch (error) {
+
+            // User cancelled sharing.
+        }
+
+    } else {
+
+        await copyCode();
+
+        alert(
+            "Native sharing is not supported by this browser. " +
+            "The generated code has been copied to the clipboard."
+        );
+    }
+}
+
+
+function clearForm() {
+
+    document.getElementById("className").value =
+        "";
+
+    document.getElementById("packageName").value =
+        "";
+
+    document.getElementById("outputCode").value =
+        "";
+
+    document.getElementById("status").innerText =
+        "";
+
+}
+
+
+window.addEventListener(
+    "load",
+    function() {
+
+        generateJavaCode();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
