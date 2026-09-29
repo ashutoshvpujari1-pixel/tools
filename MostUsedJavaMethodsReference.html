@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 Most Used Java Methods & Classes | Developer Reference</title>
+<meta name="description" content="A practical developer reference containing the top 100 most used Java methods, classes and APIs with purpose, syntax and examples.">
+<meta name="keywords" content="Java methods, Java reference, Java cheat sheet, Java developers, Java String methods, Java Collections, Java Stream API">
+<meta property="og:title" content="Top 100 Most Used Java Methods & Classes">
+<meta property="og:description" content="Quick reference for the most commonly used Java methods and classes.">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --text:#172033; --muted:#657189;
+  --primary:#2563eb; --primary2:#7c3aed; --border:#dce3ef;
+  --code:#101827; --codeText:#e5eefc; --shadow:0 10px 30px rgba(20,40,80,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{
+  background:linear-gradient(135deg,#172554,#2563eb 55%,#7c3aed);
+  color:white;padding:42px 20px 35px;text-align:center;
+}
+header h1{margin:0;font-size:clamp(28px,5vw,48px)}
+header p{margin:12px auto 0;max-width:850px;font-size:17px;opacity:.92}
+.container{max-width:1250px;margin:auto;padding:24px 18px}
+.toolbar{
+  position:sticky;top:0;z-index:10;background:rgba(244,247,251,.94);
+  backdrop-filter:blur(10px);padding:14px 0;
+}
+.controls{display:flex;gap:10px;flex-wrap:wrap}
+input,select,button{
+  border:1px solid var(--border);border-radius:10px;padding:12px 14px;
+  font-size:15px;background:white;color:var(--text)
+}
+input{flex:1;min-width:240px}
+button{cursor:pointer;font-weight:700}
+button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--border);padding:10px 16px;border-radius:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:20px;box-shadow:var(--shadow);transition:.2s;position:relative
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(20,40,80,.13)}
+.rank{
+  position:absolute;right:16px;top:16px;background:#eaf1ff;color:#1754c8;
+  font-weight:800;border-radius:20px;padding:5px 10px;font-size:13px
+}
+.category{font-size:12px;color:var(--primary);font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+.method{font-size:20px;font-weight:800;padding-right:55px;margin-bottom:8px}
+.purpose{color:var(--muted);line-height:1.5;min-height:45px}
+pre{
+  background:var(--code);color:var(--codeText);padding:14px;border-radius:10px;
+  overflow:auto;font-size:13px;line-height:1.55;margin:15px 0 0
+}
+.copy{margin-top:10px;background:#eef3ff;color:#1748b5;border-color:#cbd9ff;padding:8px 11px}
+.empty{text-align:center;padding:50px;color:var(--muted)}
+footer{text-align:center;padding:35px 15px;color:var(--muted)}
+.badge{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:20px;background:#f1f5f9;font-size:12px}
+@media(max-width:600px){.container{padding:16px 12px}.grid{grid-template-columns:1fr}.card{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>☕ 100 Most Used Java Methods & Classes</h1>
+  <p>A practical, searchable Java developer reference — quickly find common classes, methods, their purpose and a simple usage example.</p>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔎 Search String, stream, JSON, file, date, HTTP...">
+      <select id="category">
+        <option value="all">All Categories</option>
+      </select>
+      <button class="primary" onclick="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="shown">100</b> shown</div>
+    <div class="stat"><b>100</b> total references</div>
+    <div class="stat">💡 Click <b>Copy</b> to copy an example</div>
+  </div>
+
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" style="display:none">No matching Java reference found.</div>
+</div>
+
+<footer>
+  <b>Java Developer Quick Reference</b><br>
+  Created for developers who want commonly used Java APIs at their fingertips.
+</footer>
+
+<script>
+const data = [
+["String","Text processing",'String name = "Ashutosh";'],
+["String.equals()","Compare strings",'if (name.equals("Ashutosh")) { }'],
+["String.isEmpty()","Check empty string",'boolean empty = name.isEmpty();'],
+["String.length()","Get string length",'int length = name.length();'],
+["String.substring()","Extract text",'String part = name.substring(0, 5);'],
+["String.contains()","Search text",'boolean found = name.contains("sh");'],
+["String.split()","Split text",'String[] parts = name.split(" ");'],
+["String.trim()","Remove whitespace",'String clean = name.trim();'],
+["String.toLowerCase()","Convert to lowercase",'String lower = name.toLowerCase();'],
+["String.toUpperCase()","Convert to uppercase",'String upper = name.toUpperCase();'],
+["List","Store ordered collections",'List<String> names = new ArrayList<>();'],
+["ArrayList","Dynamic array",'List<String> names = new ArrayList<>();'],
+["List.add()","Add element",'names.add("Java");'],
+["List.get()","Retrieve element",'String value = names.get(0);'],
+["List.remove()","Remove element",'names.remove(0);'],
+["List.size()","Number of elements",'int count = names.size();'],
+["Map","Key/value storage",'Map<String,Integer> map = new HashMap<>();'],
+["HashMap","Hash-based map",'Map<String,Integer> map = new HashMap<>();'],
+["Map.put()","Add/update key",'map.put("Java", 100);'],
+["Map.get()","Retrieve value",'Integer value = map.get("Java");'],
+["Map.containsKey()","Check key",'boolean exists = map.containsKey("Java");'],
+["Map.remove()","Remove entry",'map.remove("Java");'],
+["Set","Unique elements",'Set<String> set = new HashSet<>();'],
+["HashSet","Hash-based set",'Set<String> set = new HashSet<>();'],
+["Set.contains()","Check element",'boolean exists = set.contains("Java");'],
+["Optional","Handle possible null values",'Optional<String> value = Optional.ofNullable(name);'],
+["Optional.ofNullable()","Create Optional",'Optional<String> value = Optional.ofNullable(name);'],
+["Optional.isPresent()","Check value",'if (value.isPresent()) { }'],
+["Optional.orElse()","Default value",'String result = value.orElse("Unknown");'],
+["Optional.orElseThrow()","Throw if absent",'String result = value.orElseThrow();'],
+["Arrays","Array utilities",'int[] values = {3, 1, 2};'],
+["Arrays.asList()","Array → List",'List<String> list = Arrays.asList("A", "B");'],
+["Arrays.sort()","Sort array",'Arrays.sort(values);'],
+["Collections","Collection utilities",'Collections.sort(names);'],
+["Collections.sort()","Sort collection",'Collections.sort(names);'],
+["Collections.reverse()","Reverse collection",'Collections.reverse(names);'],
+["Collections.unmodifiableList()","Immutable list",'List<String> readOnly = Collections.unmodifiableList(names);'],
+["Stream","Functional collection processing",'names.stream();'],
+["stream()","Create stream",'names.stream()'],
+["filter()","Filter elements",'names.stream().filter(n -> n.length() > 3)'],
+["map()","Transform elements",'names.stream().map(String::toUpperCase)'],
+["collect()","Convert stream result",'names.stream().collect(Collectors.toList())'],
+["Collectors.toList()","Stream → List",'List<String> result = names.stream().collect(Collectors.toList());'],
+["Collectors.toMap()","Stream → Map",'Map<String,Integer> result = names.stream().collect(Collectors.toMap(x -> x, String::length));'],
+["forEach()","Process elements",'names.forEach(System.out::println);'],
+["findFirst()","Get first matching element",'names.stream().findFirst();'],
+["anyMatch()","Check any match",'names.stream().anyMatch(n -> n.startsWith("J"));'],
+["allMatch()","Check all elements",'names.stream().allMatch(n -> n.length() > 2);'],
+["count()","Count elements",'long count = names.stream().count();'],
+["sorted()","Sort stream",'names.stream().sorted();'],
+["distinct()","Remove duplicates",'names.stream().distinct();'],
+["reduce()","Aggregate values",'int sum = values.stream().reduce(0, Integer::sum);'],
+["Math","Mathematical operations",'Math.max(10, 20);'],
+["Math.max()","Maximum value",'int max = Math.max(a, b);'],
+["Math.min()","Minimum value",'int min = Math.min(a, b);'],
+["Math.round()","Round number",'long rounded = Math.round(10.6);'],
+["Math.random()","Random number",'double random = Math.random();'],
+["Integer.parseInt()","String → int",'int n = Integer.parseInt("100");'],
+["Long.parseLong()","String → long",'long n = Long.parseLong("100000");'],
+["Double.parseDouble()","String → double",'double n = Double.parseDouble("10.50");'],
+["String.valueOf()","Convert to String",'String text = String.valueOf(100);'],
+["Integer.valueOf()","Create Integer",'Integer value = Integer.valueOf("100");'],
+["System.out.println()","Console output",'System.out.println("Hello Java");'],
+["System.currentTimeMillis()","Current timestamp",'long time = System.currentTimeMillis();'],
+["LocalDate","Date",'LocalDate date = LocalDate.now();'],
+["LocalDateTime","Date + time",'LocalDateTime now = LocalDateTime.now();'],
+["LocalTime","Time",'LocalTime time = LocalTime.now();'],
+["DateTimeFormatter","Format dates",'DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");'],
+["LocalDate.parse()","Parse date",'LocalDate date = LocalDate.parse("2026-09-29");'],
+["LocalDateTime.now()","Current date/time",'LocalDateTime now = LocalDateTime.now();'],
+["File","File operations",'File file = new File("data.txt");'],
+["Files.readString()","Read text file",'String text = Files.readString(Path.of("data.txt"));'],
+["Files.writeString()","Write text file",'Files.writeString(Path.of("data.txt"), "Hello");'],
+["Files.exists()","Check file",'boolean exists = Files.exists(Path.of("data.txt"));'],
+["Path","File path",'Path path = Path.of("data.txt");'],
+["Paths.get()","Create path",'Path path = Paths.get("data.txt");'],
+["IOException","I/O exception",'catch (IOException e) { e.printStackTrace(); }'],
+["try-with-resources","Resource management",'try (BufferedReader br = Files.newBufferedReader(path)) { }'],
+["ObjectMapper","JSON processing",'ObjectMapper mapper = new ObjectMapper();'],
+["ObjectMapper.readValue()","JSON → Java",'User user = mapper.readValue(json, User.class);'],
+["ObjectMapper.writeValueAsString()","Java → JSON",'String json = mapper.writeValueAsString(user);'],
+["Pattern","Regular expressions",'Pattern p = Pattern.compile("\\\\d+");'],
+["Matcher","Regex matching",'Matcher m = p.matcher(text);'],
+["UUID.randomUUID()","Generate UUID",'UUID id = UUID.randomUUID();'],
+["BigDecimal","Financial precision",'BigDecimal amount = new BigDecimal("100.50");'],
+["ExecutorService","Thread/task execution",'ExecutorService executor = Executors.newFixedThreadPool(4);'],
+["CompletableFuture","Asynchronous processing",'CompletableFuture.runAsync(() -> doWork());'],
+["Thread.sleep()","Pause execution",'Thread.sleep(1000);'],
+["HttpClient","HTTP requests",'HttpClient client = HttpClient.newHttpClient();'],
+["HttpRequest","Build HTTP request",'HttpRequest request = HttpRequest.newBuilder(uri).GET().build();'],
+["HttpResponse","HTTP response",'HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());'],
+["Logger","Application logging",'logger.info("Application started");'],
+["LoggerFactory.getLogger()","Create logger",'private static final Logger logger = LoggerFactory.getLogger(MyClass.class);'],
+["RuntimeException","Runtime errors",'throw new RuntimeException("Something went wrong");'],
+["IllegalArgumentException","Invalid arguments",'throw new IllegalArgumentException("Invalid input");'],
+["NullPointerException","Null reference error",'// Avoid by validating references before use'],
+["Class.forName()","Load class dynamically",'Class<?> clazz = Class.forName("com.example.MyClass");'],
+["Object.getClass()","Get runtime class",'Class<?> clazz = object.getClass();'],
+["Objects.requireNonNull()","Validate null",'Objects.requireNonNull(name, "name must not be null");'],
+["Objects.equals()","Null-safe comparison",'boolean same = Objects.equals(a, b);']
+];
+
+const categoryRules = [
+  ["String","String / Text",0,9], ["List","Collections",10,15], ["Map","Collections",16,21],
+  ["Set","Collections",22,24], ["Optional","Optional",25,29], ["Arrays","Arrays",30,32],
+  ["Collections","Collections",33,36], ["Stream","Streams",37,51], ["Math","Math",52,56],
+  ["Integer","Conversions",57,60], ["String.valueOf","Conversions",60,61], ["System","System",62,63],
+  ["Local","Date & Time",64,69], ["DateTimeFormatter","Date & Time",67,68],
+  ["File","Files & I/O",70,70], ["Files","Files & I/O",71,73], ["Path","Files & I/O",74,76],
+  ["IOException","Files & I/O",76,77], ["try-with","Files & I/O",77,77],
+  ["ObjectMapper","JSON",78,80], ["Pattern","Regex",81,82], ["Matcher","Regex",82,82],
+  ["UUID","Utility",83,83], ["BigDecimal","Utility",84,84], ["ExecutorService","Concurrency",85,85],
+  ["CompletableFuture","Concurrency",86,86], ["Thread","Concurrency",87,87],
+  ["HttpClient","HTTP",88,90], ["HttpRequest","HTTP",89,89], ["HttpResponse","HTTP",90,90],
+  ["Logger","Logging",91,92], ["RuntimeException","Exceptions",93,93],
+  ["IllegalArgumentException","Exceptions",94,94], ["NullPointerException","Exceptions",95,95],
+  ["Class","Reflection",96,96], ["Object","Object",97,97], ["Objects","Utility",98,99]
+];
+
+function getCategory(method, i){
+  for(const r of categoryRules){
+    if(i>=r[2] && i<=r[3] && (method.startsWith(r[0]) || r[0]==="Stream" && ["stream()","filter()","map()","collect()","forEach()","findFirst()","anyMatch()","allMatch()","count()","sorted()","distinct()","reduce()"].includes(method))) return r[1];
+  }
+  if(method.startsWith("Collectors.")) return "Streams";
+  return "Java API";
+}
+data.forEach((x,i)=>x.push(getCategory(x[0],i)));
+
+const catSelect=document.getElementById("category");
+[...new Set(data.map(x=>x[3]))].sort().forEach(c=>{
+  const o=document.createElement("option"); o.value=c; o.textContent=c; catSelect.appendChild(o);
+});
+
+function render(){
+  const q=document.getElementById("search").value.toLowerCase().trim();
+  const cat=catSelect.value;
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  let count=0;
+  data.forEach((x,i)=>{
+    const [method,purpose,example,category]=x;
+    const hay=(method+" "+purpose+" "+example+" "+category).toLowerCase();
+    if((!q||hay.includes(q))&&(cat==="all"||category===cat)){
+      count++;
+      const card=document.createElement("article");
+      card.className="card";
+      card.innerHTML=`
+        <div class="rank">#${i+1}</div>
+        <div class="category">${category}</div>
+        <div class="method"><code>${escapeHtml(method)}</code></div>
+        <div class="purpose">${escapeHtml(purpose)}</div>
+        <pre id="code-${i}">${escapeHtml(example)}</pre>
+        <button class="copy" onclick="copyCode(${i},this)">📋 Copy Example</button>
+      `;
+      grid.appendChild(card);
+    }
+  });
+  document.getElementById("shown").textContent=count;
+  document.getElementById("empty").style.display=count?"none":"block";
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+async function copyCode(i,btn){
+  await navigator.clipboard.writeText(data[i][2]);
+  const old=btn.textContent; btn.textContent="✅ Copied!";
+  setTimeout(()=>btn.textContent=old,1200);
+}
+function resetFilters(){
+  document.getElementById("search").value="";
+  catSelect.value="all";
+  render();
+}
+document.getElementById("search").addEventListener("input",render);
+catSelect.addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
