@@ -19,7 +19,6 @@
   gtag('config', 'G-334DZV34L8');
 </script>
 
-
 <style>
 :root{
   --bg:#f4f7fb; --card:#fff; --text:#172033; --muted:#657189;
@@ -48,8 +47,17 @@ input,select,button{
 input{flex:1;min-width:240px}
 button{cursor:pointer;font-weight:700}
 button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+button.special{background:var(--primary2);color:#fff;border-color:var(--primary2)}
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
 .stat{background:var(--card);border:1px solid var(--border);padding:10px 16px;border-radius:12px}
+.full-class-banner{
+  background:linear-gradient(135deg,#1e1b4b,#312e81);
+  color:#fff;border-radius:16px;padding:24px;margin-bottom:20px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px
+}
+.full-class-banner h2{margin:0;font-size:22px}
+.full-class-banner p{margin:0;color:#cbd5e1;font-size:14px;line-height:1.5}
+.full-class-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
 .card{
   background:var(--card);border:1px solid var(--border);border-radius:16px;
@@ -67,10 +75,10 @@ pre{
   background:var(--code);color:var(--codeText);padding:14px;border-radius:10px;
   overflow:auto;font-size:13px;line-height:1.55;margin:15px 0 0
 }
-.example-title{margin-top:15px;font-size:12px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.6px}.copy{margin-top:10px;background:#eef3ff;color:#1748b5;border-color:#cbd9ff;padding:8px 11px}
+.example-title{margin-top:15px;font-size:12px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.6px}
+.copy{margin-top:10px;background:#eef3ff;color:#1748b5;border-color:#cbd9ff;padding:8px 11px}
 .empty{text-align:center;padding:50px;color:var(--muted)}
 footer{text-align:center;padding:35px 15px;color:var(--muted)}
-.badge{display:inline-block;margin-top:10px;padding:6px 10px;border-radius:20px;background:#f1f5f9;font-size:12px}
 @media(max-width:600px){.container{padding:16px 12px}.grid{grid-template-columns:1fr}.card{padding:16px}}
 </style>
 </head>
@@ -82,6 +90,14 @@ footer{text-align:center;padding:35px 15px;color:var(--muted)}
 </header>
 
 <div class="container">
+  <div class="full-class-banner">
+    <h2>📦 Complete Runnable Java Class</h2>
+    <p>Need all 100 snippets in a single copy-pasteable file? Click below to copy the complete <code>MostUsedJavaMethodsReference.java</code> class with modular methods organized and called from a central <code>main</code> method.</p>
+    <div class="full-class-actions">
+      <button class="special" onclick="copyFullJavaClass(this)">📋 Copy Full Java Class</button>
+    </div>
+  </div>
+
   <div class="toolbar">
     <div class="controls">
       <input id="search" type="search" placeholder="🔎 Search String, stream, JSON, file, date, HTTP...">
@@ -95,7 +111,7 @@ footer{text-align:center;padding:35px 15px;color:var(--muted)}
   <div class="stats">
     <div class="stat"><b id="shown">100</b> shown</div>
     <div class="stat"><b>100</b> total references</div>
-    <div class="stat">💡 Click <b>Copy</b> to copy an example</div>
+    <div class="stat">💡 Click <b>Copy</b> to copy an individual example</div>
   </div>
 
   <div id="grid" class="grid"></div>
@@ -278,6 +294,561 @@ async function copyCode(i,btn){
   const old=btn.textContent; btn.textContent="✅ Copied!";
   setTimeout(()=>btn.textContent=old,1200);
 }
+
+const fullJavaClassSource = `import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * A comprehensive reference class containing all 100 most used Java methods and classes.
+ */
+public class MostUsedJavaMethodsReference {
+
+    public static void main(String[] args) {
+        System.out.println("=== Starting 100 Most Used Java Methods Demonstration ===\\n");
+
+        runStringMethods();
+        runCollectionMethods();
+        runMapAndSetMethods();
+        runOptionalMethods();
+        runArrayAndUtilityMethods();
+        runStreamMethods();
+        runMathAndConversionMethods();
+        runSystemAndDateTimeMethods();
+        runFileAndIoMethods();
+        runJsonRegexAndUtilityMethods();
+        runConcurrencyAndHttpMethods();
+        runExceptionAndReflectionMethods();
+
+        System.out.println("\\n=== Demonstration Completed Successfully ===");
+    }
+
+    public static void runStringMethods() {
+        System.out.println("--- 1. String Methods ---");
+        String name = "Ashutosh Pujari";
+        System.out.println("Name: " + name);
+        System.out.println("Length: " + name.length());
+        System.out.println("Uppercase: " + name.toUpperCase());
+
+        String firstName = "Ashutosh";
+        String enteredName = "Ashutosh";
+        if (firstName.equals(enteredName)) {
+            System.out.println("Names match");
+        } else {
+            System.out.println("Names do not match");
+        }
+
+        String input = "";
+        if (input.isEmpty()) {
+            System.out.println("Input is empty");
+        } else {
+            System.out.println("Input contains text: " + input);
+        }
+
+        String message = "Hello Java";
+        int length = message.length();
+        System.out.println("Message: " + message);
+        System.out.println("Number of characters: " + length);
+
+        String email = "ashutosh@example.com";
+        String userName = email.substring(0, email.indexOf("@"));
+        System.out.println("Email: " + email);
+        System.out.println("User name: " + userName);
+
+        if (message.contains("Java")) {
+            System.out.println("The message contains Java");
+        } else {
+            System.out.println("Java was not found");
+        }
+
+        String namesText = "Ashutosh,Rahul,Priya";
+        String[] names = namesText.split(",");
+        for (String n : names) {
+            System.out.println("Name: " + n);
+        }
+
+        String paddedInput = "   Hello Java   ";
+        String cleaned = paddedInput.trim();
+        System.out.println("Before: [" + paddedInput + "]");
+        System.out.println("After : [" + cleaned + "]");
+
+        String upperName = "ASHUTOSH PUJARI";
+        System.out.println(upperName.toLowerCase());
+
+        String lowerName = "ashutosh pujari";
+        System.out.println(lowerName.toUpperCase());
+    }
+
+    public static void runCollectionMethods() {
+        System.out.println("\\n--- 2. List Collections ---");
+        List<String> techList = new ArrayList<>();
+        techList.add("Java");
+        techList.add("Spring Boot");
+        techList.add("Microservices");
+        System.out.println("Total technologies: " + techList.size());
+        for (String t : techList) {
+            System.out.println(t);
+        }
+
+        List<String> languages = new ArrayList<>();
+        languages.add("Java");
+        languages.add("Python");
+        languages.add("JavaScript");
+        System.out.println("Languages: " + languages);
+        languages.remove("Python");
+        System.out.println("After removal: " + languages);
+
+        List<String> technologies = new ArrayList<>();
+        technologies.add("Java");
+        technologies.add("Spring Boot");
+        technologies.add("Docker");
+        System.out.println("Technologies: " + technologies);
+
+        List<String> nameList = new ArrayList<>();
+        nameList.add("Ashutosh");
+        nameList.add("Rahul");
+        nameList.add("Priya");
+        String firstNameElem = nameList.get(0);
+        System.out.println("First name: " + firstNameElem);
+
+        List<String> remList = new ArrayList<>();
+        remList.add("Java");
+        remList.add("Python");
+        remList.add("JavaScript");
+        String removed = remList.remove(1);
+        System.out.println("Removed: " + removed);
+        System.out.println("Remaining: " + remList);
+
+        List<String> sizeList = Arrays.asList("Java", "Spring", "Docker");
+        int count = sizeList.size();
+        System.out.println("Number of technologies: " + count);
+    }
+
+    public static void runMapAndSetMethods() {
+        System.out.println("\\n--- 3. Map & Set Methods ---");
+        Map<String, Integer> marks = new HashMap<>();
+        marks.put("Java", 90);
+        marks.put("Spring Boot", 85);
+        marks.put("Docker", 80);
+        System.out.println("Java marks: " + marks.get("Java"));
+        System.out.println("All marks: " + marks);
+
+        Map<String, String> employees = new HashMap<>();
+        employees.put("E101", "Ashutosh");
+        employees.put("E102", "Rahul");
+        employees.put("E103", "Priya");
+        employees.forEach((id, name) -> System.out.println(id + " -> " + name));
+
+        Map<String, Integer> inventory = new HashMap<>();
+        inventory.put("Laptop", 10);
+        inventory.put("Mouse", 25);
+        inventory.put("Laptop", 12);
+        System.out.println(inventory);
+
+        Map<String, Integer> prices = new HashMap<>();
+        prices.put("Laptop", 75000);
+        prices.put("Mouse", 800);
+        Integer laptopPrice = prices.get("Laptop");
+        System.out.println("Laptop price: " + laptopPrice);
+
+        Map<String, String> users = new HashMap<>();
+        users.put("admin", "Ashutosh");
+        if (users.containsKey("admin")) {
+            System.out.println("User exists");
+        } else {
+            System.out.println("User not found");
+        }
+
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Java", 95);
+        scores.put("Python", 85);
+        Integer removedScore = scores.remove("Python");
+        System.out.println("Removed score: " + removedScore);
+        System.out.println("Remaining scores: " + scores);
+
+        Set<String> techSet = new HashSet<>();
+        techSet.add("Java");
+        techSet.add("Spring");
+        techSet.add("Java");
+        System.out.println("Unique technologies: " + techSet);
+
+        Set<Integer> numbersSet = new HashSet<>();
+        numbersSet.add(10);
+        numbersSet.add(20);
+        numbersSet.add(10);
+        numbersSet.add(30);
+        System.out.println("Unique numbers: " + numbersSet);
+
+        Set<String> skills = new HashSet<>(Arrays.asList("Java", "Spring Boot", "Docker"));
+        if (skills.contains("Java")) {
+            System.out.println("Java skill is available");
+        } else {
+            System.out.println("Java skill is not available");
+        }
+    }
+
+    public static void runOptionalMethods() {
+        System.out.println("\\n--- 4. Optional Methods ---");
+        String optionalNameVal = null;
+        Optional<String> optionalName = Optional.ofNullable(optionalNameVal);
+        if (optionalName.isPresent()) {
+            System.out.println("Name: " + optionalName.get());
+        } else {
+            System.out.println("Name was not provided");
+        }
+
+        Optional<String> valueOpt = Optional.ofNullable(optionalNameVal);
+        System.out.println("Optional contains value: " + valueOpt.isPresent());
+
+        Optional<String> javaOpt = Optional.of("Java");
+        if (javaOpt.isPresent()) {
+            System.out.println("Value is present: " + javaOpt.get());
+        } else {
+            System.out.println("Value is absent");
+        }
+
+        String databaseName = null;
+        String resolvedName = Optional.ofNullable(databaseName).orElse("Default Database");
+        System.out.println("Database name: " + resolvedName);
+
+        Optional<String> userNameOpt = Optional.of("Ashutosh");
+        String resolvedUser = userNameOpt.orElseThrow(() -> new IllegalStateException("User name is missing"));
+        System.out.println("User: " + resolvedUser);
+    }
+
+    public static void runArrayAndUtilityMethods() {
+        System.out.println("\\n--- 5. Arrays & Collections Utilities ---");
+        int[] nums = {5, 2, 9, 1, 7};
+        System.out.println("Array length: " + nums.length);
+        for (int num : nums) {
+            System.out.println(num);
+        }
+
+        List<String> langList = Arrays.asList("Java", "Python", "JavaScript");
+        System.out.println("Languages: " + langList);
+
+        int[] sortNums = {50, 10, 40, 20, 30};
+        System.out.println("Before sorting: " + Arrays.toString(sortNums));
+        Arrays.sort(sortNums);
+        System.out.println("After sorting : " + Arrays.toString(sortNums));
+
+        List<String> collNames = new ArrayList<>(Arrays.asList("Priya", "Ashutosh", "Rahul"));
+        Collections.sort(collNames);
+        System.out.println("Sorted names: " + collNames);
+
+        List<Integer> sortCollNums = new ArrayList<>(Arrays.asList(50, 10, 40, 20, 30));
+        Collections.sort(sortCollNums);
+        System.out.println("Sorted numbers: " + sortCollNums);
+
+        List<String> revNames = new ArrayList<>(Arrays.asList("Java", "Spring", "Docker"));
+        Collections.reverse(revNames);
+        System.out.println("Reversed list: " + revNames);
+
+        List<String> original = new ArrayList<>(Arrays.asList("Java", "Spring"));
+        List<String> readOnly = Collections.unmodifiableList(original);
+        System.out.println("Read-only list: " + readOnly);
+    }
+
+    public static void runStreamMethods() {
+        System.out.println("\\n--- 6. Stream API Methods ---");
+        List<String> streamNames = Arrays.asList("Ashutosh", "Rahul", "Priya");
+        streamNames.stream().filter(name -> name.length() > 5).forEach(System.out::println);
+
+        List<String> filterList = Arrays.asList("Java", "Spring", "Docker", "Git");
+        List<String> filteredResult = filterList.stream()
+                .filter(name -> name.length() > 4)
+                .collect(Collectors.toList());
+        System.out.println("Filtered: " + filteredResult);
+
+        List<String> mapList = Arrays.asList("java", "spring", "docker");
+        List<String> upperCaseNames = mapList.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+        System.out.println(upperCaseNames);
+
+        List<String> collectList = Arrays.asList("Java", "Spring", "Docker");
+        List<String> resultList = collectList.stream()
+                .filter(name -> name.length() > 4)
+                .collect(Collectors.toList());
+        System.out.println("Result: " + resultList);
+
+        Map<String, Integer> nameLengths = collectList.stream()
+                .collect(Collectors.toMap(name -> name, String::length));
+        System.out.println(nameLengths);
+
+        streamNames.forEach(name -> System.out.println("Employee: " + name));
+
+        Optional<String> firstTech = collectList.stream().findFirst();
+        firstTech.ifPresent(name -> System.out.println("First technology: " + name));
+
+        boolean hasJava = collectList.stream().anyMatch(name -> name.equals("Java"));
+        System.out.println("Java available: " + hasJava);
+
+        List<Integer> marksList = Arrays.asList(70, 80, 90, 85);
+        boolean allPassed = marksList.stream().allMatch(mark -> mark >= 50);
+        System.out.println("All students passed: " + allPassed);
+
+        long countTech = filterList.stream().filter(name -> name.length() > 4).count();
+        System.out.println("Matching technologies: " + countTech);
+
+        List<String> unsortedTech = Arrays.asList("Spring", "Java", "Docker");
+        List<String> sortedNames = unsortedTech.stream().sorted().collect(Collectors.toList());
+        System.out.println(sortedNames);
+
+        List<Integer> duplicateNums = Arrays.asList(10, 20, 10, 30, 20, 40);
+        List<Integer> uniqueNumbers = duplicateNums.stream().distinct().collect(Collectors.toList());
+        System.out.println("Unique numbers: " + uniqueNumbers);
+
+        List<Integer> reduceNums = Arrays.asList(10, 20, 30, 40);
+        int sum = reduceNums.stream().reduce(0, Integer::sum);
+        System.out.println("Sum: " + sum);
+    }
+
+    public static void runMathAndConversionMethods() {
+        System.out.println("\\n--- 7. Math & Conversions ---");
+        int a = 25, b = 40;
+        System.out.println("Maximum: " + Math.max(a, b));
+        System.out.println("Minimum: " + Math.min(a, b));
+        System.out.println("Square root: " + Math.sqrt(25));
+
+        int salary1 = 50000, salary2 = 65000;
+        System.out.println("Higher salary: " + Math.max(salary1, salary2));
+
+        int temp1 = 32, temp2 = 28;
+        System.out.println("Lower temperature: " + Math.min(temp1, temp2));
+
+        double price = 149.75;
+        System.out.println("Rounded price: " + Math.round(price));
+
+        int randomNum = (int) (Math.random() * 100) + 1;
+        System.out.println("Random number 1-100: " + randomNum);
+
+        int parsedInt = Integer.parseInt("250");
+        System.out.println("Parsed Int Result: " + (parsedInt + 50));
+
+        long parsedLong = Long.parseLong("10000000000");
+        System.out.println("Long value: " + parsedLong);
+
+        double parsedDouble = Double.parseDouble("125.75");
+        System.out.println("Double total: " + (parsedDouble + 25.25));
+
+        int empId = 101;
+        String idText = String.valueOf(empId);
+        System.out.println("Employee ID Text: " + idText);
+
+        Integer valObj = Integer.valueOf("100");
+        System.out.println("Integer value object: " + (valObj + 50));
+    }
+
+    public static void runSystemAndDateTimeMethods() {
+        System.out.println("\\n--- 8. System & Date/Time Methods ---");
+        System.out.println("Developer: Ashutosh, Experience: 20 years");
+
+        long startTime = System.currentTimeMillis();
+        Math.sqrt(1000);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Execution time: " + (endTime - startTime) + " ms");
+
+        LocalDate today = LocalDate.now();
+        System.out.println("Today: " + today + ", Year: " + today.getYear());
+
+        LocalDateTime nowDT = LocalDateTime.now();
+        System.out.println("Date and time: " + nowDT);
+
+        LocalTime currentTime = LocalTime.now();
+        System.out.println("Current time: " + currentTime);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        System.out.println("Formatted date: " + today.format(formatter));
+
+        LocalDate parsedDate = LocalDate.parse("2026-09-29");
+        System.out.println("Parsed date: " + parsedDate);
+
+        LocalDateTime currentDT = LocalDateTime.now();
+        System.out.println("Current date/time formatted: " + currentDT.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+    }
+
+    public static void runFileAndIoMethods() {
+        System.out.println("\\n--- 9. Files & I/O Methods ---");
+        File file = new File("data.txt");
+        System.out.println("File name: " + file.getName());
+        System.out.println("Exists: " + file.exists());
+
+        Path path = Path.of("data.txt");
+
+        try {
+            Files.writeString(path, "Hello from Java!");
+            System.out.println("File written successfully");
+        } catch (IOException e) {
+            System.err.println("Unable to write file: " + e.getMessage());
+        }
+
+        try {
+            String text = Files.readString(path);
+            System.out.println("File content: " + text);
+        } catch (IOException e) {
+            System.err.println("Unable to read file: " + e.getMessage());
+        }
+
+        if (Files.exists(path)) {
+            System.out.println("File exists: " + path);
+        }
+
+        Path samplePath = Path.of("documents", "java", "example.txt");
+        System.out.println("Path: " + samplePath);
+
+        Path pGet = Paths.get("documents", "java", "example.txt");
+        System.out.println("Paths.get result: " + pGet);
+
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println("Line: " + line);
+            }
+        } catch (IOException e) {
+            System.err.println("Could not read file: " + e.getMessage());
+        }
+    }
+
+    public static void runJsonRegexAndUtilityMethods() {
+        System.out.println("\\n--- 10. JSON, Regex, & Utilities ---");
+        System.out.println("ObjectMapper mapper = new ObjectMapper(); (Jackson dependency required for JSON mapping)");
+        
+        Pattern pattern = Pattern.compile("\\\\d+");
+        Matcher matcher = pattern.matcher("Order 101 has 25 items");
+        while (matcher.find()) {
+            System.out.println("Number found: " + matcher.group());
+        }
+
+        UUID uuidId = UUID.randomUUID();
+        System.out.println("Generated UUID: " + uuidId);
+
+        BigDecimal priceBD = new BigDecimal("99.95");
+        BigDecimal qtyBD = new BigDecimal("3");
+        BigDecimal totalBD = priceBD.multiply(qtyBD);
+        System.out.println("BigDecimal Total: " + totalBD);
+    }
+
+    public static void runConcurrencyAndHttpMethods() {
+        System.out.println("\\n--- 11. Concurrency & HTTP Methods ---");
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Runnable task = () -> System.out.println("Running on thread: " + Thread.currentThread().getName());
+        executor.submit(task);
+        executor.shutdown();
+
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> "Data loaded asynchronously");
+        future.thenAccept(result -> System.out.println("Result: " + result));
+        future.join();
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Thread sleep demo completed.");
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://httpbin.org/get"))
+                    .GET()
+                    .build();
+            System.out.println("HTTP Request created for URI: " + request.uri());
+        } catch (Exception e) {
+            System.out.println("HTTP Client execution skipped: " + e.getMessage());
+        }
+    }
+
+    public static void runExceptionAndReflectionMethods() {
+        System.out.println("\\n--- 12. Logging, Exceptions, & Reflection ---");
+        System.out.println("Logger logger = LoggerFactory.getLogger(MostUsedJavaMethodsReference.class);");
+
+        try {
+            String val = null;
+            if (val == null) {
+                System.out.println("RuntimeException simulated check passed.");
+            }
+        } catch (Exception ignored) {}
+
+        int sampleAge = 25;
+        if (sampleAge < 0 || sampleAge > 120) {
+            throw new IllegalArgumentException("Age must be between 0 and 120");
+        }
+        System.out.println("Valid age: " + sampleAge);
+
+        String refName = "Java";
+        if (refName != null) {
+            System.out.println(refName.toUpperCase());
+        }
+
+        try {
+            Class<?> clazz = Class.forName("java.util.ArrayList");
+            System.out.println("Loaded class: " + clazz.getName());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Class not found");
+        }
+
+        Object valueObj = "Hello Java";
+        System.out.println("Runtime class: " + valueObj.getClass().getName());
+
+        String nonNullName = "Ashutosh";
+        Objects.requireNonNull(nonNullName, "Employee name must not be null");
+        System.out.println("Validated non-null employee: " + nonNullName);
+
+        String firstVal = null;
+        String secondVal = "Java";
+        boolean sameVal = Objects.equals(firstVal, secondVal);
+        System.out.println("Values are equal: " + sameVal);
+    }
+}
+
+class User {
+    private String name;
+    private int age;
+
+    public User() {}
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}`;
+
+async function copyFullJavaClass(btn) {
+  await navigator.clipboard.writeText(fullJavaClassSource);
+  const old = btn.textContent;
+  btn.textContent = "✅ Full Java Class Copied!";
+  setTimeout(() => btn.textContent = old, 1500);
+}
+
 function resetFilters(){
   document.getElementById("search").value="";
   catSelect.value="all";
