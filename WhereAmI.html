@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Where Am I? - Location Finder</title>
+    <meta name="description"
+          content="Find your current location, latitude, longitude, city, state and country using your browser.">
+    <meta name="keywords"
+          content="where am I, current location, GPS location, latitude longitude, location finder">
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 38px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+        }
+
+        .container {
+            width: min(900px, 94%);
+            margin: 35px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(15,23,42,0.12);
+        }
+
+        .location-icon {
+            font-size: 65px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 16px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .find-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .share-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .copy-btn {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .map-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status {
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .loading {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .answer {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border: 2px solid #22c55e;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .answer h2 {
+            margin: 0 0 10px;
+            color: #15803d;
+        }
+
+        .location-name {
+            font-size: 30px;
+            font-weight: bold;
+            color: #166534;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            font-size: 19px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .address {
+            margin-top: 20px;
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .address-title {
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-bottom: 8px;
+        }
+
+        .accuracy {
+            text-align: center;
+            margin-top: 15px;
+            color: #64748b;
+        }
+
+        .privacy {
+            margin-top: 25px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #9a3412;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            text-align: center;
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        @media (max-width: 650px) {
+            header h1 {
+                font-size: 30px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .question {
+                font-size: 25px;
+            }
+
+            .location-name {
+                font-size: 25px;
+            }
+
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📍 Where Am I?</h1>
+    <p>Find your current location instantly</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="location-icon">🌍</div>
+
+        <div class="question">
+            Where am I right now?
+        </div>
+
+        <div class="button-container">
+            <button class="find-btn" onclick="findMyLocation()">
+                📍 Find My Location
+            </button>
+        </div>
+
+        <div id="status" class="status">
+            <div class="loading">
+                📡 Detecting your location...
+            </div>
+            <p>Please allow location access when your browser asks.</p>
+        </div>
+
+        <div id="result" class="result">
+
+            <div class="answer">
+                <h2>You are approximately in</h2>
+                <div id="locationName" class="location-name">
+                    Detecting...
+                </div>
+            </div>
+
+            <div class="details">
+
+                <div class="detail-box">
+                    <div class="detail-label">Latitude</div>
+                    <div id="latitude" class="detail-value">-</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Longitude</div>
+                    <div id="longitude" class="detail-value">-</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">City</div>
+                    <div id="city" class="detail-value">-</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">State / Region</div>
+                    <div id="state" class="detail-value">-</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Country</div>
+                    <div id="country" class="detail-value">-</div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="detail-label">Postal Code</div>
+                    <div id="postalCode" class="detail-value">-</div>
+                </div>
+
+            </div>
+
+            <div class="accuracy">
+                GPS Accuracy: <strong id="accuracy">-</strong>
+            </div>
+
+            <div class="address">
+                <div class="address-title">📌 Approximate Address</div>
+                <div id="address">-</div>
+            </div>
+
+            <div class="button-container">
+
+                <button class="map-btn" onclick="openMap()">
+                    🗺️ Open in Google Maps
+                </button>
+
+                <button class="copy-btn" onclick="copyLocation()">
+                    📋 Copy Location
+                </button>
+
+                <button class="share-btn" onclick="shareLocation()">
+                    📤 Share
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="privacy">
+            🔒 <strong>Privacy:</strong>
+            Your browser controls location permission. This page does not
+            store your GPS coordinates on a server.
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <strong>Where Am I?</strong><br>
+    Location Finder Tool<br><br>
+    Created for <strong>GenerateSourceCode</strong>
+</footer>
+
+
+<script>
+
+    let currentLatitude = null;
+    let currentLongitude = null;
+    let currentLocationText = "";
+
+    function findMyLocation() {
+
+        const status = document.getElementById("status");
+        const result = document.getElementById("result");
+
+        status.classList.add("show");
+        result.classList.remove("show");
+
+        if (!navigator.geolocation) {
+
+            status.innerHTML =
+                "❌ Geolocation is not supported by this browser.";
+
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                currentLatitude = position.coords.latitude;
+                currentLongitude = position.coords.longitude;
+
+                document.getElementById("latitude").textContent =
+                    currentLatitude.toFixed(6);
+
+                document.getElementById("longitude").textContent =
+                    currentLongitude.toFixed(6);
+
+                document.getElementById("accuracy").textContent =
+                    Math.round(position.coords.accuracy) + " meters";
+
+                status.innerHTML =
+                    "✅ Location detected. Finding your city...";
+
+                reverseGeocode(
+                    currentLatitude,
+                    currentLongitude
+                );
+
+            },
+
+            function(error) {
+
+                let message = "";
+
+                switch (error.code) {
+
+                    case error.PERMISSION_DENIED:
+                        message =
+                            "❌ Location permission was denied. Please allow location access in your browser.";
+                        break;
+
+                    case error.POSITION_UNAVAILABLE:
+                        message =
+                            "❌ Location information is currently unavailable.";
+                        break;
+
+                    case error.TIMEOUT:
+                        message =
+                            "❌ Location request timed out. Please try again.";
+                        break;
+
+                    default:
+                        message =
+                            "❌ Unable to determine your location.";
+                }
+
+                status.innerHTML = message;
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    }
+
+
+    async function reverseGeocode(latitude, longitude) {
+
+        try {
+
+            /*
+             * BigDataCloud provides client-side reverse geocoding
+             * without requiring an API key for this use case.
+             */
+
+            const url =
+                "https://api.bigdatacloud.net/data/reverse-geocode-client" +
+                "?latitude=" + encodeURIComponent(latitude) +
+                "&longitude=" + encodeURIComponent(longitude) +
+                "&localityLanguage=en";
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Reverse geocoding failed");
+            }
+
+            const data = await response.json();
+
+            const city =
+                data.city ||
+                data.locality ||
+                data.principalSubdivision ||
+                "Unknown";
+
+            const state =
+                data.principalSubdivision ||
+                "Unknown";
+
+            const country =
+                data.countryName ||
+                "Unknown";
+
+            const postalCode =
+                data.postcode ||
+                "Not available";
+
+            const locality =
+                data.locality ||
+                city;
+
+            let locationParts = [];
+
+            if (locality) {
+                locationParts.push(locality);
+            }
+
+            if (state && state !== locality) {
+                locationParts.push(state);
+            }
+
+            if (country) {
+                locationParts.push(country);
+            }
+
+            currentLocationText = locationParts.join(", ");
+
+            document.getElementById("locationName").textContent =
+                currentLocationText;
+
+            document.getElementById("city").textContent =
+                city;
+
+            document.getElementById("state").textContent =
+                state;
+
+            document.getElementById("country").textContent =
+                country;
+
+            document.getElementById("postalCode").textContent =
+                postalCode;
+
+            let addressParts = [];
+
+            if (data.locality) {
+                addressParts.push(data.locality);
+            }
+
+            if (data.principalSubdivision) {
+                addressParts.push(data.principalSubdivision);
+            }
+
+            if (data.countryName) {
+                addressParts.push(data.countryName);
+            }
+
+            if (data.postcode) {
+                addressParts.push("PIN/Postal Code: " + data.postcode);
+            }
+
+            document.getElementById("address").textContent =
+                addressParts.join(", ");
+
+            document.getElementById("status").innerHTML =
+                "✅ Your location has been found.";
+
+            document.getElementById("result").classList.add("show");
+
+        }
+        catch (error) {
+
+            /*
+             * Even if reverse geocoding fails, GPS coordinates
+             * are still useful.
+             */
+
+            currentLocationText =
+                "Location coordinates detected";
+
+            document.getElementById("locationName").textContent =
+                currentLocationText;
+
+            document.getElementById("address").textContent =
+                "Coordinates: " +
+                latitude.toFixed(6) +
+                ", " +
+                longitude.toFixed(6);
+
+            document.getElementById("status").innerHTML =
+                "⚠️ GPS location found, but address lookup failed.";
+
+            document.getElementById("result").classList.add("show");
+        }
+    }
+
+
+    function openMap() {
+
+        if (
+            currentLatitude === null ||
+            currentLongitude === null
+        ) {
+            alert("Please find your location first.");
+            return;
+        }
+
+        const mapUrl =
+            "https://www.google.com/maps?q=" +
+            currentLatitude +
+            "," +
+            currentLongitude;
+
+        window.open(mapUrl, "_blank");
+    }
+
+
+    async function copyLocation() {
+
+        if (
+            currentLatitude === null ||
+            currentLongitude === null
+        ) {
+            alert("Please find your location first.");
+            return;
+        }
+
+        const text =
+            "My Current Location\n\n" +
+            currentLocationText +
+            "\n" +
+            "Latitude: " +
+            currentLatitude.toFixed(6) +
+            "\n" +
+            "Longitude: " +
+            currentLongitude.toFixed(6) +
+            "\n\n" +
+            "Google Maps:\n" +
+            "https://www.google.com/maps?q=" +
+            currentLatitude +
+            "," +
+            currentLongitude;
+
+        try {
+
+            await navigator.clipboard.writeText(text);
+
+            alert("Location copied to clipboard.");
+
+        } catch (error) {
+
+            alert("Unable to copy location.");
+        }
+    }
+
+
+    async function shareLocation() {
+
+        if (
+            currentLatitude === null ||
+            currentLongitude === null
+        ) {
+            alert("Please find your location first.");
+            return;
+        }
+
+        const mapUrl =
+            "https://www.google.com/maps?q=" +
+            currentLatitude +
+            "," +
+            currentLongitude;
+
+        const shareText =
+            "📍 My current location is approximately:\n\n" +
+            currentLocationText +
+            "\n\n" +
+            "Latitude: " +
+            currentLatitude.toFixed(6) +
+            "\n" +
+            "Longitude: " +
+            currentLongitude.toFixed(6);
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+                    title: "My Current Location",
+                    text: shareText,
+                    url: mapUrl
+                });
+
+            } catch (error) {
+
+                console.log("Sharing cancelled.");
+            }
+
+        } else {
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    shareText + "\n\n" + mapUrl
+                );
+
+                alert(
+                    "Sharing is not supported by this browser. " +
+                    "Location details have been copied instead."
+                );
+
+            } catch (error) {
+
+                alert(
+                    shareText +
+                    "\n\n" +
+                    mapUrl
+                );
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>
