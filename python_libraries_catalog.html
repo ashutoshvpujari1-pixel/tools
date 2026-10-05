@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyVault - 100 Essential Python Libraries & Snippets</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'Fira Code', monospace; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 flex flex-col">
+
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+                    <i class="fa-solid fa-code text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">PyVault</span>
+                    <span class="text-xs block text-slate-500 dark:text-slate-400 font-medium">100 Essential Python Libraries</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Search Bar Header (Mobile & Desktop) -->
+                <div class="relative hidden sm:block w-64 md:w-80">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-search text-sm"></i>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="Search 100 libraries or methods..." 
+                        class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-indigo-500 dark:focus:border-indigo-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Toggle theme">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
+        
+        <!-- Sidebar Categories -->
+        <aside class="w-64 hidden lg:flex flex-col flex-shrink-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm overflow-y-auto">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 px-3">Categories</h3>
+            <div id="categoryList" class="space-y-1">
+                <button data-category="All" class="category-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 transition-colors">
+                    <span><i class="fa-solid fa-layer-group w-6"></i> All Libraries</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 font-semibold count-all">100</span>
+                </button>
+                <!-- Dynamic category buttons inserted here -->
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto pr-1">
+            
+            <!-- Mobile Search Bar -->
+            <div class="sm:hidden mb-4">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-search text-sm"></i>
+                    </span>
+                    <input type="text" id="mobileSearchInput" placeholder="Search 100 libraries or methods..." 
+                        class="w-full pl-9 pr-4 py-2.5 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                </div>
+            </div>
+
+            <!-- Mobile Category Filter Dropdown -->
+            <div class="lg:hidden mb-4">
+                <select id="mobileCategorySelect" class="w-full py-2.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                    <option value="All">All Categories (100)</option>
+                </select>
+            </div>
+
+            <!-- Stats & Active Filter Bar -->
+            <div class="flex items-center justify-between mb-4 px-1">
+                <div class="text-sm text-slate-500 dark:text-slate-400">
+                    Showing <span id="libraryCount" class="font-semibold text-slate-700 dark:text-slate-200">100</span> Python libraries
+                </div>
+                <div id="activeFilterBadge" class="hidden items-center space-x-2 text-xs bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full font-medium border border-indigo-100 dark:border-indigo-900">
+                    <span id="filterBadgeText">Category: All</span>
+                    <button id="clearFilter" class="hover:text-indigo-800 dark:hover:text-indigo-200"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Library Cards Grid -->
+            <div id="librariesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+                <!-- Cards injected via JS -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden flex flex-col items-center justify-center py-16 px-4 text-center">
+                <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 text-2xl mb-4">
+                    <i class="fa-solid fa-ghost"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">No libraries found</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Try adjusting your search query or category filter.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-xl flex items-center space-x-3 text-sm font-medium">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">Snippet copied to clipboard!</span>
+    </div>
+
+    <script>
+        const pythonLibraries = [
+            { id: 1, name: "Pandas", category: "Data Science", desc: "Fast, powerful, flexible and easy to use open source data analysis and manipulation tool.", snippet: "import pandas as pd\n\n# Read CSV and display first 5 rows\ndf = pd.read_csv('data.csv')\nprint(df.head())\n\n# Filter and group data\nfiltered = df[df['age'] > 25]\nsummary = filtered.groupby('city')['salary'].mean()" },
+            { id: 2, name: "NumPy", category: "Data Science", desc: "Fundamental package for scientific computing with support for large, multi-dimensional arrays and matrices.", snippet: "import numpy as np\n\n# Create a 2D array and perform matrix operations\na = np.array([[1, 2], [3, 4]])\nb = np.ones((2, 2))\nc = np.dot(a, b)\nprint('Mean:', np.mean(c))" },
+            { id: 3, name: "Scikit-Learn", category: "Machine Learning", desc: "Simple and efficient tools for predictive data analysis built on NumPy, SciPy, and matplotlib.", snippet: "from sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestClassifier\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\nclf = RandomForestClassifier(n_estimators=100)\nclf.fit(X_train, y_train)\nscore = clf.score(X_test, y_test)" },
+            { id: 4, name: "TensorFlow", category: "Machine Learning", desc: "An end-to-end open source machine learning platform for building deep neural networks.", snippet: "import tensorflow as tf\n\nmodel = tf.keras.Sequential([\n    tf.keras.layers.Dense(128, activation='relu', input_shape=(784,)),\n    tf.keras.layers.Dropout(0.2),\n    tf.keras.layers.Dense(10, activation='softmax')\n])\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])" },
+            { id: 5, name: "PyTorch", category: "Machine Learning", desc: "Tensors and Dynamic neural networks in Python with strong GPU acceleration.", snippet: "import torch\nimport torch.nn as nn\n\nclass SimpleNN(nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.linear = nn.Linear(10, 2)\n    def forward(self, x):\n        return self.linear(x)\n\nmodel = SimpleNN()\noutput = model(torch.randn(5, 10))" },
+            { id: 6, name: "FastAPI", category: "Web Development", desc: "Modern, fast (high-performance), web framework for building APIs with Python based on standard type hints.", snippet: "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get('/')\ndef read_root():\n    return {'message': 'Hello FastAPI'}\n\n@app.get('/items/{item_id}')\ndef read_item(item_id: int, q: str = None):\n    return {'item_id': item_id, 'q': q}" },
+            { id: 7, name: "Flask", category: "Web Development", desc: "A lightweight WSGI web application framework designed with a small core and easy extensibility.", snippet: "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef hello_world():\n    return 'Hello from Flask!'\n\nif __name__ == '__main__':\n    app.run(debug=True)" },
+            { id: 8, name: "Django", category: "Web Development", desc: "High-level Python web framework that encourages rapid development and clean, pragmatic design.", snippet: "from django.http import HttpResponse\nfrom django.urls import path\n\ndef home(request):\n    return HttpResponse('Welcome to Django!')\n\n# urls.py pattern\nurlpatterns = [path('', home)]" },
+            { id: 9, name: "Requests", category: "Web Scraping", desc: "Elegant and simple HTTP library for Python, built for human beings.", snippet: "import requests\n\nresponse = requests.get('https://api.github.com/users/octocat')\nif response.status_code == 200:\n    data = response.json()\n    print(data.get('name'))" },
+            { id: 10, name: "BeautifulSoup", category: "Web Scraping", desc: "Python library for pulling data out of HTML and XML files.", snippet: "from bs4 import BeautifulSoup\nimport requests\n\nhtml = requests.get('https://example.com').text\nsoup = BeautifulSoup(html, 'html.parser')\nfor title in soup.find_all('h1'):\n    print(title.get_text())" },
+            { id: 11, name: "SQLAlchemy", category: "Database", desc: "The Python SQL toolkit and Object Relational Mapper that gives developers full power of SQL.", snippet: "from sqlalchemy import create_engine, Column, Integer, String\nfrom sqlalchemy.ext.declarative import declarative_base\n\nengine = create_engine('sqlite:///:memory:')\nBase = declarative_base()\n\nclass User(Base):\n    __tablename__ = 'users'\n    id = Column(Integer, primary_key=True)\n    name = Column(String)" },
+            { id: 12, name: "Pytest", category: "Utilities", desc: "The pytest framework makes it easy to write small, readable tests, and scale to complex functional testing.", snippet: "def increment(x):\n    return x + 1\n\ndef test_increment():\n    assert increment(3) == 4\n    assert increment(1) == 2" },
+            { id: 13, name: "Rich", category: "Utilities", desc: "Rich is a Python library for rich text and beautiful formatting in the terminal.", snippet: "from rich import print\nfrom rich.panel import Panel\n\nprint('[bold magenta]Hello[/bold magenta] from [green]Rich[/green]!')\nprint(Panel('Python terminal output made stunning.', title='Notice'))" },
+            { id: 14, name: "Pydantic", category: "Utilities", desc: "Data validation using Python type hints enforcing types at runtime.", snippet: "from pydantic import BaseModel, EmailStr\n\nclass User(BaseModel):\n    id: int\n    name: str\n    email: EmailStr\n\nuser = User(id=1, name='Alice', email='alice@example.com')" },
+            { id: 15, name: "Selenium", category: "Web Scraping", desc: "Automate web browsers for testing or web scraping purposes with real browser simulation.", snippet: "from selenium import webdriver\n\ndriver = webdriver.Chrome()\ndriver.get('https://www.google.com')\nsearch_box = driver.find_element('name', 'q')\nsearch_box.send_keys('Python libraries')\nsearch_box.submit()\ndriver.quit()" },
+            { id: 16, name: "SciPy", category: "Data Science", desc: "Python-based ecosystem of open-source software for mathematics, science, and engineering.", snippet: "from scipy import integrate\n\n# Define a function to integrate\ndef f(x):\n    return x**2\n\nresult, err = integrate.quad(f, 0, 3)\nprint('Integral result:', result)" },
+            { id: 17, name: "Statsmodels", category: "Data Science", desc: "Python module that provides classes and functions for the estimation of many different statistical models.", snippet: "import statsmodels.api as sm\nimport statsmodels.formula.api as smf\n\n# Fit regression model\ndf = sm.datasets.get_rdataset('mtcars').data\nmodel = smf.ols('mpg ~ wt + hp', data=df).fit()\nprint(model.summary())" },
+            { id: 18, name: "Polars", category: "Data Science", desc: "Blazingly fast DataFrames library implemented in Rust and Python.", snippet: "import polars as df\n\ndf = df.DataFrame({\n    'A': [1, 2, 3],\n    'B': ['x', 'y', 'z']\n})\nprint(df.filter(df['A'] > 1))" },
+            { id: 19, name: "Dask", category: "Data Science", desc: "Flexible parallel computing library for analytic scaling in Python.", snippet: "import dask.dataframe as dd\n\n# Parallel computation on large CSV files\ndf = dd.read_csv('large_dataset.csv')\nresult = df.groupby('category').value.mean().compute()\nprint(result)" },
+            { id: 20, name: "SymPy", category: "Data Science", desc: "Python library for symbolic mathematics and computer algebra.", snippet: "import sympy as sp\n\nx = sp.Symbol('x')\nexpr = x**2 + 2*x + 1\nfactored = sp.factor(expr)\nprint(factored)" },
+            { id: 21, name: "NetworkX", category: "Data Science", desc: "Creation, manipulation, and study of the structure, dynamics, and functions of complex networks.", snippet: "import networkx as nx\n\nG = nx.Graph()\nG.add_edge('A', 'B', weight=4)\nG.add_edge('B', 'C', weight=2)\nprint('Shortest path:', nx.shortest_path(G, 'A', 'C'))" },
+            { id: 22, name: "Geopandas", category: "Data Science", desc: "Python tools for geographic data combining capabilities of pandas and shapely.", snippet: "import geopandas as gpd\n\nworld = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))\nprint(world.head())" },
+            { id: 23, name: "Xarray", category: "Data Science", desc: "N-D labeled arrays and datasets in Python for multidimensional analysis.", snippet: "import xarray as xr\nimport numpy as np\n\ntemp = 15 + 8 * np.random.randn(2, 2, 3)\nds = xr.Dataset({'temperature': (('x', 'y', 'time'), temp)}, coords={'x': [10, 20], 'y': [30, 40]})\nprint(ds)" },
+            { id: 24, name: "Openpyxl", category: "Utilities", desc: "Python library to read/write Excel 2007 xlsx/xlsm files.", snippet: "import openpyxl\n\nwb = openpyxl.Workbook()\nws = wb.active\nws['A1'] = 'Hello'\nws['B1'] = 'Excel'\nwb.save('sample.xlsx')" },
+            { id: 25, name: "H5Py", category: "Data Science", desc: "Read and write HDF5 binary datasets from Python.", snippet: "import h5py\nimport numpy as np\n\nwith h5py.File('mydata.hdf5', 'w') as f:\n    dset = f.create_dataset('dataset', data=np.arange(100))\n    print(dset.shape)" },
+            { id: 26, name: "Keras", category: "Machine Learning", desc: "Deep learning API written in Python, capable of running on top of TensorFlow.", snippet: "import keras\n\nmodel = keras.Sequential([\n    keras.layers.Dense(64, activation='relu'),\n    keras.layers.Dense(1, activation='sigmoid')\n])\nmodel.compile(optimizer='adam', loss='binary_crossentropy')" },
+            { id: 27, name: "Transformers", category: "Machine Learning", desc: "State-of-the-art Machine Learning for Pytorch, TensorFlow, and JAX by Hugging Face.", snippet: "from transformers import pipeline\n\nclassifier = pipeline('sentiment-analysis')\nresult = classifier('PyVault makes learning Python libraries so effortless!')\nprint(result)" },
+            { id: 28, name: "LangChain", category: "Machine Learning", desc: "Building applications with LLMs through composability and retrieval-augmented generation.", snippet: "from langchain.llms import OpenAI\nfrom langchain.chains import LLMChain\nfrom langchain.prompts import PromptTemplate\n\nllm = OpenAI(temperature=0.9)\nprompt = PromptTemplate.from_template('What is a good name for a company that makes {product}?')\nprint(prompt.format(product='colorful socks'))" },
+            { id: 29, name: "LlamaIndex", category: "Machine Learning", desc: "Data framework for connecting custom data sources to large language models.", snippet: "from llama_index import VectorStoreIndex, SimpleDirectoryReader\n\ndocuments = SimpleDirectoryReader('data').load_data()\nindex = VectorStoreIndex.from_documents(documents)\nquery_engine = index.as_query_engine()\nresponse = query_engine.query('What is our company policy on remote work?')" },
+            { id: 30, name: "XGBoost", category: "Machine Learning", desc: "Scalable, Portable and Distributed Gradient Boosting library.", snippet: "import xgboost as xgb\n\ndtrain = xgb.DMatrix(X_train, label=y_train)\nparams = {'max_depth': 3, 'eta': 0.1, 'objective': 'binary:logistic'}\nbst = xgb.train(params, dtrain, num_boost_round=100)" },
+            { id: 31, name: "LightGBM", category: "Machine Learning", desc: "Fast, distributed, high performance gradient boosting framework based on decision tree algorithms.", snippet: "import lightgbm as lgb\n\ntrain_data = lgb.Dataset(X_train, label=y_train)\nparams = {'num_leaves': 31, 'objective': 'binary'}\nnum_round = 50\nbst = lgb.train(params, train_data, num_round)" },
+            { id: 32, name: "CatBoost", category: "Machine Learning", desc: "General purpose gradient boosting on decision trees library with categorical features support.", snippet: "from catboost import CatBoostClassifier\n\nmodel = CatBoostClassifier(iterations=100, learning_rate=0.1, depth=6)\nmodel.fit(X_train, y_train, verbose=False)\npreds = model.predict(X_test)" },
+            { id: 33, name: "Scikit-Image", category: "Machine Learning", desc: "Image processing algorithms for SciPy ecosystem.", snippet: "from skimage import data, filters\n\nimage = data.coins()\nedge_image = filters.sobel(image)\nprint('Edge detection complete, shape:', edge_image.shape)" },
+            { id: 34, name: "OpenCV", category: "Machine Learning", desc: "Open Source Computer Vision Library for real-time computer vision.", snippet: "import cv2\n\nimg = cv2.imread('image.jpg')\ngray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)\ncv2.imwrite('grayscale.jpg', gray)" },
+            { id: 35, name: "NLTK", category: "Machine Learning", desc: "Natural Language Processing Toolkit for building Python programs to work with human language data.", snippet: "import nltk\nfrom nltk.tokenize import word_tokenize\n\ntext = 'Natural language processing is fascinating.'\ntokens = word_tokenize(text)\nprint(tokens)" },
+            { id: 36, name: "SpaCy", category: "Machine Learning", desc: "Library for advanced Natural Language Processing in Python.", snippet: "import spacy\n\nnlp = spacy.load('en_core_web_sm')\ndoc = nlp('Apple is looking at buying U.K. startup for $1 billion')\nfor ent in doc.ents:\n    print(ent.text, ent.label_)" },
+            { id: 37, name: "Gensim", category: "Machine Learning", desc: "Python library for topic modelling, document indexing and similarity retrieval with large corpora.", snippet: "from gensim.utils import simple_preprocess\n\nsentence = 'Human machine interface for lab abc computer applications'\ntokens = simple_preprocess(sentence)\nprint(tokens)" },
+            { id: 38, name: "OpenAI", category: "Machine Learning", desc: "Official Python library for the OpenAI API services and GPT models.", snippet: "from openai import OpenAI\n\nclient = OpenAI(api_key='your-api-key')\nresponse = client.chat.completions.create(\n    model='gpt-3.5-turbo',\n    messages=[{'role': 'user', 'content': 'Hello OpenAI!'}]\n)\nprint(response.choices[0].message.content)" },
+            { id: 39, name: "Sentence-Transformers", category: "Machine Learning", desc: "Compute dense vector representations for sentences, paragraphs, and images.", snippet: "from sentence_transformers import SentenceTransformer\n\nmodel = SentenceTransformer('all-MiniLM-L6-v2')\nsentences = ['This is an example sentence', 'Each sentence is converted']\nembeddings = model.encode(sentences)\nprint(embeddings.shape)" },
+            { id: 40, name: "Diffusers", category: "Machine Learning", desc: "State-of-the-art diffusion models for image and audio generation in PyTorch.", snippet: "from diffusers import StableDiffusionPipeline\nimport torch\n\npipeline = StableDiffusionPipeline.from_pretrained('runwayml/stable-diffusion-v1-5', torch_dtype=torch.float16)\nimage = pipeline('A futuristic cyberpunk city at sunset').images[0]\nimage.save('cyberpunk.png')" },
+            { id: 41, name: "Starlette", category: "Web Development", desc: "Lightweight ASGI framework/toolkit, ideal for building high-performance async services.", snippet: "from starlette.applications import Starlette\nfrom starlette.responses import JSONResponse\nfrom starlette.routing import Route\n\nasync def homepage(request):\n    return JSONResponse({'hello': 'world'})\n\napp = Starlette(routes=[Route('/', homepage)])" },
+            { id: 42, name: "Tornado", category: "Web Development", desc: "Python web framework and asynchronous networking library.", snippet: "import tornado.ioloop\nimport tornado.web\n\nclass MainHandler(tornado.web.RequestHandler):\n    def get(self):\n        self.write('Hello, Tornado')\n\napp = tornado.web.Application([(r'/', MainHandler)])\napp.listen(8888)" },
+            { id: 43, name: "Sanic", category: "Web Development", desc: "Asynchronous Python web framework that runs fast on uvloop.", snippet: "from sanic import Sanic\nfrom sanic.response import json\n\napp = Sanic('MySanicApp')\n\n@app.get('/')\nasync def index(request):\n    return json({'status': 'ok'})" },
+            { id: 44, name: "Pyramid", category: "Web Development", desc: "Small, fast, down-to-earth open source Python web framework.", snippet: "from pyramid.config import Configurator\nfrom pyramid.response import Response\n\ndef hello_world(request):\n    return Response('Hello Pyramid!')\n\nwith Configurator() as config:\n    config.add_route('hello', '/')\n    config.add_view(hello_world, route_name='hello')\n    app = config.make_wsgi_app()" },
+            { id: 45, name: "Litestar", category: "Web Development", desc: "Powerful, flexible, and performant ASGI framework based on standard Python type hints.", snippet: "from litestar import Litestar, get\n\n@get('/')\ndef index() -> dict[str, str]:\n    return {'hello': 'litestar'}\n\napp = Litestar(route_handlers=[index])" },
+            { id: 46, name: "Strawberry", category: "Web Development", desc: "Library for creating GraphQL APIs in Python using type annotations.", snippet: "import strawberry\n\n@strawberry.type\nclass Query:\n    @strawberry.field\n    def hello(self) -> str:\n        return 'Hello GraphQL!'\n\nschema = strawberry.Schema(query=Query)" },
+            { id: 47, name: "Jinja2", category: "Web Development", desc: "Full-featured template engine for Python with modern designer-friendly syntax.", snippet: "from jinja2 import Template\n\ntemplate = Template('Hello {{ name }}!')\nprint(template.render(name='Developer'))" },
+            { id: 48, name: "Uvicorn", category: "Web Development", desc: "Lightning-fast ASGI server implementation built on uvloop and httptools.", snippet: "import uvicorn\n\n# Run with: uvicorn main:app --reload\nif __name__ == '__main__':\n    uvicorn.run('main:app', host='127.0.0.1', port=8000, reload=True)" },
+            { id: 49, name: "Gunicorn", category: "Web Development", desc: "Python WSGI HTTP server for UNIX providing high concurrency web applications.", snippet: "# Run via CLI command:\n# gunicorn -w 4 -b 127.0.0.1:8000 myproject.wsgi:application\nprint('Production WSGI server configuration')" },
+            { id: 50, name: "Django REST Framework", category: "Web Development", desc: "Powerful and flexible toolkit for building Web APIs in Django apps.", snippet: "from rest_framework import serializers, viewsets\n\nclass UserSerializer(serializers.HyperlinkedModelSerializer):\n    class Meta:\n        model = User\n        fields = ['url', 'username', 'email', 'is_staff']" },
+            { id: 51, name: "Scrapy", category: "Web Scraping", desc: "Fast high-level web crawling and scraping framework for extracting structured data.", snippet: "import scrapy\n\nclass QuotesSpider(scrapy.Spider):\n    name = 'quotes'\n    start_urls = ['http://quotes.toscrape.com/']\n\n    def parse(self, response):\n        for quote in response.css('div.quote'):\n            yield {'text': quote.css('span.text::text').get()}" },
+            { id: 52, name: "HTTPX", category: "Web Scraping", desc: "Fully featured HTTP client for Python 3, providing sync and async APIs.", snippet: "import httpx\n\nwith httpx.Client() as client:\n    response = client.get('https://httpbin.org/get')\n    print(response.json())" },
+            { id: 53, name: "Playwright", category: "Web Scraping", desc: "Python library to automate Chromium, Firefox and WebKit with a single API.", snippet: "from playwright.sync_api import sync_playwright\n\nwith sync_playwright() as p:\n    browser = p.chromium.launch(headless=True)\n    page = browser.new_page()\n    page.goto('https://example.com')\n    print(page.title())\n    browser.close()" },
+            { id: 54, name: "Lxml", category: "Web Scraping", desc: "Extremely fast and feature-rich library for processing XML and HTML in Python.", snippet: "from lxml import html\nimport requests\n\npage = requests.get('https://example.com')\ntree = html.fromstring(page.content)\ntitles = tree.xpath('//h1/text()')\nprint(titles)" },
+            { id: 55, name: "Feedparser", category: "Web Scraping", desc: "Universal feed parser that handles RSS, Atom, and RDF feeds in Python.", snippet: "import feedparser\n\nd = feedparser.parse('https://news.ycombinator.com/rss')\nprint(d.feed.title)\nfor entry in d.entries[:5]:\n    print(entry.title)" },
+            { id: 56, name: "Instaloader", category: "Web Scraping", desc: "Download pictures, videos and metadata from Instagram without API limitations.", snippet: "import instaloader\n\nL = instaloader.Instaloader()\n# Load profile\nprofile = instaloader.Profile.from_username(L.context, 'python.org')\nprint(f'Followers: {profile.followers}')" },
+            { id: 57, name: "Tweepy", category: "Web Scraping", desc: "Easy-to-use Python library for accessing the Twitter API.", snippet: "import tweepy\n\nclient = tweepy.Client(bearer_token='YOUR_BEARER_TOKEN')\nresponse = client.search_recent_tweets(query='python programming', max_results=10)\nfor tweet in response.data:\n    print(tweet.text)" },
+            { id: 58, name: "MechanicalSoup", category: "Web Scraping", desc: "Python library for automating interaction with websites.", snippet: "import mechanicalsoup\n\nbrowser = mechanicalsoup.StatefulBrowser()\nbrowser.open('http://httpbin.org/')\nbrowser.follow_link('forms')\nbrowser.select_form('form')\nbrowser.submit()" },
+            { id: 59, name: "Selectolax", category: "Web Scraping", desc: "Fast HTML parser for Python using CSS selectors.", snippet: "from selectolax.parser import HTMLParser\n\nhtml = '<h1>Hello Selectolax</h1>'\ntree = HTMLParser(html)\nprint(tree.css_first('h1').text())" },
+            { id: 60, name: "Pyppeteer", category: "Web Scraping", desc: "Headless chromium automation library (port of Puppeteer in Python).", snippet: "import asyncio\nfrom pyppeteer import launch\n\nasync def main():\n    browser = await launch()\n    page = await browser.newPage()\n    await page.goto('https://example.com')\n    await page.screenshot({'path': 'example.png'})\n    await browser.close()\n\nasyncio.get_event_loop().run_until_complete(main())" },
+            { id: 61, name: "Peewee", category: "Database", desc: "A small, expressive ORM supporting SQLite, MySQL, and PostgreSQL.", snippet: "from peewee import *\n\ndb = SqliteDatabase('people.db')\n\nclass Person(Model):\n    name = CharField()\n    birthday = DateField()\n    class Meta:\n        database = db\n\ndb.connect()\ndb.create_tables([Person])" },
+            { id: 62, name: "Tortoise-ORM", category: "Database", desc: "Easy-to-use asyncio ORM inspired by Django.", snippet: "from tortoise import fields, Model\n\nclass Tournament(Model):\n    id = fields.IntField(pk=True)\n    name = fields.CharField(max_length=255)\n\n    def __str__(self):\n        return self.name" },
+            { id: 63, name: "Psycopg2", category: "Database", desc: "PostgreSQL database adapter for the Python programming language.", snippet: "import psycopg2\n\nconn = psycopg2.connect('dbname=test user=postgres')\ncur = conn.cursor()\ncur.execute('SELECT version();')\ndb_version = cur.fetchone()\nprint(db_version)\ncur.close()\nconn.close()" },
+            { id: 64, name: "PyMySQL", category: "Database", desc: "Pure Python MySQL client library.", snippet: "import pymysql\n\nconnection = pymysql.connect(host='localhost',\n                             user='root',\n                             password='password',\n                             database='db_name')\nwith connection.cursor() as cursor:\n    cursor.execute('SELECT VERSION()')\n    print(cursor.fetchone())" },
+            { id: 65, name: "Motor", category: "Database", desc: "Asynchronous Python driver for MongoDB.", snippet: "import motor.motor_asyncio\n\nclient = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')\ndb = client.test_database\ncollection = db.test_collection" },
+            { id: 66, name: "SQLModel", category: "Database", desc: "SQL databases in Python, designed for high productivity, built on Pydantic and SQLAlchemy.", snippet: "from sqlmodel import Field, SQLModel\n\nclass Hero(SQLModel, table=True):\n    id: int | None = Field(default=None, primary_key=True)\n    name: str\n    secret_name: str\n    age: int | None = None" },
+            { id: 67, name: "Redis-Py", category: "Database", desc: "Python client for Redis key-value store and data structure server.", snippet: "import redis\n\nr = redis.Redis(host='localhost', port=6379, db=0)\nr.set('foo', 'bar')\nprint(r.get('foo').decode('utf-8'))" },
+            { id: 68, name: "TinyDB", category: "Database", desc: "TinyDB is a lightweight document oriented database optimized for your happiness.", snippet: "from tinydb import TinyDB, Query\n\ndb = TinyDB('db.json')\ndb.insert({'name': 'John', 'age': 30})\nUser = Query()\nprint(db.search(User.name == 'John'))" },
+            { id: 69, name: "DuckDB", category: "Database", desc: "In-memory analytical columnar database with high performance SQL support.", snippet: "import duckdb\n\n# Query dataframes or CSV files directly with SQL\nresults = duckdb.sql('SELECT 42 AS answer').fetchall()\nprint(results)" },
+            { id: 70, name: "Alembic", category: "Database", desc: "Database migration tool for SQLAlchemy.", snippet: "# Command line tool:\n# alembic init alembic\n# alembic revision --autogenerate -m 'Add user table'\n# alembic upgrade head\nprint('Alembic migration configuration')" },
+            { id: 71, name: "Click", category: "Utilities", desc: "Python package for creating beautiful command line interfaces with minimal code.", snippet: "import click\n\n@click.command()\n@click.option('--count', default=1, help='Number of greetings.')\n@click.option('--name', prompt='Your name', help='The person to greet.')\ndef hello(count, name):\n    for _ in range(count):\n        click.echo(f'Hello, {name}!')\n\nif __name__ == '__main__':\n    hello()" },
+            { id: 72, name: "Typer", category: "Utilities", desc: "Typer, build great CLI applications with effortless Python type hints.", snippet: "import typer\n\ndef main(name: str):\n    typer.echo(f'Hello {name}')\n\nif __name__ == '__main__':\n    typer.run(main)" },
+            { id: 73, name: "Textual", category: "Utilities", desc: "Textual is a Rapid Application Development framework for Python to build terminal UIs.", snippet: "from textual.app import App, ComposeResult\nfrom textual.widgets import Header, Footer, Static\n\nclass MyApp(App):\n    def compose(self) -> ComposeResult:\n        yield Header()\n        yield Static('Hello World')\n        yield Footer()\n\nif __name__ == '__main__':\n    MyApp().run()" },
+            { id: 74, name: "Loguru", category: "Utilities", desc: "Python logging made (stupidly) simple and powerful.", snippet: "from loguru import logger\n\nlogger.debug('Debug message')\nlogger.info('System operational')\nlogger.error('Database connection failed!')" },
+            { id: 75, name: "Celery", category: "Utilities", desc: "Distributed task queue focused on real-time processing and task scheduling.", snippet: "from celery import Celery\n\napp = Celery('tasks', broker='redis://localhost:6379/0')\n\n@app.task\ndef add(x, y):\n    return x + y\n\n# Call task: result = add.delay(4, 4)" },
+            { id: 76, name: "APScheduler", category: "Utilities", desc: "Advanced Python Scheduler lets you schedule your Python functions to be executed periodically.", snippet: "from apscheduler.schedulers.blocking import BlockingScheduler\n\ndef job():\n    print('Executing scheduled job...')\n\nsched = BlockingScheduler()\nsched.add_job(job, 'interval', seconds=10)\nsched.start()" },
+            { id: 77, name: "Python-Dotenv", category: "Utilities", desc: "Read key-value pairs from a .env file and set them as environment variables.", snippet: "from dotenv import load_dotenv\nimport os\n\nload_dotenv()\nDATABASE_URL = os.getenv('DATABASE_URL')\nprint(f'Loaded DB URL: {DATABASE_URL}')" },
+            { id: 78, name: "PyYAML", category: "Utilities", desc: "YAML parser and emitter for the Python programming language.", snippet: "import yaml\n\ndata = {'name': 'PyVault', 'version': 1.0, 'active': True}\nyaml_str = yaml.dump(data)\nprint(yaml_str)\nparsed = yaml.safe_load(yaml_str)\nprint(parsed)" },
+            { id: 79, name: "Arrow", category: "Utilities", desc: "Better dates and times in Python with an intelligent human-friendly API.", snippet: "import arrow\n\nnow = arrow.utcnow()\nprint('UTC:', now)\nprint('Shifted:', now.shift(hours=+3))\nprint('Humanized:', now.humanize())" },
+            { id: 80, name: "Pendulum", category: "Utilities", desc: "Python datetimes made easy and intuitive.", snippet: "import pendulum\n\nnow = pendulum.now('Europe/Paris')\nprint('Current in Paris:', now)\nprint('Tomorrow:', now.add(days=1))" },
+            { id: 81, name: "Tenacity", category: "Utilities", desc: "General-purpose retrying library to simplify adding retry behavior to Python functions.", snippet: "from tenacity import retry\n\n@retry\ndef flaky_network_call():\n    print('Trying connection...')\n    raise Exception('Network error')\n\n# flaky_network_call() will retry automatically" },
+            { id: 82, name: "Black", category: "Utilities", desc: "The uncompromising Python code formatter.", snippet: "# Run via terminal command to format all code recursively:\n# black .\nprint('Black ensures 100% consistent PEP 8 code style')" },
+            { id: 83, name: "Ruff", category: "Utilities", desc: "An extremely fast Python linter and code formatter, written in Rust.", snippet: "# Run via terminal command:\n# ruff check .\n# ruff format .\nprint('Ruff replaces Flake8, Black, isort, and more!')" },
+            { id: 84, name: "Flake8", category: "Utilities", desc: "Your tool for style guide enforcement (PyFlakes, pycodestyle, Ned Batchelder's McCabe script).", snippet: "# Run via terminal command:\n# flake8 my_project/\nprint('Linting Python code for syntax errors and PEP8 compliance')" },
+            { id: 85, name: "Unittest", category: "Utilities", desc: "Python standard library unit testing framework inspired by JUnit.", snippet: "import unittest\n\nclass TestStringMethods(unittest.TestCase):\n    def test_upper(self):\n        self.assertEqual('foo'.upper(), 'FOO')" },
+            { id: 86, name: "Paramiko", category: "Utilities", desc: "Python implementation of SSHv2 protocol for secure connection and SFTP.", snippet: "import paramiko\n\nssh = paramiko.SSHClient()\nssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())\nssh.connect('hostname', username='user', password='password')\nstdin, stdout, stderr = ssh.exec_command('ls -l')\nprint(stdout.read().decode())" },
+            { id: 87, name: "Boto3", category: "Utilities", desc: "Amazon Web Services (AWS) SDK for Python to create, configure, and manage AWS resources.", snippet: "import boto3\n\ns3 = boto3.client('s3')\nresponse = s3.list_buckets()\nfor bucket in response['Buckets']:\n    print(f'Bucket: {bucket[\"Name\"]}')" },
+            { id: 88, name: "Cryptographic", category: "Utilities", desc: "Recipes and primitives for safe cryptographic operations in Python.", snippet: "from cryptography.fernet import Fernet\n\nkey = Fernet.generate_key()\nf = Fernet(key)\ntoken = f.encrypt(b'Secret API Token')\nprint('Encrypted:', token)\nprint('Decrypted:', f.decrypt(token))" },
+            { id: 89, name: "PyJWT", category: "Utilities", desc: "JSON Web Token implementation for Python.", snippet: "import jwt\n\nencoded = jwt.encode({'some': 'payload'}, 'secret', algorithm='HS256')\nprint('JWT Token:', encoded)\ndecoded = jwt.decode(encoded, 'secret', algorithms=['HS256'])\nprint('Decoded:', decoded)" },
+            { id: 90, name: "Passlib", category: "Utilities", desc: "Comprehensive password hashing framework supporting over 30 schemes.", snippet: "from passlib.hash import pbkdf2_sha256\n\nhash = pbkdf2_sha256.hash('secret-password')\nprint('Hash:', hash)\nprint('Verified:', pbkdf2_sha256.verify('secret-password', hash))" },
+            { id: 91, name: "Arrow (Time)", category: "Utilities", desc: "Alternative time zone and date parsing library.", snippet: "import arrow\n\ndt = arrow.get('2026-06-01T12:00:00', 'YYYY-MM-DDTHH:mm:ss')\nprint('Parsed Arrow object:', dt.to('US/Pacific'))" },
+            { id: 92, name: "Pillow", category: "Utilities", desc: "Python Imaging Library adds image processing capabilities to your Python interpreter.", snippet: "from PIL import Image\n\nimg = Image.open('photo.jpg')\nimg_resized = img.resize((800, 600))\nimg_resized.save('photo_resized.jpg')\nprint('Image resized successfully')" },
+            { id: 93, name: "Pygame", category: "Utilities", desc: "Set of Python modules designed for writing video games.", snippet: "import pygame\n\npygame.init()\nscreen = pygame.display.set_mode((640, 480))\npygame.display.set_caption('Pygame Window')\nrunning = True\nwhile running:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            running = False\npygame.quit()" },
+            { id: 94, name: "Matplotlib", category: "Data Science", desc: "Comprehensive library for creating static, animated, and interactive visualizations in Python.", snippet: "import matplotlib.pyplot as plt\n\nx = [1, 2, 3, 4, 5]\ny = [2, 4, 6, 8, 10]\nplt.plot(x, y, marker='o')\nplt.title('Sample Plot')\nplt.xlabel('X Axis')\nplt.ylabel('Y Axis')\nplt.show()" },
+            { id: 95, name: "Seaborn", category: "Data Science", desc: "Python data visualization library based on matplotlib providing attractive statistical graphics.", snippet: "import seaborn as sns\nimport matplotlib.pyplot as plt\n\ndf = sns.load_dataset('iris')\nsns.scatterplot(data=df, x='sepal_length', y='sepal_width', hue='species')\nplt.title('Iris Dataset Scatterplot')\nplt.show()" },
+            { id: 96, name: "Plotly", category: "Data Science", desc: "Interactive graphing library for Python supporting charts, maps, and financial graphs.", snippet: "import plotly.express as px\n\ndf = px.data.gapminder().query('year == 2007')\nfig = px.scatter(df, x='gdpPercap', y='lifeExp', size='pop', color='continent',\n                 hover_name='country', log_x=True, size_max=60)\nfig.show()" },
+            { id: 97, name: "Bokeh", category: "Data Science", desc: "Interactive visualization library for modern web browsers.", snippet: "from bokeh.plotting import figure, show\n\np = figure(title='simple line example', x_axis_label='x', y_axis_label='y')\np.line([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], line_width=2)\n# show(p)" },
+            { id: 98, name: "Streamlit", category: "Web Development", desc: "The fastest way to build and share data apps in Python.", snippet: "import streamlit as st\n\nst.title('My Streamlit Dashboard')\nname = st.text_input('Enter your name')\nif st.button('Submit'):\n    st.success(f'Welcome aboard, {name}!')" },
+            { id: 99, name: "Gradio", category: "Machine Learning", desc: "Build and share delightful machine learning web apps in Python with a single line of code.", snippet: "import gradio as gr\n\ndef greet(name):\n    return f'Hello {name}!'\n\ndemo = gr.Interface(fn=greet, inputs='text', outputs='text')\ndemo.launch()" },
+            { id: 100, name: "PyAutoGUI", category: "Utilities", desc: "Python GUI utility module for human-like programmatic mouse and keyboard control.", snippet: "import pyautogui\n\n# Get screen size\nprint(pyautogui.size())\n# Move mouse and click\npyautogui.moveTo(100, 100, duration=0.5)\npyautogui.click()\npyautogui.write('Hello World!')" }
+        ];
+
+        // State variables
+        let currentCategory = 'All';
+        let searchQuery = '';
+
+        function renderCategories() {
+            const categoryList = document.getElementById('categoryList');
+            const mobileSelect = document.getElementById('mobileCategorySelect');
+            
+            // Calculate category counts
+            const counts = { All: pythonLibraries.length };
+            pythonLibraries.forEach(lib => {
+                counts[lib.category] = (counts[lib.category] || 0) + 1;
+            });
+
+            const categories = ['All', ...new Set(pythonLibraries.map(lib => lib.category))];
+            
+            // Render Desktop Sidebar
+            categoryList.innerHTML = '';
+            categories.forEach(cat => {
+                const count = counts[cat] || 0;
+                const isActive = cat === currentCategory;
+                const btn = document.createElement('button');
+                btn.className = `category-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+                    isActive 
+                        ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold' 
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`;
+                btn.innerHTML = `<span><i class="fa-solid fa-folder w-6 text-indigo-500/70"></i> ${cat}</span><span class="text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'} font-semibold">${count}</span>`;
+                btn.onclick = () => {
+                    currentCategory = cat;
+                    renderCategories();
+                    renderLibraries();
+                };
+                categoryList.appendChild(btn);
+            });
+
+            // Render Mobile Select
+            mobileSelect.innerHTML = '';
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = `${cat} (${counts[cat]})`;
+                if(cat === currentCategory) opt.selected = true;
+                mobileSelect.appendChild(opt);
+            });
+        }
+
+        function renderLibraries() {
+            const grid = document.getElementById('librariesGrid');
+            const emptyState = document.getElementById('emptyState');
+            const libraryCount = document.getElementById('libraryCount');
+            const activeFilterBadge = document.getElementById('activeFilterBadge');
+            const filterBadgeText = document.getElementById('filterBadgeText');
+
+            // Filter logic
+            const filtered = pythonLibraries.filter(lib => {
+                const matchesCat = currentCategory === 'All' || lib.category === currentCategory;
+                const matchesSearch = lib.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      lib.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      lib.snippet.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            libraryCount.textContent = filtered.length;
+
+            if(currentCategory !== 'All' || searchQuery !== '') {
+                activeFilterBadge.classList.remove('hidden');
+                activeFilterBadge.classList.add('flex');
+                filterBadgeText.textContent = currentCategory !== 'All' ? `Category: ${currentCategory}` : `Search: "${searchQuery}"`;
+            } else {
+                activeFilterBadge.classList.add('hidden');
+                activeFilterBadge.classList.remove('flex');
+            }
+
+            if(filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = '';
+
+            filtered.forEach(lib => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow';
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div>
+                                <h4 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                    ${lib.name}
+                                </h4>
+                                <span class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 mt-1">
+                                    ${lib.category}
+                                </span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-400">#${lib.id}</span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4">${lib.desc}</p>
+                        
+                        <!-- Code Snippet Box -->
+                        <div class="relative rounded-xl bg-slate-900 text-slate-200 p-3.5 font-mono text-xs overflow-x-auto border border-slate-800 mb-4 group">
+                            <pre class="whitespace-pre"><code>${escapeHtml(lib.snippet)}</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="copySnippet(${lib.id})" class="inline-flex items-center space-x-1 text-xs font-medium px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950 dark:hover:text-indigo-400 transition-colors" title="Copy to clipboard">
+                                <i class="fa-regular fa-copy"></i>
+                                <span class="hidden sm:inline">Copy</span>
+                            </button>
+                            <button onclick="downloadSnippet(${lib.id})" class="inline-flex items-center space-x-1 text-xs font-medium px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950 dark:hover:text-indigo-400 transition-colors" title="Download .py file">
+                                <i class="fa-solid fa-download"></i>
+                                <span class="hidden sm:inline">Download</span>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="emailSnippet(${lib.id})" class="inline-flex items-center space-x-1 text-xs font-medium px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950 dark:hover:text-indigo-400 transition-colors" title="Email snippet">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span class="hidden sm:inline">Email</span>
+                            </button>
+                            <button onclick="shareSnippet(${lib.id})" class="inline-flex items-center space-x-1 text-xs font-medium px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950 dark:hover:text-indigo-400 transition-colors" title="Share snippet">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span class="hidden sm:inline">Share</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function showToast(message, iconClass = "fa-solid fa-circle-check text-emerald-400") {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+            toastIcon.className = iconClass;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Action Handlers
+        function copySnippet(id) {
+            const lib = pythonLibraries.find(l => l.id === id);
+            if (!lib) return;
+            
+            // Fallback clipboard method complying with iFrame constraints
+            const textarea = document.createElement('textarea');
+            textarea.value = lib.snippet;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(`Copied ${lib.name} snippet to clipboard!`);
+            } catch (err) {
+                showToast('Failed to copy snippet', 'fa-solid fa-triangle-exclamation text-amber-400');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function downloadSnippet(id) {
+            const lib = pythonLibraries.find(l => l.id === id);
+            if (!lib) return;
+
+            const blob = new Blob([lib.snippet], { type: 'text/x-python' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${lib.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_snippet.py`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`Downloaded ${lib.name} snippet as .py!`);
+        }
+
+        function emailSnippet(id) {
+            const lib = pythonLibraries.find(l => l.id === id);
+            if (!lib) return;
+
+            const subject = encodeURIComponent(`Python Snippet: ${lib.name} (${lib.category})`);
+            const body = encodeURIComponent(`Check out this code snippet for ${lib.name} (${lib.desc}):\n\n${lib.snippet}\n\nShared via PyVault.`);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+
+        function shareSnippet(id) {
+            const lib = pythonLibraries.find(l => l.id === id);
+            if (!lib) return;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: `${lib.name} Python Snippet`,
+                    text: `Check out the ${lib.name} snippet:`,
+                    url: window.location.href,
+                }).catch(() => {});
+            } else {
+                copySnippet(id);
+                showToast(`Link/Snippet copied for sharing!`);
+            }
+        }
+
+        // Event Listeners setup
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderLibraries();
+        });
+
+        document.getElementById('mobileSearchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderLibraries();
+        });
+
+        document.getElementById('mobileCategorySelect').addEventListener('change', (e) => {
+            currentCategory = e.target.value;
+            renderCategories();
+            renderLibraries();
+        });
+
+        document.getElementById('clearFilter').addEventListener('click', () => {
+            currentCategory = 'All';
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            renderCategories();
+            renderLibraries();
+        });
+
+        // Theme Toggle logic
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Initialize Theme from localStorage
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Initial render on load
+        window.onload = function() {
+            renderCategories();
+            renderLibraries();
+        };
+    </script>
+</body>
+</html>
