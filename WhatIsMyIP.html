@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>What Is My IP Address? | Free IP Checker</title>
+
+    <meta name="description"
+          content="Find your public IP address instantly. Free online What Is My IP tool with IP address, location, ISP and network information.">
+
+    <meta name="keywords"
+          content="what is my IP, my IP address, public IP, IP checker, IP lookup, IP address finder">
+
+    <meta property="og:title"
+          content="What Is My IP Address?">
+
+    <meta property="og:description"
+          content="Find your public IP address instantly with this free online IP checker.">
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            text-align: center;
+            padding: 28px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+            text-align: center;
+        }
+
+        .ip-label {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .ip-address {
+            font-size: 46px;
+            font-weight: bold;
+            color: #2563eb;
+            word-break: break-all;
+            margin: 15px 0 25px;
+        }
+
+        .status {
+            font-size: 16px;
+            margin: 15px 0;
+            min-height: 24px;
+        }
+
+        .loading {
+            color: #64748b;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .info-title {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-green {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-orange {
+            background: #ea580c;
+            color: white;
+        }
+
+        .btn-purple {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .about {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 12px;
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .about h2 {
+            margin-top: 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        @media (max-width: 650px) {
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .ip-address {
+                font-size: 31px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌐 What Is My IP?</h1>
+    <p>Find your public IP address instantly</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="ip-label">
+            Your Public IP Address
+        </div>
+
+        <div id="ipAddress" class="ip-address">
+            Detecting...
+        </div>
+
+        <div id="status" class="status loading">
+            Please wait while we detect your IP address...
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+                <div class="info-title">IP Version</div>
+                <div class="info-value" id="ipVersion">-</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-title">Country</div>
+                <div class="info-value" id="country">-</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-title">Region</div>
+                <div class="info-value" id="region">-</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-title">City</div>
+                <div class="info-value" id="city">-</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-title">ISP / Organization</div>
+                <div class="info-value" id="isp">-</div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-title">Timezone</div>
+                <div class="info-value" id="timezone">-</div>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button class="btn-primary"
+                    onclick="detectIP()">
+                🔄 Refresh IP
+            </button>
+
+            <button class="btn-green"
+                    onclick="copyIP()">
+                📋 Copy IP
+            </button>
+
+            <button class="btn-orange"
+                    onclick="downloadResult()">
+                ⬇ Download
+            </button>
+
+            <button class="btn-purple"
+                    onclick="shareResult()">
+                📤 Share
+            </button>
+
+        </div>
+
+        <div class="about">
+
+            <h2>What is an IP address?</h2>
+
+            <p>
+                An IP address is a unique network address used to
+                identify a device or network connection on the Internet.
+            </p>
+
+            <p>
+                This tool displays your <strong>public IP address</strong>,
+                which is the IP address visible to Internet services.
+            </p>
+
+            <p>
+                <strong>Note:</strong> The location and ISP information
+                shown by IP lookup services is approximate and may not
+                represent your exact physical location.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <div>
+        © 2026 GenerateSourceCode
+    </div>
+
+    <div style="margin-top:8px;">
+        Created few tools which could help in day to day activities.
+    </div>
+</footer>
+
+
+<script>
+
+    let ipData = null;
+
+
+    // Detect public IP
+    async function detectIP() {
+
+        const ipElement =
+            document.getElementById("ipAddress");
+
+        const statusElement =
+            document.getElementById("status");
+
+        ipElement.textContent = "Detecting...";
+
+        statusElement.textContent =
+            "Please wait while we detect your IP address...";
+
+        statusElement.className =
+            "status loading";
+
+
+        try {
+
+            /*
+             * ipapi.co provides public IP and
+             * approximate network/location information.
+             */
+            const response =
+                await fetch("https://ipapi.co/json/");
+
+            if (!response.ok) {
+                throw new Error("Unable to detect IP");
+            }
+
+            ipData = await response.json();
+
+
+            if (!ipData.ip) {
+                throw new Error("IP address not found");
+            }
+
+
+            // Display IP
+            ipElement.textContent =
+                ipData.ip;
+
+
+            // Determine IP version
+            let version = "Unknown";
+
+            if (ipData.version) {
+                version = ipData.version;
+            }
+            else if (ipData.ip.includes(":")) {
+                version = "IPv6";
+            }
+            else {
+                version = "IPv4";
+            }
+
+
+            document.getElementById("ipVersion")
+                .textContent = version;
+
+
+            document.getElementById("country")
+                .textContent =
+                ipData.country_name || "-";
+
+
+            document.getElementById("region")
+                .textContent =
+                ipData.region || "-";
+
+
+            document.getElementById("city")
+                .textContent =
+                ipData.city || "-";
+
+
+            document.getElementById("isp")
+                .textContent =
+                ipData.org || "-";
+
+
+            document.getElementById("timezone")
+                .textContent =
+                ipData.timezone || "-";
+
+
+            statusElement.textContent =
+                "✓ Your public IP address was detected successfully.";
+
+            statusElement.className =
+                "status success";
+
+        }
+        catch (error) {
+
+            console.error(error);
+
+            ipElement.textContent =
+                "Unable to detect";
+
+            statusElement.textContent =
+                "Unable to detect your IP address. Please try again.";
+
+            statusElement.className =
+                "status error";
+        }
+    }
+
+
+    // Copy IP
+    async function copyIP() {
+
+        if (!ipData || !ipData.ip) {
+
+            alert("IP address is not available yet.");
+
+            return;
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                ipData.ip
+            );
+
+            alert(
+                "IP address copied: " +
+                ipData.ip
+            );
+
+        }
+        catch (error) {
+
+            alert(
+                "Unable to copy the IP address."
+            );
+        }
+    }
+
+
+    // Download result as TXT
+    function downloadResult() {
+
+        if (!ipData || !ipData.ip) {
+
+            alert(
+                "Please detect your IP address first."
+            );
+
+            return;
+        }
+
+
+        const content =
+`WHAT IS MY IP ADDRESS?
+
+Public IP Address: ${ipData.ip}
+
+IP Version: ${ipData.version || "Unknown"}
+
+Country: ${ipData.country_name || "-"}
+
+Region: ${ipData.region || "-"}
+
+City: ${ipData.city || "-"}
+
+ISP / Organization: ${ipData.org || "-"}
+
+Timezone: ${ipData.timezone || "-"}
+
+Generated by GenerateSourceCode
+`;
+
+
+        const blob =
+            new Blob(
+                [content],
+                { type: "text/plain" }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            "my-ip-address.txt";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(url);
+    }
+
+
+    // Share result
+    async function shareResult() {
+
+        if (!ipData || !ipData.ip) {
+
+            alert(
+                "Please detect your IP address first."
+            );
+
+            return;
+        }
+
+
+        const shareText =
+`My Public IP Address is:
+
+${ipData.ip}
+
+IP Version: ${ipData.version || "Unknown"}
+Country: ${ipData.country_name || "-"}
+City: ${ipData.city || "-"}
+ISP: ${ipData.org || "-"}
+
+Checked using GenerateSourceCode.`;
+
+
+        if (navigator.share) {
+
+            try {
+
+                await navigator.share({
+
+                    title:
+                        "My IP Address",
+
+                    text:
+                        shareText
+
+                });
+
+            }
+            catch (error) {
+
+                console.log(
+                    "Sharing cancelled."
+                );
+            }
+
+        }
+        else {
+
+            try {
+
+                await navigator.clipboard
+                    .writeText(shareText);
+
+                alert(
+                    "Sharing is not supported by this browser. " +
+                    "The IP information has been copied instead."
+                );
+
+            }
+            catch (error) {
+
+                alert(
+                    shareText
+                );
+            }
+        }
+    }
+
+
+    // Automatically detect IP when page loads
+    window.addEventListener(
+        "load",
+        detectIP
+    );
+
+</script>
+
+</body>
+</html>
