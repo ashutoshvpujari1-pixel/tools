@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Where Am I? - City, Area, PIN Code & Nearby Places</title>
+
+<meta name="description"
+      content="Find your current city, area, PIN code and nearby bus stops, cinemas, ATMs, hospitals, pharmacies and other places.">
+
+<meta name="keywords"
+      content="where am I, current location, city finder, area finder, pin code finder, nearby places, ATM near me, hospital near me">
+
+<meta property="og:title" content="Where Am I? - Location Finder">
+<meta property="og:description"
+      content="Find your current city, area, PIN code and nearby places.">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef5ff, #f8fbff);
+    color: #222;
+}
+
+header {
+    background: linear-gradient(135deg, #1261c9, #073b87);
+    color: white;
+    padding: 28px 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 17px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.location-card {
+    text-align: center;
+}
+
+.big-location {
+    font-size: 23px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 13px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+.primary {
+    background: #1261c9;
+    color: white;
+}
+
+.success {
+    background: #168a4a;
+    color: white;
+}
+
+.warning {
+    background: #e99b00;
+    color: white;
+}
+
+.dark {
+    background: #333;
+    color: white;
+}
+
+.info {
+    background: #eef6ff;
+    color: #14529a;
+}
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.location-item {
+    padding: 18px;
+    border-radius: 12px;
+    background: #f7faff;
+    border: 1px solid #dce9fa;
+}
+
+.location-item .label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 7px;
+}
+
+.location-item .value {
+    font-size: 19px;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.coordinates {
+    text-align: center;
+    margin-top: 18px;
+    color: #555;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-top: 0;
+}
+
+.category-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 10px;
+}
+
+.category-button {
+    padding: 15px 10px;
+    background: #f2f7ff;
+    border: 2px solid #d7e6fa;
+    color: #164d8d;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.category-button:hover,
+.category-button.active {
+    background: #1261c9;
+    color: white;
+    border-color: #1261c9;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.result-count {
+    color: #666;
+}
+
+.result {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 17px;
+    margin-top: 12px;
+    background: #fff;
+}
+
+.result h3 {
+    margin: 0 0 8px;
+    color: #1359a7;
+}
+
+.result p {
+    margin: 6px 0;
+    color: #555;
+}
+
+.distance {
+    font-weight: bold;
+    color: #168a4a !important;
+}
+
+.result-actions {
+    margin-top: 12px;
+}
+
+.result-actions a {
+    display: inline-block;
+    padding: 9px 13px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 7px;
+    text-decoration: none;
+    background: #1261c9;
+    color: white;
+    font-size: 14px;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+    color: #1261c9;
+}
+
+.error {
+    background: #fff0f0;
+    color: #b30000;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.note {
+    background: #fff8e5;
+    border-left: 5px solid #e5a000;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+footer {
+    background: #073b87;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    margin-top: 40px;
+}
+
+footer a {
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width:600px) {
+
+    header h1 {
+        font-size: 27px;
+    }
+
+    .big-location {
+        font-size: 19px;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .category-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>📍 Where Am I?</h1>
+
+    <p>
+        Find your current city, area, PIN code and nearby places
+    </p>
+
+</header>
+
+<div class="container">
+
+    <!-- LOCATION -->
+    <div class="card location-card">
+
+        <h2>📍 Your Current Location</h2>
+
+        <div id="status">
+            Click the button below to detect your location.
+        </div>
+
+        <button class="primary" onclick="getLocation()">
+            📍 Find My Location
+        </button>
+
+        <button class="success" onclick="shareLocation()">
+            📤 Share Location
+        </button>
+
+        <button class="dark" onclick="copyLocation()">
+            📋 Copy Location
+        </button>
+
+        <div id="locationError"></div>
+
+        <div id="locationDetails" class="hidden">
+
+            <div class="big-location" id="fullAddress">
+                -
+            </div>
+
+            <div class="location-grid">
+
+                <div class="location-item">
+                    <div class="label">🏙️ City</div>
+                    <div class="value" id="city">-</div>
+                </div>
+
+                <div class="location-item">
+                    <div class="label">📍 Area / Locality</div>
+                    <div class="value" id="area">-</div>
+                </div>
+
+                <div class="location-item">
+                    <div class="label">📮 PIN Code</div>
+                    <div class="value" id="postcode">-</div>
+                </div>
+
+                <div class="location-item">
+                    <div class="label">🌎 State</div>
+                    <div class="value" id="state">-</div>
+                </div>
+
+                <div class="location-item">
+                    <div class="label">🇮🇳 Country</div>
+                    <div class="value" id="country">-</div>
+                </div>
+
+                <div class="location-item">
+                    <div class="label">🧭 Coordinates</div>
+                    <div class="value" id="coordinates">-</div>
+                </div>
+
+            </div>
+
+            <div class="coordinates">
+
+                <button class="warning" onclick="openGoogleMaps()">
+                    🗺️ Open in Google Maps
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NEARBY -->
+    <div class="card">
+
+        <h2 class="section-title">
+            🔎 Find Nearby Places
+        </h2>
+
+        <p>
+            Select what you are looking for near your current location.
+        </p>
+
+        <div class="category-buttons">
+
+            <button class="category-button"
+                    onclick="findNearby('bus_stop', this)">
+                🚌 Bus Stops
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('cinema', this)">
+                🎬 Cinemas
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('atm', this)">
+                🏧 ATMs
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('hospital', this)">
+                🏥 Hospitals
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('pharmacy', this)">
+                💊 Pharmacies
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('restaurant', this)">
+                🍽️ Restaurants
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('cafe', this)">
+                ☕ Cafes
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('supermarket', this)">
+                🛒 Supermarkets
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('bank', this)">
+                🏦 Banks
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('fuel', this)">
+                ⛽ Petrol Pumps
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('hotel', this)">
+                🏨 Hotels
+            </button>
+
+            <button class="category-button"
+                    onclick="findNearby('school', this)">
+                🏫 Schools
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="card" id="resultsCard">
+
+        <div class="results-header">
+
+            <h2 id="resultsTitle">
+                Nearby Results
+            </h2>
+
+            <span class="result-count" id="resultCount"></span>
+
+        </div>
+
+        <div id="results">
+
+            <div class="note">
+                First click <strong>Find My Location</strong>.
+                Then select a nearby category.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <strong>Where Am I?</strong>
+
+    <br><br>
+
+    Location finder and nearby places tool
+
+    <br>
+
+    Created for GenerateSourceCode
+
+</footer>
+
+
+<script>
+
+let currentLatitude = null;
+let currentLongitude = null;
+let currentAddress = null;
+
+
+/* =========================================
+   GET CURRENT LOCATION
+========================================= */
+
+function getLocation() {
+
+    const status = document.getElementById("status");
+    const error = document.getElementById("locationError");
+
+    error.innerHTML = "";
+
+    if (!navigator.geolocation) {
+
+        error.innerHTML =
+            '<div class="error">Your browser does not support location services.</div>';
+
+        return;
+    }
+
+    status.innerHTML =
+        "⏳ Detecting your location... Please allow location access.";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            currentLatitude = position.coords.latitude;
+            currentLongitude = position.coords.longitude;
+
+            document.getElementById("coordinates").innerText =
+                currentLatitude.toFixed(6) +
+                ", " +
+                currentLongitude.toFixed(6);
+
+            reverseGeocode(
+                currentLatitude,
+                currentLongitude
+            );
+
+        },
+
+        function(error) {
+
+            let message = "";
+
+            switch(error.code) {
+
+                case error.PERMISSION_DENIED:
+                    message =
+                        "Location permission was denied. Please allow location access in your browser.";
+                    break;
+
+                case error.POSITION_UNAVAILABLE:
+                    message =
+                        "Location information is unavailable.";
+                    break;
+
+                case error.TIMEOUT:
+                    message =
+                        "Location request timed out. Please try again.";
+                    break;
+
+                default:
+                    message =
+                        "Unable to determine your location.";
+
+            }
+
+            status.innerHTML = "";
+
+            document.getElementById("locationError").innerHTML =
+                '<div class="error">' + message + '</div>';
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+
+    );
+
+}
+
+
+/* =========================================
+   REVERSE GEOCODING
+========================================= */
+
+async function reverseGeocode(lat, lon) {
+
+    const status = document.getElementById("status");
+
+    status.innerHTML =
+        "⏳ Finding your city, area and PIN code...";
+
+    try {
+
+        const url =
+            "https://nominatim.openstreetmap.org/reverse" +
+            "?format=jsonv2" +
+            "&lat=" + encodeURIComponent(lat) +
+            "&lon=" + encodeURIComponent(lon) +
+            "&zoom=18" +
+            "&addressdetails=1";
+
+        const response = await fetch(url, {
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Address service unavailable");
+        }
+
+        const data = await response.json();
+
+        const address = data.address || {};
+
+        currentAddress = data.display_name || "";
+
+        /*
+         * Different countries/cities use different
+         * OSM address fields, therefore several
+         * alternatives are checked.
+         */
+
+        const city =
+            address.city ||
+            address.town ||
+            address.municipality ||
+            address.village ||
+            address.city_district ||
+            "-";
+
+        const area =
+            address.suburb ||
+            address.neighbourhood ||
+            address.quarter ||
+            address.residential ||
+            address.hamlet ||
+            address.city_district ||
+            "-";
+
+        const postcode =
+            address.postcode ||
+            "-";
+
+        const state =
+            address.state ||
+            address.state_district ||
+            "-";
+
+        const country =
+            address.country ||
+            "-";
+
+
+        document.getElementById("city").innerText = city;
+
+        document.getElementById("area").innerText = area;
+
+        document.getElementById("postcode").innerText = postcode;
+
+        document.getElementById("state").innerText = state;
+
+        document.getElementById("country").innerText = country;
+
+        document.getElementById("fullAddress").innerText =
+            currentAddress || "Address not available";
+
+
+        document.getElementById("locationDetails")
+            .classList.remove("hidden");
+
+        status.innerHTML =
+            "✅ Location detected successfully.";
+
+    }
+
+    catch(error) {
+
+        status.innerHTML = "";
+
+        document.getElementById("locationError").innerHTML =
+            '<div class="error">' +
+            "Unable to determine your address. " +
+            "Please try again." +
+            "</div>";
+
+    }
+
+}
+
+
+/* =========================================
+   FIND NEARBY PLACES
+========================================= */
+
+async function findNearby(type, button) {
+
+    if (
+        currentLatitude === null ||
+        currentLongitude === null
+    ) {
+
+        alert(
+            "Please click 'Find My Location' first."
+        );
+
+        return;
+    }
+
+
+    document.querySelectorAll(".category-button")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+    button.classList.add("active");
+
+
+    const results = document.getElementById("results");
+
+    results.innerHTML =
+        '<div class="loading">' +
+        "⏳ Searching nearby places..." +
+        "</div>";
+
+
+    const titleMap = {
+
+        bus_stop: "🚌 Nearby Bus Stops",
+
+        cinema: "🎬 Nearby Cinemas",
+
+        atm: "🏧 Nearby ATMs",
+
+        hospital: "🏥 Nearby Hospitals",
+
+        pharmacy: "💊 Nearby Pharmacies",
+
+        restaurant: "🍽️ Nearby Restaurants",
+
+        cafe: "☕ Nearby Cafes",
+
+        supermarket: "🛒 Nearby Supermarkets",
+
+        bank: "🏦 Nearby Banks",
+
+        fuel: "⛽ Nearby Petrol Pumps",
+
+        hotel: "🏨 Nearby Hotels",
+
+        school: "🏫 Nearby Schools"
+
+    };
+
+
+    document.getElementById("resultsTitle").innerText =
+        titleMap[type] || "Nearby Places";
+
+
+    /*
+     * Search approximately 5 km around the user.
+     */
+
+    const radius = 5000;
+
+
+    let query = "";
+
+
+    if (type === "bus_stop") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["highway"="bus_stop"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          node["public_transport"="platform"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "cinema") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="cinema"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="cinema"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "atm") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="atm"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="atm"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "hospital") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="hospital"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="hospital"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "pharmacy") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="pharmacy"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="pharmacy"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "restaurant") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="restaurant"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="restaurant"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "cafe") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="cafe"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="cafe"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "supermarket") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["shop"="supermarket"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["shop"="supermarket"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "bank") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="bank"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="bank"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "fuel") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="fuel"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="fuel"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "hotel") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["tourism"="hotel"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["tourism"="hotel"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+    else if (type === "school") {
+
+        query = `
+        [out:json][timeout:25];
+
+        (
+          node["amenity"="school"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+
+          way["amenity"="school"]
+            (around:${radius},${currentLatitude},${currentLongitude});
+        );
+
+        out center;
+        `;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+            "https://overpass-api.de/api/interpreter",
+            {
+                method: "POST",
+                body: query
+            }
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Nearby search service unavailable"
+            );
+
+        }
+
+
+        const data = await response.json();
+
+
+        displayResults(
+            data.elements || [],
+            type
+        );
+
+    }
+
+    catch(error) {
+
+        results.innerHTML =
+            '<div class="error">' +
+            "Unable to load nearby places right now. " +
+            "Please try again after a few seconds." +
+            "</div>";
+
+        document.getElementById("resultCount")
+            .innerText = "";
+
+    }
+
+}
+
+
+/* =========================================
+   DISPLAY RESULTS
+========================================= */
+
+function displayResults(elements, type) {
+
+    const results =
+        document.getElementById("results");
+
+    /*
+     * Remove duplicates
+     */
+
+    const unique = [];
+
+    const seen = new Set();
+
+
+    elements.forEach(function(item) {
+
+        const tags = item.tags || {};
+
+        const lat =
+            item.lat !== undefined
+                ? item.lat
+                : item.center?.lat;
+
+        const lon =
+            item.lon !== undefined
+                ? item.lon
+                : item.center?.lon;
+
+
+        if (lat === undefined || lon === undefined) {
+            return;
+        }
+
+
+        const name =
+            tags.name ||
+            tags["name:en"] ||
+            getDefaultName(type);
+
+
+        const key =
+            name.toLowerCase() +
+            "_" +
+            lat.toFixed(4) +
+            "_" +
+            lon.toFixed(4);
+
+
+        if (!seen.has(key)) {
+
+            seen.add(key);
+
+            unique.push({
+
+                name: name,
+
+                lat: lat,
+
+                lon: lon,
+
+                tags: tags
+
+            });
+
+        }
+
+    });
+
+
+    /*
+     * Sort by distance
+     */
+
+    unique.forEach(function(place) {
+
+        place.distance =
+            calculateDistance(
+                currentLatitude,
+                currentLongitude,
+                place.lat,
+                place.lon
+            );
+
+    });
+
+
+    unique.sort(function(a, b) {
+
+        return a.distance - b.distance;
+
+    });
+
+
+    const limited =
+        unique.slice(0, 50);
+
+
+    document.getElementById("resultCount")
+        .innerText =
+        limited.length +
+        " place(s) found";
+
+
+    if (limited.length === 0) {
+
+        results.innerHTML =
+            '<div class="note">' +
+            "No nearby places were found in approximately 5 km. " +
+            "Try another category." +
+            "</div>";
+
+        return;
+
+    }
+
+
+    results.innerHTML = "";
+
+
+    limited.forEach(function(place, index) {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "result";
+
+
+        const address =
+            buildAddress(place.tags);
+
+
+        const mapsUrl =
+            "https://www.google.com/maps/search/?api=1" +
+            "&query=" +
+            encodeURIComponent(
+                place.lat + "," + place.lon
+            );
+
+
+        const directionUrl =
+            "https://www.google.com/maps/dir/?api=1" +
+            "&destination=" +
+            encodeURIComponent(
+                place.lat + "," + place.lon
+            );
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${index + 1}. ${escapeHtml(place.name)}
+            </h3>
+
+            ${
+                address
+                ? `<p>📍 ${escapeHtml(address)}</p>`
+                : ""
+            }
+
+            <p class="distance">
+                📏 ${formatDistance(place.distance)}
+            </p>
+
+            <p>
+                🧭 ${place.lat.toFixed(6)},
+                ${place.lon.toFixed(6)}
+            </p>
+
+            <div class="result-actions">
+
+                <a href="${mapsUrl}"
+                   target="_blank"
+                   rel="noopener">
+                    🗺️ View on Map
+                </a>
+
+                <a href="${directionUrl}"
+                   target="_blank"
+                   rel="noopener">
+                    🚗 Get Directions
+                </a>
+
+            </div>
+
+        `;
+
+
+        results.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================
+   DISTANCE CALCULATION
+========================================= */
+
+function calculateDistance(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+) {
+
+    const earthRadius = 6371;
+
+    const dLat =
+        toRadians(lat2 - lat1);
+
+    const dLon =
+        toRadians(lon2 - lon1);
+
+
+    const a =
+        Math.sin(dLat / 2) *
+        Math.sin(dLat / 2) +
+
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+
+    const c =
+        2 *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+
+    return earthRadius * c;
+
+}
+
+
+function toRadians(degrees) {
+
+    return degrees * Math.PI / 180;
+
+}
+
+
+function formatDistance(km) {
+
+    if (km < 1) {
+
+        return Math.round(km * 1000) +
+               " meters away";
+
+    }
+
+    return km.toFixed(2) +
+           " km away";
+
+}
+
+
+/* =========================================
+   DEFAULT NAME
+========================================= */
+
+function getDefaultName(type) {
+
+    const names = {
+
+        bus_stop: "Bus Stop",
+
+        cinema: "Cinema",
+
+        atm: "ATM",
+
+        hospital: "Hospital",
+
+        pharmacy: "Pharmacy",
+
+        restaurant: "Restaurant",
+
+        cafe: "Cafe",
+
+        supermarket: "Supermarket",
+
+        bank: "Bank",
+
+        fuel: "Petrol Pump",
+
+        hotel: "Hotel",
+
+        school: "School"
+
+    };
+
+    return names[type] || "Nearby Place";
+
+}
+
+
+/* =========================================
+   BUILD ADDRESS
+========================================= */
+
+function buildAddress(tags) {
+
+    const parts = [];
+
+    if (tags["addr:housenumber"])
+        parts.push(tags["addr:housenumber"]);
+
+    if (tags["addr:street"])
+        parts.push(tags["addr:street"]);
+
+    if (tags["addr:suburb"])
+        parts.push(tags["addr:suburb"]);
+
+    if (tags["addr:city"])
+        parts.push(tags["addr:city"]);
+
+    if (tags["addr:postcode"])
+        parts.push(tags["addr:postcode"]);
+
+    return parts.join(", ");
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================
+   GOOGLE MAPS
+========================================= */
+
+function openGoogleMaps() {
+
+    if (
+        currentLatitude === null ||
+        currentLongitude === null
+    ) {
+
+        alert(
+            "Please find your location first."
+        );
+
+        return;
+    }
+
+
+    const url =
+        "https://www.google.com/maps/search/?api=1" +
+        "&query=" +
+        currentLatitude +
+        "," +
+        currentLongitude;
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================
+   COPY LOCATION
+========================================= */
+
+async function copyLocation() {
+
+    if (
+        currentLatitude === null ||
+        currentLongitude === null
+    ) {
+
+        alert(
+            "Please find your location first."
+        );
+
+        return;
+
+    }
+
+
+    const city =
+        document.getElementById("city").innerText;
+
+    const area =
+        document.getElementById("area").innerText;
+
+    const postcode =
+        document.getElementById("postcode").innerText;
+
+
+    const text =
+        "My Current Location\n\n" +
+
+        "City: " + city + "\n" +
+
+        "Area: " + area + "\n" +
+
+        "PIN Code: " + postcode + "\n" +
+
+        "Address: " + currentAddress + "\n" +
+
+        "Coordinates: " +
+        currentLatitude +
+        ", " +
+        currentLongitude + "\n\n" +
+
+        "Google Maps:\n" +
+
+        "https://www.google.com/maps/search/?api=1&query=" +
+        currentLatitude +
+        "," +
+        currentLongitude;
+
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+        alert(
+            "Location information copied to clipboard."
+        );
+
+    }
+
+    catch(error) {
+
+        alert(
+            "Unable to copy location."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   SHARE LOCATION
+========================================= */
+
+async function shareLocation() {
+
+    if (
+        currentLatitude === null ||
+        currentLongitude === null
+    ) {
+
+        alert(
+            "Please find your location first."
+        );
+
+        return;
+    }
+
+
+    const city =
+        document.getElementById("city").innerText;
+
+    const area =
+        document.getElementById("area").innerText;
+
+
+    const mapsUrl =
+        "https://www.google.com/maps/search/?api=1" +
+        "&query=" +
+        currentLatitude +
+        "," +
+        currentLongitude;
+
+
+    const shareData = {
+
+        title: "My Current Location",
+
+        text:
+            "I am currently near " +
+            area +
+            ", " +
+            city +
+            ".",
+
+        url: mapsUrl
+
+    };
+
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share(
+                shareData
+            );
+
+        }
+
+        catch(error) {
+
+            console.log(
+                "Share cancelled"
+            );
+
+        }
+
+    }
+
+    else {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                mapsUrl
+            );
+
+            alert(
+                "Sharing is not supported by this browser. " +
+                "Google Maps location link has been copied."
+            );
+
+        }
+
+        catch(error) {
+
+            window.open(
+                mapsUrl,
+                "_blank"
+            );
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
