@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Two Photo Merger - Merge Two Photos Online</title>
+
+<meta name="description"
+      content="Merge two photos into one image online. Upload two photos and combine them side-by-side or vertically. Free browser-based photo merger.">
+
+<meta name="keywords"
+      content="merge photos, combine photos, photo merger, join two images, combine two photos, image merger">
+
+<meta property="og:title" content="Two Photo Merger">
+<meta property="og:description"
+      content="Upload two photos and merge them into a single image directly in your browser.">
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: #1e293b;
+}
+
+header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 8px 0 0;
+    font-size: 16px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+    margin-bottom: 25px;
+}
+
+.upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.upload-box {
+    border: 2px dashed #94a3b8;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    background: #f8fafc;
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    border-color: #6366f1;
+    background: #eef2ff;
+}
+
+.upload-box h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+input[type="file"] {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+    display: none;
+    background: #e2e8f0;
+}
+
+.controls {
+    text-align: center;
+}
+
+.controls label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+select {
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 16px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 22px;
+    margin: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.merge-btn {
+    background: #4f46e5;
+    color: white;
+}
+
+.merge-btn:hover {
+    background: #4338ca;
+}
+
+.download-btn {
+    background: #16a34a;
+    color: white;
+    display: none;
+}
+
+.download-btn:hover {
+    background: #15803d;
+}
+
+.clear-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #b91c1c;
+}
+
+.status {
+    text-align: center;
+    font-weight: bold;
+    margin: 15px;
+    min-height: 25px;
+}
+
+.result-area {
+    text-align: center;
+}
+
+canvas {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    display: none;
+}
+
+.info {
+    background: #eff6ff;
+    border-left: 5px solid #3b82f6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #0f172a;
+    color: white;
+    margin-top: 40px;
+}
+
+@media (max-width: 700px) {
+
+    .upload-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📸 Two Photo Merger</h1>
+    <p>Upload two photos and combine them into one single image</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="upload-grid">
+
+            <!-- PHOTO 1 -->
+            <div class="upload-box">
+
+                <h2>📷 Photo 1</h2>
+
+                <input
+                    type="file"
+                    id="photo1"
+                    accept="image/*">
+
+                <img
+                    id="preview1"
+                    class="preview"
+                    alt="Photo 1 Preview">
+
+            </div>
+
+            <!-- PHOTO 2 -->
+            <div class="upload-box">
+
+                <h2>📷 Photo 2</h2>
+
+                <input
+                    type="file"
+                    id="photo2"
+                    accept="image/*">
+
+                <img
+                    id="preview2"
+                    class="preview"
+                    alt="Photo 2 Preview">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="controls">
+
+            <h2>Choose Merge Direction</h2>
+
+            <label for="direction">
+                Merge:
+            </label>
+
+            <select id="direction">
+
+                <option value="horizontal">
+                    Side by Side
+                </option>
+
+                <option value="vertical">
+                    Top to Bottom
+                </option>
+
+            </select>
+
+            <br>
+
+            <button
+                class="merge-btn"
+                onclick="mergePhotos()">
+                🔗 Merge Photos
+            </button>
+
+            <button
+                class="clear-btn"
+                onclick="clearAll()">
+                🗑 Clear
+            </button>
+
+        </div>
+
+        <div
+            id="status"
+            class="status">
+        </div>
+
+    </div>
+
+    <div class="card result-area">
+
+        <h2>✨ Merged Photo</h2>
+
+        <canvas id="canvas"></canvas>
+
+        <br>
+
+        <button
+            id="downloadBtn"
+            class="download-btn"
+            onclick="downloadImage()">
+            ⬇ Download Merged Photo
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <div class="info">
+
+            <strong>🔒 Privacy:</strong>
+
+            Your photos are processed directly inside your browser.
+            They are not uploaded to a server.
+
+        </div>
+
+        <div class="info">
+
+            <strong>💡 Tip:</strong>
+
+            For the best result, use photos with similar dimensions
+            and orientation.
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+
+    <div>
+        Two Photo Merger
+    </div>
+
+    <div style="margin-top:8px;">
+        Created for day-to-day image processing
+    </div>
+
+</footer>
+
+
+<script>
+
+let image1 = null;
+let image2 = null;
+
+
+/*
+====================================================
+PHOTO 1 UPLOAD
+====================================================
+*/
+
+document.getElementById("photo1").addEventListener(
+    "change",
+    function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+
+            alert("Please select an image file.");
+
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            const preview =
+                document.getElementById("preview1");
+
+            preview.src = e.target.result;
+
+            preview.style.display = "block";
+
+            image1 = new Image();
+
+            image1.onload = function() {
+
+                console.log(
+                    "Photo 1 loaded:",
+                    image1.width,
+                    image1.height
+                );
+
+            };
+
+            image1.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+);
+
+
+/*
+====================================================
+PHOTO 2 UPLOAD
+====================================================
+*/
+
+document.getElementById("photo2").addEventListener(
+    "change",
+    function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+
+            alert("Please select an image file.");
+
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            const preview =
+                document.getElementById("preview2");
+
+            preview.src = e.target.result;
+
+            preview.style.display = "block";
+
+            image2 = new Image();
+
+            image2.onload = function() {
+
+                console.log(
+                    "Photo 2 loaded:",
+                    image2.width,
+                    image2.height
+                );
+
+            };
+
+            image2.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+);
+
+
+/*
+====================================================
+MERGE PHOTOS
+====================================================
+*/
+
+function mergePhotos() {
+
+    const status =
+        document.getElementById("status");
+
+    const canvas =
+        document.getElementById("canvas");
+
+    const downloadBtn =
+        document.getElementById("downloadBtn");
+
+    if (!image1 || !image2) {
+
+        status.innerHTML =
+            "⚠ Please upload both photos first.";
+
+        status.style.color = "#dc2626";
+
+        return;
+    }
+
+    const direction =
+        document.getElementById("direction").value;
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /*
+    ================================================
+    HORIZONTAL MERGE
+    ================================================
+    */
+
+    if (direction === "horizontal") {
+
+        /*
+        Use the maximum height.
+        */
+
+        const maxHeight =
+            Math.max(
+                image1.height,
+                image2.height
+            );
+
+        /*
+        Calculate scaled widths so both
+        photos have the same height.
+        */
+
+        const width1 =
+            image1.width *
+            (maxHeight / image1.height);
+
+        const width2 =
+            image2.width *
+            (maxHeight / image2.height);
+
+        canvas.width =
+            width1 + width2;
+
+        canvas.height =
+            maxHeight;
+
+        /*
+        White background
+        */
+
+        ctx.fillStyle = "white";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        /*
+        Draw Photo 1
+        */
+
+        ctx.drawImage(
+            image1,
+            0,
+            0,
+            width1,
+            maxHeight
+        );
+
+        /*
+        Draw Photo 2
+        */
+
+        ctx.drawImage(
+            image2,
+            width1,
+            0,
+            width2,
+            maxHeight
+        );
+
+    }
+
+
+    /*
+    ================================================
+    VERTICAL MERGE
+    ================================================
+    */
+
+    else {
+
+        /*
+        Use maximum width.
+        */
+
+        const maxWidth =
+            Math.max(
+                image1.width,
+                image2.width
+            );
+
+        /*
+        Calculate scaled heights.
+        */
+
+        const height1 =
+            image1.height *
+            (maxWidth / image1.width);
+
+        const height2 =
+            image2.height *
+            (maxWidth / image2.width);
+
+        canvas.width =
+            maxWidth;
+
+        canvas.height =
+            height1 + height2;
+
+        /*
+        White background
+        */
+
+        ctx.fillStyle = "white";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        /*
+        Draw Photo 1
+        */
+
+        ctx.drawImage(
+            image1,
+            0,
+            0,
+            maxWidth,
+            height1
+        );
+
+        /*
+        Draw Photo 2
+        */
+
+        ctx.drawImage(
+            image2,
+            0,
+            height1,
+            maxWidth,
+            height2
+        );
+    }
+
+
+    /*
+    ================================================
+    SHOW RESULT
+    ================================================
+    */
+
+    canvas.style.display = "inline-block";
+
+    downloadBtn.style.display = "inline-block";
+
+    status.innerHTML =
+        "✅ Photos merged successfully!";
+
+    status.style.color = "#16a34a";
+}
+
+
+/*
+====================================================
+DOWNLOAD IMAGE
+====================================================
+*/
+
+function downloadImage() {
+
+    const canvas =
+        document.getElementById("canvas");
+
+    if (!canvas.width || !canvas.height) {
+
+        alert("Please merge the photos first.");
+
+        return;
+    }
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "merged-photo.png";
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+}
+
+
+/*
+====================================================
+CLEAR ALL
+====================================================
+*/
+
+function clearAll() {
+
+    image1 = null;
+
+    image2 = null;
+
+    document.getElementById("photo1").value = "";
+
+    document.getElementById("photo2").value = "";
+
+    document.getElementById("preview1").src = "";
+
+    document.getElementById("preview2").src = "";
+
+    document.getElementById("preview1").style.display = "none";
+
+    document.getElementById("preview2").style.display = "none";
+
+    const canvas =
+        document.getElementById("canvas");
+
+    canvas.style.display = "none";
+
+    canvas.width = 0;
+
+    canvas.height = 0;
+
+    document.getElementById("downloadBtn")
+        .style.display = "none";
+
+    document.getElementById("status")
+        .innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
