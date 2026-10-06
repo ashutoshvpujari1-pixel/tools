@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Photo to Sketch Converter | GenerateSourceCode</title>
+
+<meta name="description"
+      content="Convert any photo into a beautiful pencil sketch online. Free browser-based photo to sketch converter with download and sharing options.">
+
+<meta name="keywords"
+      content="photo to sketch, image to sketch, pencil sketch maker, photo sketch converter, online sketch generator">
+
+<meta property="og:title" content="Photo to Sketch Converter">
+<meta property="og:description" content="Convert your photo into a pencil sketch instantly.">
+<meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #dce4ec);
+    color: #222;
+}
+
+header {
+    background: linear-gradient(135deg, #111827, #374151);
+    color: white;
+    padding: 22px 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.upload-area {
+    border: 3px dashed #64748b;
+    border-radius: 15px;
+    padding: 35px 20px;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    background: #e2e8f0;
+    border-color: #111827;
+}
+
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.upload-area h2 {
+    margin: 5px 0;
+}
+
+.upload-area p {
+    color: #64748b;
+}
+
+#fileInput {
+    display: none;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.control {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.control label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+.value {
+    float: right;
+    font-weight: normal;
+    color: #475569;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+button {
+    border: none;
+    padding: 13px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.primary {
+    background: #111827;
+    color: white;
+}
+
+.secondary {
+    background: #475569;
+    color: white;
+}
+
+.success {
+    background: #15803d;
+    color: white;
+}
+
+.warning {
+    background: #b45309;
+    color: white;
+}
+
+.danger {
+    background: #b91c1c;
+    color: white;
+}
+
+.preview-title {
+    text-align: center;
+    margin: 25px 0 15px;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.preview-box {
+    background: #f8fafc;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+}
+
+.preview-box h3 {
+    margin-top: 5px;
+}
+
+.preview-box img,
+.preview-box canvas {
+    max-width: 100%;
+    max-height: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.placeholder {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+.info {
+    margin-top: 25px;
+    padding: 18px;
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+    border-radius: 8px;
+}
+
+footer {
+    margin-top: 30px;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+    .controls {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>✏️ Photo to Sketch Converter</h1>
+    <p>Transform your photo into a beautiful pencil sketch instantly</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+    <div class="upload-area" id="uploadArea">
+
+        <div class="upload-icon">📷</div>
+
+        <h2>Upload Your Photo</h2>
+
+        <p>
+            Click here or drag & drop an image
+        </p>
+
+        <p>
+            JPG, JPEG, PNG, WEBP supported
+        </p>
+
+        <input type="file"
+               id="fileInput"
+               accept="image/*">
+
+    </div>
+
+    <div class="controls">
+
+        <div class="control">
+
+            <label>
+                Sketch Intensity
+                <span class="value" id="intensityValue">70</span>
+            </label>
+
+            <input type="range"
+                   id="intensity"
+                   min="10"
+                   max="100"
+                   value="70">
+
+        </div>
+
+        <div class="control">
+
+            <label>
+                Brightness
+                <span class="value" id="brightnessValue">0</span>
+            </label>
+
+            <input type="range"
+                   id="brightness"
+                   min="-50"
+                   max="50"
+                   value="0">
+
+        </div>
+
+        <div class="control">
+
+            <label>
+                Contrast
+                <span class="value" id="contrastValue">20</span>
+            </label>
+
+            <input type="range"
+                   id="contrast"
+                   min="-50"
+                   max="100"
+                   value="20">
+
+        </div>
+
+    </div>
+
+    <div class="buttons">
+
+        <button class="primary"
+                onclick="generateSketch()">
+            ✏️ Generate Sketch
+        </button>
+
+        <button class="secondary"
+                onclick="downloadSketch()">
+            ⬇️ Download Sketch
+        </button>
+
+        <button class="success"
+                onclick="shareSketch()">
+            📤 Share
+        </button>
+
+        <button class="warning"
+                onclick="copySketch()">
+            📋 Copy Image
+        </button>
+
+        <button class="danger"
+                onclick="resetTool()">
+            🔄 Reset
+        </button>
+
+    </div>
+
+    <h2 class="preview-title">
+        Image Preview
+    </h2>
+
+    <div class="preview-grid">
+
+        <div class="preview-box">
+
+            <h3>Original Photo</h3>
+
+            <div id="originalContainer"
+                 class="placeholder">
+                Upload a photo
+            </div>
+
+        </div>
+
+        <div class="preview-box">
+
+            <h3>Sketch Result</h3>
+
+            <div id="sketchContainer"
+                 class="placeholder">
+                Your sketch will appear here
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="info">
+
+        <strong>How it works:</strong>
+
+        <p>
+            Your photo is processed directly inside your browser.
+            The image is converted to grayscale, inverted and blended
+            using a dodge-style pencil sketch algorithm.
+        </p>
+
+        <p>
+            <strong>Privacy:</strong>
+            Your image is not uploaded to a server by this page.
+        </p>
+
+    </div>
+
+</div>
+
+</div>
+
+<footer>
+
+    <div>
+        © 2026 GenerateSourceCode
+    </div>
+
+    <div style="margin-top:8px;">
+        Photo to Sketch Converter
+    </div>
+
+</footer>
+
+
+<script>
+
+let originalImage = null;
+
+let originalCanvas = null;
+
+let sketchCanvas = null;
+
+
+/* ===============================
+   Upload Area
+================================ */
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+const fileInput =
+    document.getElementById("fileInput");
+
+
+uploadArea.addEventListener("click", function () {
+    fileInput.click();
+});
+
+
+fileInput.addEventListener("change", function (event) {
+
+    const file = event.target.files[0];
+
+    if (file) {
+        loadImage(file);
+    }
+
+});
+
+
+/* ===============================
+   Drag & Drop
+================================ */
+
+uploadArea.addEventListener("dragover", function (event) {
+
+    event.preventDefault();
+
+    uploadArea.classList.add("dragover");
+
+});
+
+
+uploadArea.addEventListener("dragleave", function () {
+
+    uploadArea.classList.remove("dragover");
+
+});
+
+
+uploadArea.addEventListener("drop", function (event) {
+
+    event.preventDefault();
+
+    uploadArea.classList.remove("dragover");
+
+    const file = event.dataTransfer.files[0];
+
+    if (file && file.type.startsWith("image/")) {
+
+        loadImage(file);
+
+    }
+
+});
+
+
+/* ===============================
+   Load Image
+================================ */
+
+function loadImage(file) {
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+
+        const img = new Image();
+
+        img.onload = function () {
+
+            originalImage = img;
+
+            displayOriginal(img);
+
+            generateSketch();
+
+        };
+
+        img.src = event.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* ===============================
+   Display Original
+================================ */
+
+function displayOriginal(img) {
+
+    const container =
+        document.getElementById("originalContainer");
+
+    container.innerHTML = "";
+
+    const canvas =
+        document.createElement("canvas");
+
+    originalCanvas = canvas;
+
+    const ctx = canvas.getContext("2d");
+
+    const dimensions =
+        calculateDimensions(
+            img.width,
+            img.height
+        );
+
+    canvas.width = dimensions.width;
+
+    canvas.height = dimensions.height;
+
+    ctx.drawImage(
+        img,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    container.appendChild(canvas);
+
+}
+
+
+/* ===============================
+   Calculate Image Size
+================================ */
+
+function calculateDimensions(width, height) {
+
+    const maxWidth = 1600;
+
+    const maxHeight = 1600;
+
+    let newWidth = width;
+
+    let newHeight = height;
+
+    if (width > maxWidth) {
+
+        newWidth = maxWidth;
+
+        newHeight =
+            height * (maxWidth / width);
+
+    }
+
+    if (newHeight > maxHeight) {
+
+        newHeight = maxHeight;
+
+        newWidth =
+            newWidth * (maxHeight / newHeight);
+
+    }
+
+    return {
+        width: Math.round(newWidth),
+        height: Math.round(newHeight)
+    };
+
+}
+
+
+/* ===============================
+   Generate Sketch
+================================ */
+
+function generateSketch() {
+
+    if (!originalImage) {
+
+        alert("Please upload a photo first.");
+
+        return;
+
+    }
+
+    const intensity =
+        parseInt(
+            document.getElementById("intensity").value
+        );
+
+    const brightness =
+        parseInt(
+            document.getElementById("brightness").value
+        );
+
+    const contrast =
+        parseInt(
+            document.getElementById("contrast").value
+        );
+
+
+    const width =
+        originalCanvas.width;
+
+    const height =
+        originalCanvas.height;
+
+
+    const sourceContext =
+        originalCanvas.getContext("2d");
+
+    const sourceData =
+        sourceContext.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+    /*
+       Create grayscale image
+    */
+
+    const gray =
+        new Uint8ClampedArray(
+            width * height
+        );
+
+
+    for (let i = 0, p = 0;
+         i < sourceData.data.length;
+         i += 4, p++) {
+
+        let r =
+            sourceData.data[i];
+
+        let g =
+            sourceData.data[i + 1];
+
+        let b =
+            sourceData.data[i + 2];
+
+
+        let value =
+            0.299 * r +
+            0.587 * g +
+            0.114 * b;
+
+
+        value += brightness;
+
+        value =
+            ((value - 128) *
+             (1 + contrast / 100))
+             + 128;
+
+
+        value =
+            Math.max(
+                0,
+                Math.min(255, value)
+            );
+
+
+        gray[p] = value;
+
+    }
+
+
+    /*
+       Blur radius based on intensity
+    */
+
+    const radius =
+        Math.max(
+            1,
+            Math.round(
+                intensity / 18
+            )
+        );
+
+
+    /*
+       Create blurred inverted image
+    */
+
+    const blurred =
+        new Uint8ClampedArray(
+            width * height
+        );
+
+
+    /*
+       Simple box blur
+    */
+
+    for (let y = 0; y < height; y++) {
+
+        for (let x = 0; x < width; x++) {
+
+            let sum = 0;
+
+            let count = 0;
+
+
+            for (
+                let ky = -radius;
+                ky <= radius;
+                ky++
+            ) {
+
+                const yy = y + ky;
+
+                if (
+                    yy < 0 ||
+                    yy >= height
+                ) {
+                    continue;
+                }
+
+
+                for (
+                    let kx = -radius;
+                    kx <= radius;
+                    kx++
+                ) {
+
+                    const xx = x + kx;
+
+                    if (
+                        xx < 0 ||
+                        xx >= width
+                    ) {
+                        continue;
+                    }
+
+
+                    const index =
+                        yy * width + xx;
+
+
+                    /*
+                       Inverted grayscale
+                    */
+
+                    sum +=
+                        255 - gray[index];
+
+                    count++;
+
+                }
+
+            }
+
+
+            blurred[
+                y * width + x
+            ] =
+                sum / count;
+
+        }
+
+    }
+
+
+    /*
+       Dodge blend
+    */
+
+    sketchCanvas =
+        document.createElement("canvas");
+
+    sketchCanvas.width = width;
+
+    sketchCanvas.height = height;
+
+
+    const outputContext =
+        sketchCanvas.getContext("2d");
+
+
+    const output =
+        outputContext.createImageData(
+            width,
+            height
+        );
+
+
+    for (
+        let i = 0;
+        i < gray.length;
+        i++
+    ) {
+
+        const base =
+            gray[i];
+
+        const blur =
+            blurred[i];
+
+
+        let result;
+
+
+        if (blur >= 254) {
+
+            result = 255;
+
+        } else {
+
+            result =
+                Math.min(
+                    255,
+                    (base * 255) /
+                    (255 - blur)
+                );
+
+        }
+
+
+        /*
+           Slightly control sketch strength
+        */
+
+        const strength =
+            intensity / 100;
+
+
+        result =
+            base * (1 - strength) +
+            result * strength;
+
+
+        output.data[i * 4] =
+            result;
+
+        output.data[i * 4 + 1] =
+            result;
+
+        output.data[i * 4 + 2] =
+            result;
+
+        output.data[i * 4 + 3] =
+            255;
+
+    }
+
+
+    outputContext.putImageData(
+        output,
+        0,
+        0
+    );
+
+
+    const container =
+        document.getElementById(
+            "sketchContainer"
+        );
+
+    container.innerHTML = "";
+
+    container.appendChild(
+        sketchCanvas
+    );
+
+}
+
+
+/* ===============================
+   Range Controls
+================================ */
+
+document.getElementById(
+    "intensity"
+).addEventListener(
+    "input",
+    function () {
+
+        document.getElementById(
+            "intensityValue"
+        ).textContent = this.value;
+
+        if (originalImage) {
+            generateSketch();
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "brightness"
+).addEventListener(
+    "input",
+    function () {
+
+        document.getElementById(
+            "brightnessValue"
+        ).textContent = this.value;
+
+        if (originalImage) {
+            generateSketch();
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "contrast"
+).addEventListener(
+    "input",
+    function () {
+
+        document.getElementById(
+            "contrastValue"
+        ).textContent = this.value;
+
+        if (originalImage) {
+            generateSketch();
+        }
+
+    }
+);
+
+
+/* ===============================
+   Download
+================================ */
+
+function downloadSketch() {
+
+    if (!sketchCanvas) {
+
+        alert("Please generate a sketch first.");
+
+        return;
+
+    }
+
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "photo-sketch.png";
+
+    link.href =
+        sketchCanvas.toDataURL(
+            "image/png"
+        );
+
+    link.click();
+
+}
+
+
+/* ===============================
+   Copy Image
+================================ */
+
+async function copySketch() {
+
+    if (!sketchCanvas) {
+
+        alert("Please generate a sketch first.");
+
+        return;
+
+    }
+
+
+    try {
+
+        const blob =
+            await new Promise(
+                resolve =>
+                    sketchCanvas.toBlob(
+                        resolve,
+                        "image/png"
+                    )
+            );
+
+
+        await navigator.clipboard.write([
+            new ClipboardItem({
+                "image/png": blob
+            })
+        ]);
+
+
+        alert(
+            "Sketch copied to clipboard."
+        );
+
+    } catch (error) {
+
+        alert(
+            "Copying images is not supported by this browser. Please use Download."
+        );
+
+    }
+
+}
+
+
+/* ===============================
+   Share
+================================ */
+
+async function shareSketch() {
+
+    if (!sketchCanvas) {
+
+        alert("Please generate a sketch first.");
+
+        return;
+
+    }
+
+
+    try {
+
+        const blob =
+            await new Promise(
+                resolve =>
+                    sketchCanvas.toBlob(
+                        resolve,
+                        "image/png"
+                    )
+            );
+
+
+        const file =
+            new File(
+                [blob],
+                "photo-sketch.png",
+                {
+                    type: "image/png"
+                }
+            );
+
+
+        if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({
+                files: [file]
+            })
+        ) {
+
+            await navigator.share({
+                title: "My Photo Sketch",
+                text: "Created using Photo to Sketch Converter",
+                files: [file]
+            });
+
+        } else {
+
+            alert(
+                "Image sharing is not supported on this browser. Please download the sketch."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* ===============================
+   Reset
+================================ */
+
+function resetTool() {
+
+    originalImage = null;
+
+    originalCanvas = null;
+
+    sketchCanvas = null;
+
+    fileInput.value = "";
+
+    document.getElementById(
+        "originalContainer"
+    ).innerHTML =
+        "Upload a photo";
+
+    document.getElementById(
+        "originalContainer"
+    ).className =
+        "placeholder";
+
+
+    document.getElementById(
+        "sketchContainer"
+    ).innerHTML =
+        "Your sketch will appear here";
+
+    document.getElementById(
+        "sketchContainer"
+    ).className =
+        "placeholder";
+
+
+    document.getElementById(
+        "intensity"
+    ).value = 70;
+
+    document.getElementById(
+        "brightness"
+    ).value = 0;
+
+    document.getElementById(
+        "contrast"
+    ).value = 20;
+
+
+    document.getElementById(
+        "intensityValue"
+    ).textContent = "70";
+
+    document.getElementById(
+        "brightnessValue"
+    ).textContent = "0";
+
+    document.getElementById(
+        "contrastValue"
+    ).textContent = "20";
+
+}
+
+
+/* ===============================
+   Keyboard Shortcut
+================================ */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "s"
+        ) {
+
+            event.preventDefault();
+
+            downloadSketch();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Photo Frame Generator | Create Framed Photos Online</title>
+
+<meta name="description"
+      content="Upload a photo and create beautiful framed photos online. Choose from multiple photo frame styles and download or share your framed image.">
+
+<meta property="og:title" content="Photo Frame Generator">
+<meta property="og:description" content="Create beautiful framed photos online with multiple frame styles.">
+<meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #fdf2f8);
+    color: #222;
+}
+
+header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 8px 0 0;
+    font-size: 16px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 25px;
+}
+
+.panel {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.1);
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #4f46e5;
+}
+
+.upload-area {
+    border: 2px dashed #8b5cf6;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    background: #faf5ff;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.upload-area:hover {
+    background: #f3e8ff;
+}
+
+.upload-area input {
+    display: none;
+}
+
+.upload-icon {
+    font-size: 45px;
+}
+
+.frame-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.frame-option {
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    background: white;
+    transition: .25s;
+}
+
+.frame-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,.12);
+}
+
+.frame-option.selected {
+    border-color: #4f46e5;
+    background: #eef2ff;
+}
+
+.frame-preview {
+    width: 90px;
+    height: 70px;
+    margin: auto;
+    background: linear-gradient(135deg,#ddd,#fff);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.frame-option span {
+    display: block;
+    margin-top: 7px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.control-row {
+    margin-bottom: 15px;
+}
+
+.control-row label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.canvas-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 650px;
+    background:
+        repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%)
+        50% / 30px 30px;
+    border-radius: 15px;
+    padding: 25px;
+    overflow: auto;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.primary {
+    background: #4f46e5;
+    color: white;
+}
+
+.success {
+    background: #16a34a;
+    color: white;
+}
+
+.warning {
+    background: #ea580c;
+    color: white;
+}
+
+.dark {
+    background: #111827;
+    color: white;
+}
+
+.info {
+    background: #0284c7;
+    color: white;
+}
+
+.reset {
+    background: #dc2626;
+    color: white;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    text-align: center;
+}
+
+footer {
+    margin-top: 30px;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+@media(max-width:850px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .canvas-area {
+        min-height: 450px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🖼️ Photo Frame Generator</h1>
+    <p>Upload your photo • Choose a frame • Create & download your framed photo</p>
+</header>
+
+<div class="container">
+
+<div class="main-grid">
+
+<!-- LEFT PANEL -->
+<div class="panel">
+
+<h2>1. Upload Photo</h2>
+
+<label class="upload-area">
+    <div class="upload-icon">📷</div>
+    <strong>Click to Upload Photo</strong>
+    <p>JPG, PNG, WEBP</p>
+    <input type="file" id="photoInput" accept="image/*">
+</label>
+
+<h2 style="margin-top:25px;">2. Select Frame</h2>
+
+<div class="frame-grid">
+
+<div class="frame-option selected" data-frame="classic">
+    <div class="frame-preview" style="border:8px solid #8b5a2b;">
+        <span>🌄</span>
+    </div>
+    <span>Classic Wood</span>
+</div>
+
+<div class="frame-option" data-frame="gold">
+    <div class="frame-preview" style="border:8px solid #d4af37;">
+        <span>🌄</span>
+    </div>
+    <span>Golden</span>
+</div>
+
+<div class="frame-option" data-frame="silver">
+    <div class="frame-preview" style="border:8px solid #aaa;">
+        <span>🌄</span>
+    </div>
+    <span>Silver</span>
+</div>
+
+<div class="frame-option" data-frame="black">
+    <div class="frame-preview" style="border:8px solid #111;">
+        <span>🌄</span>
+    </div>
+    <span>Modern Black</span>
+</div>
+
+<div class="frame-option" data-frame="white">
+    <div class="frame-preview" style="border:8px solid white;box-shadow:inset 0 0 0 2px #ccc;">
+        <span>🌄</span>
+    </div>
+    <span>Minimal White</span>
+</div>
+
+<div class="frame-option" data-frame="polaroid">
+    <div class="frame-preview" style="border:8px solid white;border-bottom:25px solid white;box-shadow:0 0 4px #999;">
+        <span>🌄</span>
+    </div>
+    <span>Polaroid</span>
+</div>
+
+<div class="frame-option" data-frame="neon">
+    <div class="frame-preview" style="border:6px solid #00e5ff;box-shadow:0 0 10px #00e5ff;">
+        <span>🌄</span>
+    </div>
+    <span>Neon</span>
+</div>
+
+<div class="frame-option" data-frame="floral">
+    <div class="frame-preview" style="border:8px solid #e879a8;">
+        <span>🌸</span>
+    </div>
+    <span>Floral</span>
+</div>
+
+<div class="frame-option" data-frame="diamond">
+    <div class="frame-preview" style="border:8px solid #9333ea;">
+        <span>💎</span>
+    </div>
+    <span>Diamond</span>
+</div>
+
+<div class="frame-option" data-frame="royal">
+    <div class="frame-preview" style="border:10px solid #7f1d1d;">
+        <span>👑</span>
+    </div>
+    <span>Royal</span>
+</div>
+
+</div>
+
+<div class="controls">
+
+<h2>3. Photo Controls</h2>
+
+<div class="control-row">
+<label>Zoom</label>
+<input type="range" id="zoom" min="0.5" max="2.5" value="1" step="0.01">
+</div>
+
+<div class="control-row">
+<label>Horizontal Position</label>
+<input type="range" id="posX" min="-300" max="300" value="0">
+</div>
+
+<div class="control-row">
+<label>Vertical Position</label>
+<input type="range" id="posY" min="-300" max="300" value="0">
+</div>
+
+<div class="control-row">
+<label>Frame Size</label>
+<select id="frameSize">
+    <option value="500">Small</option>
+    <option value="700" selected>Medium</option>
+    <option value="900">Large</option>
+</select>
+</div>
+
+</div>
+
+<div class="buttons">
+    <button class="primary" onclick="generateFrame()">✨ Generate</button>
+    <button class="reset" onclick="resetAll()">↻ Reset</button>
+</div>
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="panel">
+
+<h2>Preview</h2>
+
+<div class="canvas-area">
+    <canvas id="canvas" width="700" height="550"></canvas>
+</div>
+
+<div class="status" id="status">
+    Upload a photo to begin.
+</div>
+
+<div class="buttons">
+
+<button class="success" onclick="downloadImage()">
+    ⬇ Download
+</button>
+
+<button class="info" onclick="shareImage()">
+    📤 Share
+</button>
+
+<button class="warning" onclick="emailImage()">
+    ✉ Email
+</button>
+
+<button class="dark" onclick="printImage()">
+    🖨 Print
+</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<footer>
+    <strong>Photo Frame Generator</strong>
+    <br>
+    Create beautiful framed photos directly in your browser.
+    <br><br>
+    © 2026 GenerateSourceCode
+</footer>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const photoInput = document.getElementById("photoInput");
+
+let photo = null;
+let selectedFrame = "classic";
+
+let zoom = 1;
+let posX = 0;
+let posY = 0;
+
+const frames = {
+
+classic: {
+    border: 45,
+    color: "#8b5a2b",
+    inner: "#d6a15b"
+},
+
+gold: {
+    border: 45,
+    color: "#d4af37",
+    inner: "#fff2a8"
+},
+
+silver: {
+    border: 45,
+    color: "#aaa",
+    inner: "#eee"
+},
+
+black: {
+    border: 40,
+    color: "#111",
+    inner: "#444"
+},
+
+white: {
+    border: 40,
+    color: "#fff",
+    inner: "#ddd"
+},
+
+polaroid: {
+    border: 35,
+    color: "#fff",
+    inner: "#ddd"
+},
+
+neon: {
+    border: 30,
+    color: "#00e5ff",
+    inner: "#ff00ff"
+},
+
+floral: {
+    border: 45,
+    color: "#e879a8",
+    inner: "#f9a8d4"
+},
+
+diamond: {
+    border: 45,
+    color: "#9333ea",
+    inner: "#c084fc"
+},
+
+royal: {
+    border: 50,
+    color: "#7f1d1d",
+    inner: "#d4af37"
+}
+
+};
+
+
+/* PHOTO UPLOAD */
+
+photoInput.addEventListener("change", function(e) {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+
+        const img = new Image();
+
+        img.onload = function() {
+
+            photo = img;
+
+            document.getElementById("status").innerText =
+                "Photo loaded successfully.";
+
+            generateFrame();
+        };
+
+        img.src = event.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* FRAME SELECTION */
+
+document.querySelectorAll(".frame-option").forEach(option => {
+
+    option.addEventListener("click", function() {
+
+        document.querySelectorAll(".frame-option")
+            .forEach(x => x.classList.remove("selected"));
+
+        this.classList.add("selected");
+
+        selectedFrame = this.dataset.frame;
+
+        generateFrame();
+
+    });
+
+});
+
+
+/* CONTROLS */
+
+document.getElementById("zoom").addEventListener("input", function() {
+
+    zoom = parseFloat(this.value);
+
+    generateFrame();
+
+});
+
+document.getElementById("posX").addEventListener("input", function() {
+
+    posX = parseInt(this.value);
+
+    generateFrame();
+
+});
+
+document.getElementById("posY").addEventListener("input", function() {
+
+    posY = parseInt(this.value);
+
+    generateFrame();
+
+});
+
+
+document.getElementById("frameSize").addEventListener("change", function() {
+
+    generateFrame();
+
+});
+
+
+/* GENERATE FRAME */
+
+function generateFrame() {
+
+    if (!photo) {
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle = "#f8fafc";
+
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle = "#64748b";
+
+        ctx.font = "24px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            "Upload a photo to create your framed image",
+            canvas.width/2,
+            canvas.height/2
+        );
+
+        return;
+    }
+
+    const size =
+        parseInt(document.getElementById("frameSize").value);
+
+    const frame = frames[selectedFrame];
+
+    const border = frame.border;
+
+    canvas.width = size;
+    canvas.height = size + (selectedFrame === "polaroid" ? 80 : 0);
+
+    /* Background */
+
+    ctx.fillStyle = frame.color;
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* Decorative frame */
+
+    if (selectedFrame === "gold") {
+
+        const gradient =
+            ctx.createLinearGradient(0,0,size,size);
+
+        gradient.addColorStop(0,"#fff4a3");
+        gradient.addColorStop(.3,"#d4af37");
+        gradient.addColorStop(.6,"#fff2a8");
+        gradient.addColorStop(1,"#a67c00");
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+
+    if (selectedFrame === "silver") {
+
+        const gradient =
+            ctx.createLinearGradient(0,0,size,size);
+
+        gradient.addColorStop(0,"#fff");
+        gradient.addColorStop(.5,"#888");
+        gradient.addColorStop(1,"#eee");
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+
+    /* Photo area */
+
+    const photoX = border;
+    const photoY = border;
+
+    const photoWidth =
+        canvas.width - border * 2;
+
+    const photoHeight =
+        canvas.height -
+        border * 2 -
+        (selectedFrame === "polaroid" ? 80 : 0);
+
+
+    ctx.save();
+
+    /* Clip photo */
+
+    ctx.beginPath();
+
+    if (selectedFrame === "classic") {
+
+        ctx.roundRect(
+            photoX,
+            photoY,
+            photoWidth,
+            photoHeight,
+            3
+        );
+
+    } else if (selectedFrame === "polaroid") {
+
+        ctx.rect(
+            photoX,
+            photoY,
+            photoWidth,
+            photoHeight
+        );
+
+    } else {
+
+        ctx.roundRect(
+            photoX,
+            photoY,
+            photoWidth,
+            photoHeight,
+            12
+        );
+
+    }
+
+    ctx.clip();
+
+
+    /* Calculate image scaling */
+
+    const imageRatio =
+        photo.width / photo.height;
+
+    const areaRatio =
+        photoWidth / photoHeight;
+
+    let drawWidth;
+    let drawHeight;
+
+    if (imageRatio > areaRatio) {
+
+        drawHeight = photoHeight;
+
+        drawWidth =
+            drawHeight * imageRatio;
+
+    } else {
+
+        drawWidth = photoWidth;
+
+        drawHeight =
+            drawWidth / imageRatio;
+
+    }
+
+    drawWidth *= zoom;
+    drawHeight *= zoom;
+
+    const drawX =
+        photoX +
+        (photoWidth - drawWidth)/2 +
+        posX;
+
+    const drawY =
+        photoY +
+        (photoHeight - drawHeight)/2 +
+        posY;
+
+    ctx.drawImage(
+        photo,
+        drawX,
+        drawY,
+        drawWidth,
+        drawHeight
+    );
+
+    ctx.restore();
+
+
+    /* Inner border */
+
+    ctx.strokeStyle = frame.inner;
+    ctx.lineWidth = 5;
+
+    ctx.strokeRect(
+        photoX,
+        photoY,
+        photoWidth,
+        photoHeight
+    );
+
+
+    /* Special frames */
+
+    if (selectedFrame === "neon") {
+
+        ctx.shadowColor = "#00e5ff";
+        ctx.shadowBlur = 30;
+
+        ctx.strokeStyle = "#00e5ff";
+        ctx.lineWidth = 8;
+
+        ctx.strokeRect(
+            border/2,
+            border/2,
+            canvas.width-border,
+            canvas.height-border
+        );
+
+        ctx.shadowBlur = 0;
+
+    }
+
+
+    if (selectedFrame === "floral") {
+
+        ctx.font = "45px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText("🌸", 25, 45);
+        ctx.fillText("🌸", canvas.width-25, 45);
+        ctx.fillText("🌸", 25, canvas.height-20);
+        ctx.fillText("🌸", canvas.width-25, canvas.height-20);
+
+    }
+
+
+    if (selectedFrame === "diamond") {
+
+        ctx.font = "35px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText("💎", 25, 40);
+        ctx.fillText("💎", canvas.width-25, 40);
+        ctx.fillText("💎", 25, canvas.height-20);
+        ctx.fillText("💎", canvas.width-25, canvas.height-20);
+
+    }
+
+
+    if (selectedFrame === "royal") {
+
+        ctx.font = "40px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText("👑", canvas.width/2, 40);
+
+    }
+
+
+    /* Polaroid caption area */
+
+    if (selectedFrame === "polaroid") {
+
+        ctx.fillStyle = "#333";
+
+        ctx.font = "bold 22px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            "My Photo",
+            canvas.width/2,
+            canvas.height-30
+        );
+
+    }
+
+    document.getElementById("status").innerText =
+        "Framed photo generated successfully.";
+
+}
+
+
+/* DOWNLOAD */
+
+function downloadImage() {
+
+    if (!photo) {
+
+        alert("Please upload a photo first.");
+
+        return;
+    }
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "framed-photo.png";
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+
+}
+
+
+/* SHARE */
+
+async function shareImage() {
+
+    if (!photo) {
+
+        alert("Please upload a photo first.");
+
+        return;
+    }
+
+    canvas.toBlob(async function(blob) {
+
+        const file =
+            new File(
+                [blob],
+                "framed-photo.png",
+                {type:"image/png"}
+            );
+
+        if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({files:[file]})
+        ) {
+
+            try {
+
+                await navigator.share({
+
+                    title:"My Framed Photo",
+
+                    text:"Created using Photo Frame Generator",
+
+                    files:[file]
+
+                });
+
+            } catch(error) {
+
+                console.log(error);
+
+            }
+
+        } else {
+
+            alert(
+                "Direct image sharing is not supported by this browser. Download the image and share it manually."
+            );
+
+        }
+
+    });
+
+}
+
+
+/* EMAIL */
+
+function emailImage() {
+
+    if (!photo) {
+
+        alert("Please upload a photo first.");
+
+        return;
+    }
+
+    const subject =
+        encodeURIComponent("My Framed Photo");
+
+    const body =
+        encodeURIComponent(
+            "I created this framed photo using the Photo Frame Generator.\n\nPlease find the generated image attached after downloading it."
+        );
+
+    window.location.href =
+        `mailto:?subject=${subject}&body=${body}`;
+
+}
+
+
+/* PRINT */
+
+function printImage() {
+
+    if (!photo) {
+
+        alert("Please upload a photo first.");
+
+        return;
+    }
+
+    const data =
+        canvas.toDataURL("image/png");
+
+    const printWindow =
+        window.open("", "_blank");
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Framed Photo</title>
+            <style>
+                body {
+                    margin:0;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    min-height:100vh;
+                }
+
+                img {
+                    max-width:95%;
+                    max-height:95vh;
+                }
+            </style>
+        </head>
+        <body>
+            <img src="${data}">
+            <script>
+                window.onload=function(){
+                    window.print();
+                };
+            <\/script>
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+
+}
+
+
+/* RESET */
+
+function resetAll() {
+
+    photo = null;
+
+    zoom = 1;
+    posX = 0;
+    posY = 0;
+
+    document.getElementById("zoom").value = 1;
+    document.getElementById("posX").value = 0;
+    document.getElementById("posY").value = 0;
+
+    photoInput.value = "";
+
+    selectedFrame = "classic";
+
+    document.querySelectorAll(".frame-option")
+        .forEach(x => x.classList.remove("selected"));
+
+    document
+        .querySelector('[data-frame="classic"]')
+        .classList.add("selected");
+
+    document.getElementById("status").innerText =
+        "Upload a photo to begin.";
+
+    canvas.width = 700;
+    canvas.height = 550;
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.fillRect(0,0,700,550);
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        "Upload a photo to create your framed image",
+        350,
+        275
+    );
+
+}
+
+resetAll();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexPulse Pro - Sports Watch & Stopwatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        sport: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            900: '#14532d',
+                            950: '#052e16',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .glow-emerald {
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+        .glow-box {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.15);
+        }
+        /* Custom scrollbar for lap table */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-zinc-950">
+
+    <header class="border-b border-zinc-800 bg-zinc-900/60 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-900/40">
+                    <svg class="w-6 h-6 text-zinc-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">APEXPULSE <span class="text-emerald-500 font-mono text-xs px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">PRO v2.4</span></h1>
+                    <p class="text-xs text-zinc-400 hidden sm:block">Professional Athletic Chronograph & Training Hub</p>
+                </div>
+            </div>
+
+            <!-- Mode Switcher Tabs -->
+            <nav class="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+                <button onclick="switchMode('stopwatch')" id="nav-stopwatch" class="px-3 sm:px-5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 bg-emerald-600 text-zinc-950 shadow">
+                    Stopwatch
+                </button>
+                <button onclick="switchMode('clock')" id="nav-clock" class="px-3 sm:px-5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200">
+                    Clock & Date
+                </button>
+                <button onclick="switchMode('intervals')" id="nav-intervals" class="px-3 sm:px-5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200">
+                    Intervals
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 flex flex-col justify-center">
+
+        <!-- STOPWATCH VIEW -->
+        <div id="view-stopwatch" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Main Stopwatch Display & Controls Column -->
+                <div class="lg:col-span-7 flex flex-col space-y-6">
+                    <div class="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 sm:p-10 glow-box relative overflow-hidden backdrop-blur-sm">
+                        <!-- Background aesthetic rings -->
+                        <div class="absolute -right-12 -top-12 w-64 h-64 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none"></div>
+                        <div class="absolute -left-12 -bottom-12 w-64 h-64 rounded-full bg-teal-500/5 blur-3xl pointer-events-none"></div>
+                        
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span id="stopwatch-status-text">Ready</span>
+                            </span>
+                            <div class="text-xs font-mono text-zinc-400">
+                                Precision: <span class="text-zinc-200 font-semibold">1 ms</span>
+                            </div>
+                        </div>
+
+                        <!-- Huge Time Display -->
+                        <div class="text-center py-6">
+                            <div class="font-mono text-6xl sm:text-8xl lg:text-9xl font-extrabold tracking-tighter text-white glow-emerald tabular-nums select-none" id="display-time">
+                                00<span class="text-zinc-600">:</span>00<span class="text-zinc-600">.</span><span id="display-ms" class="text-4xl sm:text-6xl lg:text-7xl text-emerald-400">00</span>
+                            </div>
+                            <div class="mt-2 text-sm font-mono text-zinc-400 tracking-wider">
+                                SPLIT TIME: <span id="display-split" class="text-zinc-200 font-bold">00:00.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-zinc-800/80">
+                            <button id="btn-start-stop" onclick="toggleStopwatch()" class="w-full py-4 px-6 rounded-2xl font-bold text-base sm:text-lg transition-all duration-150 transform active:scale-95 shadow-lg bg-emerald-600 hover:bg-emerald-500 text-zinc-950 flex items-center justify-center space-x-2">
+                                <svg id="icon-start-stop" class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <span id="text-start-stop">START</span>
+                            </button>
+
+                            <button id="btn-lap-reset" onclick="handleLapReset()" class="w-full py-4 px-6 rounded-2xl font-bold text-base sm:text-lg transition-all duration-150 transform active:scale-95 border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 flex items-center justify-center space-x-2">
+                                <svg id="icon-lap-reset" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span id="text-lap-reset">LAP</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats Cards for Athlete -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 text-center">
+                            <p class="text-xs text-zinc-400 uppercase font-medium">Total Laps</p>
+                            <p id="stat-total-laps" class="text-2xl font-extrabold font-mono text-white mt-1">0</p>
+                        </div>
+                        <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 text-center">
+                            <p class="text-xs text-emerald-400 uppercase font-medium">Fastest Lap</p>
+                            <p id="stat-fastest-lap" class="text-xl sm:text-2xl font-extrabold font-mono text-emerald-400 mt-1">--:--.--</p>
+                        </div>
+                        <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 text-center">
+                            <p class="text-xs text-rose-400 uppercase font-medium">Slowest Lap</p>
+                            <p id="stat-slowest-lap" class="text-xl sm:text-2xl font-extrabold font-mono text-rose-400 mt-1">--:--.--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lap Times Table Column -->
+                <div class="lg:col-span-5 flex flex-col bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 glow-box backdrop-blur-sm h-[520px]">
+                    <div class="flex justify-between items-center pb-4 border-b border-zinc-800">
+                        <h2 class="font-bold text-base flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            <span>Lap & Split Analytics</span>
+                        </h2>
+                        <button onclick="exportLaps()" class="text-xs text-zinc-400 hover:text-emerald-400 transition-colors font-medium px-2.5 py-1 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center space-x-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            <span>Export</span>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto mt-4 pr-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-xs font-mono text-zinc-400 border-b border-zinc-800 sticky top-0 bg-zinc-900/95 backdrop-blur-sm">
+                                    <th class="py-2 px-2">LAP</th>
+                                    <th class="py-2 px-2 text-right">LAP TIME</th>
+                                    <th class="py-2 px-2 text-right">CUMULATIVE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="laps-table-body" class="font-mono text-sm divide-y divide-zinc-800/40">
+                                <!-- Dynamic lap rows will appear here -->
+                                <tr id="empty-laps-row">
+                                    <td colspan="3" class="text-center py-20 text-zinc-600 text-xs italic">
+                                        No laps recorded yet. Press "LAP" while running.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- REAL-TIME CLOCK VIEW -->
+        <div id="view-clock" class="hidden space-y-6">
+            <div class="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-8 sm:p-14 glow-box text-center relative overflow-hidden backdrop-blur-sm max-w-4xl mx-auto w-full">
+                <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl pointer-events-none"></div>
+                
+                <div class="inline-flex items-center space-x-2 text-xs font-semibold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20 mb-8">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="clock-timezone">Local Time Zone</span>
+                </div>
+
+                <div class="font-mono text-6xl sm:text-9xl font-black tracking-tight text-white glow-emerald mb-4 tabular-nums" id="live-time-display">
+                    00:00:00 <span class="text-3xl sm:text-5xl text-emerald-400" id="live-ampm">AM</span>
+                </div>
+
+                <div class="text-xl sm:text-2xl font-medium text-zinc-300 tracking-wide mb-8" id="live-date-display">
+                    Loading Date...
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-zinc-800">
+                    <div class="bg-zinc-950/60 p-4 rounded-2xl border border-zinc-800/80">
+                        <p class="text-xs text-zinc-400 uppercase font-medium">Day of Year</p>
+                        <p id="info-day-year" class="text-lg font-mono font-bold text-white mt-1">--</p>
+                    </div>
+                    <div class="bg-zinc-950/60 p-4 rounded-2xl border border-zinc-800/80">
+                        <p class="text-xs text-zinc-400 uppercase font-medium">Week Number</p>
+                        <p id="info-week-num" class="text-lg font-mono font-bold text-white mt-1">--</p>
+                    </div>
+                    <div class="bg-zinc-950/60 p-4 rounded-2xl border border-zinc-800/80">
+                        <p class="text-xs text-zinc-400 uppercase font-medium">UTC Offset</p>
+                        <p id="info-utc-offset" class="text-lg font-mono font-bold text-white mt-1">--</p>
+                    </div>
+                    <div class="bg-zinc-950/60 p-4 rounded-2xl border border-zinc-800/80">
+                        <p class="text-xs text-zinc-400 uppercase font-medium">Format</p>
+                        <button onclick="toggleTimeFormat()" id="btn-format-toggle" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-1 rounded-lg border border-emerald-500/20 mt-1 transition-colors">
+                            12-HOUR
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERVAL TIMER VIEW -->
+        <div id="view-intervals" class="hidden space-y-6">
+            <div class="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 sm:p-10 glow-box max-w-3xl mx-auto w-full backdrop-blur-sm">
+                <div class="text-center mb-8">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                        HIIT / Sprint Interval Mode
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-white mt-3">Workout Pacer & Timer</h2>
+                    <p class="text-xs sm:text-sm text-zinc-400 mt-1">Configure work and rest blocks for training sessions.</p>
+                </div>
+
+                <!-- Setup Form / Active Countdown Screen -->
+                <div id="interval-setup" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="bg-zinc-950/60 p-5 rounded-2xl border border-zinc-800 text-center">
+                            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-2">Work Duration (sec)</label>
+                            <input type="number" id="input-work" value="30" min="5" max="600" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-center font-mono text-2xl font-bold text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div class="bg-zinc-950/60 p-5 rounded-2xl border border-zinc-800 text-center">
+                            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-2">Rest Duration (sec)</label>
+                            <input type="number" id="input-rest" value="10" min="0" max="600" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-center font-mono text-2xl font-bold text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div class="bg-zinc-950/60 p-5 rounded-2xl border border-zinc-800 text-center">
+                            <label class="block text-xs font-semibold uppercase text-zinc-400 mb-2">Total Rounds</label>
+                            <input type="number" id="input-rounds" value="8" min="1" max="50" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-center font-mono text-2xl font-bold text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center pt-4">
+                        <button onclick="startIntervalSession()" class="px-10 py-4 bg-emerald-600 hover:bg-emerald-500 text-zinc-950 font-extrabold rounded-2xl text-lg shadow-lg transition-all transform active:scale-95 flex items-center space-x-2">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>START INTERVALS</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Interval Running State -->
+                <div id="interval-running" class="hidden text-center space-y-6">
+                    <div class="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" id="interval-phase-badge">
+                        GET READY
+                    </div>
+
+                    <div>
+                        <div class="font-mono text-7xl sm:text-9xl font-black tracking-tighter text-white glow-emerald tabular-nums" id="interval-countdown">
+                            05
+                        </div>
+                        <p class="text-sm font-mono text-zinc-400 mt-2">ROUND <span id="interval-current-round" class="text-white font-bold">1</span> OF <span id="interval-total-rounds" class="text-white font-bold">8</span></p>
+                    </div>
+
+                    <div class="flex justify-center space-x-4 pt-4">
+                        <button onclick="pauseIntervalSession()" id="btn-pause-interval" class="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold rounded-xl border border-zinc-700 transition-all">
+                            PAUSE
+                        </button>
+                        <button onclick="stopIntervalSession()" class="px-8 py-3 bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold rounded-xl transition-all">
+                            STOP / RESET
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Web Audio API Beep Generator for Athletic Feedback ---
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playBeep(frequency = 800, duration = 0.1, type = 'sine') {
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = frequency;
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log('Audio playback prevented or unsupported');
+            }
+        }
+
+        // --- App Navigation State ---
+        function switchMode(mode) {
+            const modes = ['stopwatch', 'clock', 'intervals'];
+            modes.forEach(m => {
+                const view = document.getElementById(`view-${m}`);
+                const nav = document.getElementById(`nav-${m}`);
+                if (m === mode) {
+                    view.classList.remove('hidden');
+                    nav.className = "px-3 sm:px-5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 bg-emerald-600 text-zinc-950 shadow";
+                } else {
+                    view.classList.add('hidden');
+                    nav.className = "px-3 sm:px-5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200";
+                }
+            });
+        }
+
+        // --- Stopwatch State Variables ---
+        let stopwatchRunning = false;
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval = null;
+        let laps = [];
+        let lastLapTime = 0;
+
+        // Format milliseconds to MM:SS.ms
+        function formatTime(ms) {
+            const totalSec = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSec / 60);
+            const seconds = totalSec % 60;
+            const milliseconds = Math.floor((ms % 1000) / 10);
+
+            const minStr = String(minutes).padStart(2, '0');
+            const secStr = String(seconds).padStart(2, '0');
+            const msStr = String(milliseconds).padStart(2, '0');
+
+            return { minStr, secStr, msStr, formatted: `${minStr}:${secStr}.${msStr}` };
+        }
+
+        function updateStopwatchDisplay() {
+            const currentTime = elapsedTime + (stopwatchRunning ? (performance.now() - startTime) : 0);
+            const timeObj = formatTime(currentTime);
+            
+            document.getElementById('display-time').innerHTML = `${timeObj.minStr}<span class="text-zinc-600">:</span>${timeObj.secStr}<span class="text-zinc-600">.</span><span id="display-ms" class="text-4xl sm:text-6xl lg:text-7xl text-emerald-400">${timeObj.msStr}</span>`;
+            
+            // Calculate current split time relative to last lap
+            const currentSplitMs = laps.length === 0 ? currentTime : (currentTime - laps[laps.length - 1].cumulative);
+            const splitObj = formatTime(currentSplitMs);
+            document.getElementById('display-split').innerText = `${splitObj.minStr}:${splitObj.secStr}.${splitObj.msStr}`;
+        }
+
+        function toggleStopwatch() {
+            playBeep(1000, 0.08);
+            if (!stopwatchRunning) {
+                // Start
+                stopwatchRunning = true;
+                startTime = performance.now();
+                timerInterval = setInterval(updateStopwatchDisplay, 10);
+
+                document.getElementById('text-start-stop').innerText = 'STOP';
+                document.getElementById('icon-start-stop').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                document.getElementById('btn-start-stop').className = "w-full py-4 px-6 rounded-2xl font-bold text-base sm:text-lg transition-all duration-150 transform active:scale-95 shadow-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 flex items-center justify-center space-x-2";
+
+                document.getElementById('text-lap-reset').innerText = 'LAP';
+                document.getElementById('icon-lap-reset').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>';
+                document.getElementById('stopwatch-status-text').innerText = 'RUNNING';
+            } else {
+                // Stop / Pause
+                stopwatchRunning = false;
+                elapsedTime += performance.now() - startTime;
+                clearInterval(timerInterval);
+
+                document.getElementById('text-start-stop').innerText = 'START';
+                document.getElementById('icon-start-stop').innerHTML = '<path d="M8 5v14l11-7z"/>';
+                document.getElementById('btn-start-stop').className = "w-full py-4 px-6 rounded-2xl font-bold text-base sm:text-lg transition-all duration-150 transform active:scale-95 shadow-lg bg-emerald-600 hover:bg-emerald-500 text-zinc-950 flex items-center justify-center space-x-2";
+
+                document.getElementById('text-lap-reset').innerText = 'RESET';
+                document.getElementById('icon-lap-reset').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>';
+                document.getElementById('stopwatch-status-text').innerText = 'PAUSED';
+            }
+        }
+
+        function handleLapReset() {
+            playBeep(1200, 0.08);
+            if (stopwatchRunning) {
+                // Record Lap
+                const currentTime = elapsedTime + (performance.now() - startTime);
+                const lapDuration = laps.length === 0 ? currentTime : (currentTime - laps[laps.length - 1].cumulative);
+                
+                laps.push({
+                    lapNumber: laps.length + 1,
+                    duration: lapDuration,
+                    cumulative: currentTime
+                });
+
+                renderLapsTable();
+            } else {
+                // Reset Stopwatch completely
+                elapsedTime = 0;
+                startTime = 0;
+                laps = [];
+                clearInterval(timerInterval);
+                updateStopwatchDisplay();
+                renderLapsTable();
+
+                document.getElementById('stopwatch-status-text').innerText = 'Ready';
+                document.getElementById('text-lap-reset').innerText = 'LAP';
+                document.getElementById('icon-lap-reset').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>';
+            }
+        }
+
+        function renderLapsTable() {
+            const tbody = document.getElementById('laps-table-body');
+            document.getElementById('stat-total-laps').innerText = laps.length;
+
+            if (laps.length === 0) {
+                tbody.innerHTML = `
+                    <tr id="empty-laps-row">
+                        <td colspan="3" class="text-center py-20 text-zinc-600 text-xs italic">
+                            No laps recorded yet. Press "LAP" while running.
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('stat-fastest-lap').innerText = '--:--.--';
+                document.getElementById('stat-slowest-lap').innerText = '--:--.--';
+                return;
+            }
+
+            // Find fastest and slowest lap indices
+            let bestIdx = 0;
+            let worstIdx = 0;
+            if (laps.length > 1) {
+                for (let i = 1; i < laps.length; i++) {
+                    if (laps[i].duration < laps[bestIdx].duration) bestIdx = i;
+                    if (laps[i].duration > laps[worstIdx].duration) worstIdx = i;
+                }
+            }
+
+            // Update stats cards
+            if (laps.length > 0) {
+                const bestObj = formatTime(laps[bestIdx].duration);
+                const worstObj = formatTime(laps[worstIdx].duration);
+                document.getElementById('stat-fastest-lap').innerText = bestObj.formatted;
+                document.getElementById('stat-slowest-lap').innerText = worstObj.formatted;
+            }
+
+            let html = '';
+            // Render in reverse chronological order (newest lap on top)
+            for (let i = laps.length - 1; i >= 0; i--) {
+                const lap = laps[i];
+                const lapTimeFormatted = formatTime(lap.duration);
+                const cumTimeFormatted = formatTime(lap.cumulative);
+
+                let rowHighlight = '';
+                let badge = '';
+                if (laps.length >= 2) {
+                    if (i === bestIdx) {
+                        rowHighlight = 'bg-emerald-950/30 text-emerald-300';
+                        badge = '<span class="ml-2 text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/30 font-bold">FASTEST</span>';
+                    } else if (i === worstIdx) {
+                        rowHighlight = 'bg-rose-950/30 text-rose-300';
+                        badge = '<span class="ml-2 text-[10px] bg-rose-500/20 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/30 font-bold">SLOWEST</span>';
+                    }
+                }
+
+                html += `
+                    <tr class="border-b border-zinc-800/40 hover:bg-zinc-800/20 transition-colors ${rowHighlight}">
+                        <td class="py-3 px-2 font-bold text-zinc-300">#${lap.lapNumber} ${badge}</td>
+                        <td class="py-3 px-2 text-right font-mono">${lapTimeFormatted.formatted}</td>
+                        <td class="py-3 px-2 text-right font-mono text-zinc-400">${cumTimeFormatted.formatted}</td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+        }
+
+        function exportLaps() {
+            if (laps.length === 0) return;
+            let csv = 'Lap,Lap Time,Cumulative Time\n';
+            laps.forEach(l => {
+                csv += `${l.lapNumber},${formatTime(l.duration).formatted},${formatTime(l.cumulative).formatted}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `apexpulse_laps_${new Date().toISOString().slice(0,10)}.csv`);
+            a.click();
+        }
+
+        // --- Real-time Clock Logic ---
+        let is12HourFormat = true;
+
+        function toggleTimeFormat() {
+            is12HourFormat = !is12HourFormat;
+            document.getElementById('btn-format-toggle').innerText = is12HourFormat ? '12-HOUR' : '24-HOUR';
+        }
+
+        function updateLiveClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            let ampmStr = '';
+            if (is12HourFormat) {
+                ampmStr = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+            }
+            const hoursStr = String(hours).padStart(2, '0');
+
+            document.getElementById('live-time-display').innerHTML = `${hoursStr}<span class="text-zinc-600">:</span>${minutes}<span class="text-zinc-600">:</span>${seconds} <span class="text-3xl sm:text-5xl text-emerald-400">${ampmStr}</span>`;
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('live-date-display').innerText = now.toLocaleDateString(undefined, options);
+            document.getElementById('clock-timezone').innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            // Day of year
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            document.getElementById('info-day-year').innerText = dayOfYear;
+
+            // Week number
+            const d = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((d - yearStart) / oneDay) + 1) / 7);
+            document.getElementById('info-week-num').innerText = weekNo;
+
+            // UTC offset
+            const offsetMin = -now.getTimezoneOffset();
+            const sign = offsetMin >= 0 ? '+' : '-';
+            const absH = String(Math.floor(Math.abs(offsetMin) / 60)).padStart(2, '0');
+            const absM = String(Math.abs(offsetMin) % 60).padStart(2, '0');
+            document.getElementById('info-utc-offset').innerText = `UTC ${sign}${absH}:${absM}`;
+        }
+
+        // --- Interval Timer Logic ---
+        let intervalState = {
+            running: false,
+            paused: false,
+            workSec: 30,
+            restSec: 10,
+            totalRounds: 8,
+            currentRound: 1,
+            isWorkPhase: true,
+            timeLeft: 30,
+            timerId: null
+        };
+
+        function startIntervalSession() {
+            playBeep(1000, 0.1);
+            intervalState.workSec = parseInt(document.getElementById('input-work').value) || 30;
+            intervalState.restSec = parseInt(document.getElementById('input-rest').value) || 10;
+            intervalState.totalRounds = parseInt(document.getElementById('input-rounds').value) || 8;
+            
+            intervalState.currentRound = 1;
+            intervalState.isWorkPhase = true;
+            intervalState.timeLeft = 5; // Get ready countdown
+            intervalState.running = true;
+            intervalState.paused = false;
+
+            document.getElementById('interval-setup').classList.add('hidden');
+            document.getElementById('interval-running').classList.remove('hidden');
+            document.getElementById('interval-phase-badge').innerText = 'GET READY';
+            document.getElementById('interval-phase-badge').className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/40";
+            
+            document.getElementById('interval-total-rounds').innerText = intervalState.totalRounds;
+            document.getElementById('interval-current-round').innerText = intervalState.currentRound;
+
+            if (intervalState.timerId) clearInterval(intervalState.timerId);
+            intervalState.timerId = setInterval(intervalTick, 1000);
+        }
+
+        function intervalTick() {
+            if (intervalState.paused) return;
+
+            if (intervalState.timeLeft > 0) {
+                intervalState.timeLeft--;
+                if (intervalState.timeLeft <= 3 && intervalState.timeLeft > 0) {
+                    playBeep(600, 0.1); // Countdown bleeps
+                }
+            } else {
+                // Phase switch
+                playBeep(1400, 0.3); // Phase switch bleep
+                if (intervalState.phaseState === 'getready') {
+                    // Switch to work
+                    intervalState.phaseState = 'work';
+                    intervalState.isWorkPhase = true;
+                    intervalState.timeLeft = intervalState.workSec;
+                } else if (intervalState.isWorkPhase) {
+                    // Switch to rest (if rest > 0) or next round work
+                    if (intervalState.restSec > 0) {
+                        // Check if final round
+                        if (intervalState.currentRound >= intervalState.totalRounds) {
+                            finishIntervalSession();
+                            return;
+                        }
+                        intervalState.isWorkPhase = false;
+                        intervalState.timeLeft = intervalState.restSec;
+                    } else {
+                        intervalState.currentRound++;
+                        if (intervalState.currentRound > intervalState.totalRounds) {
+                            finishIntervalSession();
+                            return;
+                        }
+                        intervalState.timeLeft = intervalState.workSec;
+                    }
+                } else {
+                    // Switch from rest to next round work
+                    intervalState.currentRound++;
+                    if (intervalState.currentRound > intervalState.totalRounds) {
+                        finishIntervalSession();
+                        return;
+                    }
+                    intervalState.isWorkPhase = true;
+                    intervalState.timeLeft = intervalState.workSec;
+                }
+            }
+
+            // Update UI
+            document.getElementById('interval-countdown').innerText = String(intervalState.timeLeft).padStart(2, '0');
+            document.getElementById('interval-current-round').innerText = intervalState.currentRound;
+
+            const badge = document.getElementById('interval-phase-badge');
+            if (intervalState.timeLeft <= 5 && intervalState.phaseState === 'getready') {
+                badge.innerText = 'GET READY';
+                badge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-500/20 text-amber-400 border border-amber-500/40";
+            } else if (intervalState.isWorkPhase) {
+                badge.innerText = 'WORK / SPRINT';
+                badge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse";
+            } else {
+                badge.innerText = 'REST / RECOVER';
+                badge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/20 text-blue-400 border border-blue-500/40";
+            }
+        }
+
+        // Initialize getready phase state properly
+        // We set initial state phase
+        // Let's hook it cleanly inside startIntervalSession
+        // Adjust startIntervalSession setup:
+        // intervalState.phaseState = 'getready';
+
+        function pauseIntervalSession() {
+            intervalState.paused = !intervalState.paused;
+            document.getElementById('btn-pause-interval').innerText = intervalState.paused ? 'RESUME' : 'PAUSE';
+        }
+
+        function stopIntervalSession() {
+            if (intervalState.timerId) clearInterval(intervalState.timerId);
+            intervalState.running = false;
+            document.getElementById('interval-running').classList.add('hidden');
+            document.getElementById('interval-setup').classList.remove('hidden');
+        }
+
+        function finishIntervalSession() {
+            if (intervalState.timerId) clearInterval(intervalState.timerId);
+            playBeep(880, 0.6);
+            document.getElementById('interval-countdown').innerText = 'DONE!';
+            document.getElementById('interval-phase-badge').innerText = 'WORKOUT COMPLETE';
+            document.getElementById('interval-phase-badge').className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-500/30 text-emerald-300 border border-emerald-500/50";
+            
+            setTimeout(() => {
+                stopIntervalSession();
+            }, 4000);
+        }
+
+        // Initialize intervals phase state tracking
+        // Patch startIntervalSession phaseState:
+        // Inside startIntervalSession: intervalState.phaseState = 'getready';
+
+        // --- Initialization on Load ---
+        window.onload = function() {
+            setInterval(updateLiveClock, 200);
+            updateLiveClock();
+            updateStopwatchDisplay();
+        };
+    </script>
+</body>
+</html>

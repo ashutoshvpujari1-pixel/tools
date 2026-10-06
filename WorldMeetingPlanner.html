@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What Time Is It? + World Meeting Planner</title>
+
+<meta name="description"
+content="World Meeting Planner - compare time zones, find overlapping working hours, best meeting time, sunrise, sunset and good times to call.">
+
+<meta name="keywords"
+content="world clock, meeting planner, world meeting planner, time zone converter, working hours, best meeting time, sunrise sunset">
+
+<meta property="og:title"
+content="What Time Is It? + World Meeting Planner">
+
+<meta property="og:description"
+content="Find the best meeting time between cities around the world.">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f6fb;
+    color: #172033;
+    transition: background .3s, color .3s;
+}
+
+body.dark {
+    background: #101522;
+    color: #f5f7fb;
+}
+
+header {
+    background: linear-gradient(135deg, #172554, #2563eb, #0891b2);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 17px;
+}
+
+.container {
+    width: 94%;
+    max-width: 1250px;
+    margin: auto;
+}
+
+.panel {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-top: 25px;
+    box-shadow: 0 7px 25px rgba(0,0,0,.08);
+    border: 1px solid #e2e8f0;
+}
+
+body.dark .panel,
+body.dark .city-card,
+body.dark .result-card {
+    background: #1b2435;
+    border-color: #35435d;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 150px;
+    gap: 15px;
+    align-items: end;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+select,
+input,
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 9px;
+    border: 1px solid #cbd5e1;
+    font-size: 15px;
+}
+
+body.dark select,
+body.dark input {
+    background: #111827;
+    color: white;
+    border-color: #475569;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .88;
+}
+
+.secondary {
+    background: #475569;
+}
+
+.success {
+    background: #059669;
+}
+
+.warning {
+    background: #d97706;
+}
+
+.danger {
+    background: #dc2626;
+}
+
+.city-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.city-option {
+    padding: 13px;
+    border: 2px solid #dbe3ee;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: .2s;
+}
+
+body.dark .city-option {
+    background: #111827;
+    border-color: #39465c;
+}
+
+.city-option:hover {
+    border-color: #2563eb;
+}
+
+.city-option.selected {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+body.dark .city-option.selected {
+    background: #172554;
+}
+
+.city-option input {
+    width: auto;
+    margin-right: 7px;
+}
+
+.clock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 18px;
+}
+
+.city-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    padding: 20px;
+    box-shadow: 0 5px 17px rgba(0,0,0,.06);
+}
+
+.city-name {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.country {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.live-time {
+    font-size: 39px;
+    font-weight: bold;
+    margin: 15px 0 5px;
+}
+
+.local-date {
+    font-size: 15px;
+    color: #64748b;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+body.dark .info-row {
+    border-color: #334155;
+}
+
+.good {
+    color: #059669;
+    font-weight: bold;
+}
+
+.medium {
+    color: #d97706;
+    font-weight: bold;
+}
+
+.bad {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.best-result {
+    background: linear-gradient(135deg,#ecfdf5,#eff6ff);
+    border: 2px solid #10b981;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+body.dark .best-result {
+    background: #102b29;
+}
+
+.best-time {
+    font-size: 35px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.result-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.timeline {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.timeline-grid {
+    min-width: 900px;
+    position: relative;
+}
+
+.timeline-hours {
+    display: grid;
+    grid-template-columns: repeat(24,1fr);
+    margin-left: 120px;
+}
+
+.timeline-hour {
+    text-align: center;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.timeline-row {
+    display: flex;
+    height: 50px;
+    margin-top: 5px;
+}
+
+.timeline-label {
+    width: 120px;
+    padding: 15px 8px;
+    font-weight: bold;
+}
+
+.timeline-bars {
+    flex: 1;
+    position: relative;
+    background: repeating-linear-gradient(
+        90deg,
+        #e5e7eb 0,
+        #e5e7eb 1px,
+        transparent 1px,
+        transparent calc(100% / 24)
+    );
+}
+
+.working-bar {
+    position: absolute;
+    top: 7px;
+    height: 36px;
+    background: #93c5fd;
+    border-radius: 6px;
+}
+
+body.dark .working-bar {
+    background: #1d4ed8;
+}
+
+.current-marker {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #ef4444;
+}
+
+.overlap-bar {
+    height: 18px;
+    background: #10b981;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+.summary {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.copy-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.copy-area button {
+    flex: 1;
+}
+
+footer {
+    margin-top: 50px;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+}
+
+footer a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+@media(max-width:800px) {
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
+
+    .live-time {
+        font-size: 32px;
+    }
+
+    .copy-area {
+        flex-direction: column;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🌎 What Time Is It?</h1>
+
+<h2>🤝 World Meeting Planner</h2>
+
+<p>
+Find the best time to meet, call or collaborate across time zones.
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- SETTINGS -->
+
+<section class="panel">
+
+<h2>⚙️ Meeting Settings</h2>
+
+<div class="controls">
+
+<div>
+<label>Working Day Starts</label>
+<input type="time" id="workStart" value="09:00">
+</div>
+
+<div>
+<label>Working Day Ends</label>
+<input type="time" id="workEnd" value="18:00">
+</div>
+
+<div>
+<button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CITY SELECTION -->
+
+<section class="panel">
+
+<h2>🌍 Select Cities</h2>
+
+<p>
+Select at least two cities to calculate the best meeting time.
+</p>
+
+<div id="citySelector" class="city-selector"></div>
+
+</section>
+
+
+<!-- BEST MEETING -->
+
+<section class="panel">
+
+<h2>⭐ Best Meeting Time</h2>
+
+<div id="bestMeeting">
+Select at least two cities.
+</div>
+
+</section>
+
+
+<!-- LIVE CLOCKS -->
+
+<section class="panel">
+
+<h2>🕐 Current Time in Selected Cities</h2>
+
+<div id="clockGrid" class="clock-grid"></div>
+
+</section>
+
+
+<!-- TIMELINE -->
+
+<section class="panel">
+
+<h2>📊 Working Hours Comparison</h2>
+
+<div class="timeline">
+
+<div class="timeline-grid">
+
+<div class="timeline-hours">
+
+<div class="timeline-hour">12 AM</div>
+<div class="timeline-hour">1</div>
+<div class="timeline-hour">2</div>
+<div class="timeline-hour">3</div>
+<div class="timeline-hour">4</div>
+<div class="timeline-hour">5</div>
+<div class="timeline-hour">6</div>
+<div class="timeline-hour">7</div>
+<div class="timeline-hour">8</div>
+<div class="timeline-hour">9</div>
+<div class="timeline-hour">10</div>
+<div class="timeline-hour">11</div>
+<div class="timeline-hour">12 PM</div>
+<div class="timeline-hour">1</div>
+<div class="timeline-hour">2</div>
+<div class="timeline-hour">3</div>
+<div class="timeline-hour">4</div>
+<div class="timeline-hour">5</div>
+<div class="timeline-hour">6</div>
+<div class="timeline-hour">7</div>
+<div class="timeline-hour">8</div>
+<div class="timeline-hour">9</div>
+<div class="timeline-hour">10</div>
+<div class="timeline-hour">11</div>
+
+</div>
+
+<div id="timelineRows"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUNRISE SUNSET -->
+
+<section class="panel">
+
+<h2>🌅 Sunrise & Sunset</h2>
+
+<div id="sunGrid" class="clock-grid"></div>
+
+</section>
+
+
+<!-- MEETING SUMMARY -->
+
+<section class="panel">
+
+<h2>📋 Meeting Summary</h2>
+
+<div id="meetingSummary" class="summary">
+Select cities to generate the meeting summary.
+</div>
+
+<div class="copy-area">
+
+<button class="success"
+onclick="copySummary()">
+📋 Copy Summary
+</button>
+
+<button
+onclick="shareSummary()">
+📤 Share
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<footer>
+
+<p>
+🌎 World Meeting Planner
+</p>
+
+<p>
+A free time-zone and international meeting planning utility
+</p>
+
+</footer>
+
+
+<script>
+
+/* ============================================================
+   CITY DATABASE
+   ============================================================ */
+
+const cities = [
+
+{
+name:"Mumbai",
+country:"India",
+timezone:"Asia/Kolkata",
+lat:19.0760,
+lon:72.8777
+},
+
+{
+name:"Delhi",
+country:"India",
+timezone:"Asia/Kolkata",
+lat:28.6139,
+lon:77.2090
+},
+
+{
+name:"Bengaluru",
+country:"India",
+timezone:"Asia/Kolkata",
+lat:12.9716,
+lon:77.5946
+},
+
+{
+name:"Dubai",
+country:"UAE",
+timezone:"Asia/Dubai",
+lat:25.2048,
+lon:55.2708
+},
+
+{
+name:"Singapore",
+country:"Singapore",
+timezone:"Asia/Singapore",
+lat:1.3521,
+lon:103.8198
+},
+
+{
+name:"Tokyo",
+country:"Japan",
+timezone:"Asia/Tokyo",
+lat:35.6762,
+lon:139.6503
+},
+
+{
+name:"Seoul",
+country:"South Korea",
+timezone:"Asia/Seoul",
+lat:37.5665,
+lon:126.9780
+},
+
+{
+name:"Beijing",
+country:"China",
+timezone:"Asia/Shanghai",
+lat:39.9042,
+lon:116.4074
+},
+
+{
+name:"Bangkok",
+country:"Thailand",
+timezone:"Asia/Bangkok",
+lat:13.7563,
+lon:100.5018
+},
+
+{
+name:"London",
+country:"United Kingdom",
+timezone:"Europe/London",
+lat:51.5074,
+lon:-0.1278
+},
+
+{
+name:"Paris",
+country:"France",
+timezone:"Europe/Paris",
+lat:48.8566,
+lon:2.3522
+},
+
+{
+name:"Berlin",
+country:"Germany",
+timezone:"Europe/Berlin",
+lat:52.5200,
+lon:13.4050
+},
+
+{
+name:"Moscow",
+country:"Russia",
+timezone:"Europe/Moscow",
+lat:55.7558,
+lon:37.6173
+},
+
+{
+name:"New York",
+country:"USA",
+timezone:"America/New_York",
+lat:40.7128,
+lon:-74.0060
+},
+
+{
+name:"Chicago",
+country:"USA",
+timezone:"America/Chicago",
+lat:41.8781,
+lon:-87.6298
+},
+
+{
+name:"Denver",
+country:"USA",
+timezone:"America/Denver",
+lat:39.7392,
+lon:-104.9903
+},
+
+{
+name:"Los Angeles",
+country:"USA",
+timezone:"America/Los_Angeles",
+lat:34.0522,
+lon:-118.2437
+},
+
+{
+name:"Toronto",
+country:"Canada",
+timezone:"America/Toronto",
+lat:43.6532,
+lon:-79.3832
+},
+
+{
+name:"Vancouver",
+country:"Canada",
+timezone:"America/Vancouver",
+lat:49.2827,
+lon:-123.1207
+},
+
+{
+name:"Mexico City",
+country:"Mexico",
+timezone:"America/Mexico_City",
+lat:19.4326,
+lon:-99.1332
+},
+
+{
+name:"São Paulo",
+country:"Brazil",
+timezone:"America/Sao_Paulo",
+lat:-23.5505,
+lon:-46.6333
+},
+
+{
+name:"Cairo",
+country:"Egypt",
+timezone:"Africa/Cairo",
+lat:30.0444,
+lon:31.2357
+},
+
+{
+name:"Johannesburg",
+country:"South Africa",
+timezone:"Africa/Johannesburg",
+lat:-26.2041,
+lon:28.0473
+},
+
+{
+name:"Nairobi",
+country:"Kenya",
+timezone:"Africa/Nairobi",
+lat:-1.2921,
+lon:36.8219
+},
+
+{
+name:"Sydney",
+country:"Australia",
+timezone:"Australia/Sydney",
+lat:-33.8688,
+lon:151.2093
+},
+
+{
+name:"Melbourne",
+country:"Australia",
+timezone:"Australia/Melbourne",
+lat:-37.8136,
+lon:144.9631
+},
+
+{
+name:"Perth",
+country:"Australia",
+timezone:"Australia/Perth",
+lat:-31.9505,
+lon:115.8605
+},
+
+{
+name:"Auckland",
+country:"New Zealand",
+timezone:"Pacific/Auckland",
+lat:-36.8509,
+lon:174.7645
+},
+
+{
+name:"Honolulu",
+country:"USA",
+timezone:"Pacific/Honolulu",
+lat:21.3069,
+lon:-157.8583
+}
+
+];
+
+
+/* ============================================================
+   DEFAULT CITIES
+   ============================================================ */
+
+let selectedCityNames = [
+    "Mumbai",
+    "London",
+    "New York"
+];
+
+
+/* ============================================================
+   CREATE CITY SELECTOR
+   ============================================================ */
+
+function createCitySelector() {
+
+    const container =
+        document.getElementById("citySelector");
+
+    container.innerHTML = "";
+
+    cities.forEach(city => {
+
+        const div =
+            document.createElement("label");
+
+        div.className = "city-option";
+
+        if (selectedCityNames.includes(city.name)) {
+            div.classList.add("selected");
+        }
+
+        div.innerHTML = `
+            <input type="checkbox"
+                   value="${city.name}"
+                   ${selectedCityNames.includes(city.name) ? "checked" : ""}>
+            <strong>${city.name}</strong><br>
+            <small>${city.country}</small>
+        `;
+
+        const checkbox =
+            div.querySelector("input");
+
+        checkbox.addEventListener("change", function() {
+
+            if (this.checked) {
+
+                if (!selectedCityNames.includes(city.name)) {
+                    selectedCityNames.push(city.name);
+                }
+
+                div.classList.add("selected");
+
+            } else {
+
+                selectedCityNames =
+                    selectedCityNames.filter(
+                        x => x !== city.name
+                    );
+
+                div.classList.remove("selected");
+            }
+
+            refresh();
+
+        });
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* ============================================================
+   GET SELECTED CITY OBJECTS
+   ============================================================ */
+
+function getSelectedCities() {
+
+    return selectedCityNames
+        .map(name =>
+            cities.find(city => city.name === name)
+        )
+        .filter(Boolean);
+
+}
+
+
+/* ============================================================
+   FORMAT TIME
+   ============================================================ */
+
+function formatTime(date, timezone, seconds=false) {
+
+    return new Intl.DateTimeFormat(
+        "en-US",
+        {
+            timeZone: timezone,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: seconds ? "2-digit" : undefined,
+            hour12: true
+        }
+    ).format(date);
+
+}
+
+
+/* ============================================================
+   FORMAT DATE
+   ============================================================ */
+
+function formatDate(date, timezone) {
+
+    return new Intl.DateTimeFormat(
+        "en-US",
+        {
+            timeZone: timezone,
+            weekday:"long",
+            month:"short",
+            day:"numeric",
+            year:"numeric"
+        }
+    ).format(date);
+
+}
+
+
+/* ============================================================
+   GET LOCAL DATE PARTS
+   ============================================================ */
+
+function getLocalParts(date, timezone) {
+
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone: timezone,
+                year:"numeric",
+                month:"2-digit",
+                day:"2-digit",
+                hour:"2-digit",
+                minute:"2-digit",
+                hourCycle:"h23"
+            }
+        ).formatToParts(date);
+
+    const result = {};
+
+    parts.forEach(p => {
+        result[p.type] = p.value;
+    });
+
+    return {
+        year:Number(result.year),
+        month:Number(result.month),
+        day:Number(result.day),
+        hour:Number(result.hour),
+        minute:Number(result.minute)
+    };
+
+}
+
+
+/* ============================================================
+   UTC OFFSET
+   ============================================================ */
+
+function getOffsetMinutes(date, timezone) {
+
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone: timezone,
+                timeZoneName:"longOffset"
+            }
+        ).formatToParts(date);
+
+    const zone =
+        parts.find(
+            x => x.type === "timeZoneName"
+        );
+
+    if (!zone) return 0;
+
+    const match =
+        zone.value.match(
+            /GMT([+-])(\d{2}):?(\d{2})?/
+        );
+
+    if (!match) return 0;
+
+    const sign =
+        match[1] === "+" ? 1 : -1;
+
+    const hours =
+        Number(match[2]);
+
+    const minutes =
+        Number(match[3] || 0);
+
+    return sign *
+        (hours * 60 + minutes);
+
+}
+
+
+/* ============================================================
+   DAY DIFFERENCE
+   ============================================================ */
+
+function getDayDifference(date, city1, city2) {
+
+    const a =
+        getLocalParts(date, city1.timezone);
+
+    const b =
+        getLocalParts(date, city2.timezone);
+
+    const utcA =
+        Date.UTC(
+            a.year,
+            a.month-1,
+            a.day
+        );
+
+    const utcB =
+        Date.UTC(
+            b.year,
+            b.month-1,
+            b.day
+        );
+
+    return Math.round(
+        (utcB - utcA) /
+        86400000
+    );
+
+}
+
+
+/* ============================================================
+   GOOD TIME TO CALL
+   ============================================================ */
+
+function getCallStatus(date, city) {
+
+    const p =
+        getLocalParts(
+            date,
+            city.timezone
+        );
+
+    const minutes =
+        p.hour * 60 +
+        p.minute;
+
+    const start =
+        getWorkStart();
+
+    const end =
+        getWorkEnd();
+
+    if (minutes >= start &&
+        minutes <= end) {
+
+        return {
+            text:"🟢 Good time to call",
+            class:"good"
+        };
+
+    }
+
+    if (
+        (minutes >= 7*60 && minutes < start) ||
+        (minutes > end && minutes <= 21*60)
+    ) {
+
+        return {
+            text:"🟡 Early/Late",
+            class:"medium"
+        };
+
+    }
+
+    return {
+        text:"🔴 Not a good time",
+        class:"bad"
+    };
+
+}
+
+
+/* ============================================================
+   WORK HOURS
+   ============================================================ */
+
+function getWorkStart() {
+
+    const value =
+        document.getElementById(
+            "workStart"
+        ).value;
+
+    const parts =
+        value.split(":");
+
+    return Number(parts[0])*60 +
+           Number(parts[1]);
+
+}
+
+
+function getWorkEnd() {
+
+    const value =
+        document.getElementById(
+            "workEnd"
+        ).value;
+
+    const parts =
+        value.split(":");
+
+    return Number(parts[0])*60 +
+           Number(parts[1]);
+
+}
+
+
+/* ============================================================
+   CHECK IF LOCAL TIME IS WORKING TIME
+   ============================================================ */
+
+function isWorkingTime(date, city) {
+
+    const p =
+        getLocalParts(
+            date,
+            city.timezone
+        );
+
+    const minutes =
+        p.hour * 60 +
+        p.minute;
+
+    return minutes >= getWorkStart() &&
+           minutes < getWorkEnd();
+
+}
+
+
+/* ============================================================
+   FIND OVERLAPPING WORKING PERIODS
+   ============================================================ */
+
+function findOverlaps() {
+
+    const selected =
+        getSelectedCities();
+
+    if (selected.length < 2) {
+        return [];
+    }
+
+    const now = new Date();
+
+    /*
+       Search the next 24 hours in
+       15-minute increments.
+    */
+
+    const periods = [];
+
+    let active = null;
+
+    for (
+        let minutes = 0;
+        minutes <= 24*60;
+        minutes += 15
+    ) {
+
+        const instant =
+            new Date(
+                now.getTime() +
+                minutes * 60000
+            );
+
+        const allWorking =
+            selected.every(
+                city =>
+                    isWorkingTime(
+                        instant,
+                        city
+                    )
+            );
+
+        if (allWorking && !active) {
+
+            active = instant;
+
+        }
+
+        if (!allWorking && active) {
+
+            periods.push({
+                start:active,
+                end:instant
+            });
+
+            active = null;
+
+        }
+
+    }
+
+    if (active) {
+
+        periods.push({
+            start:active,
+            end:new Date(
+                now.getTime() +
+                24*60*60000
+            )
+        });
+
+    }
+
+    return periods;
+
+}
+
+
+/* ============================================================
+   FIND BEST MEETING
+   ============================================================ */
+
+function findBestMeeting() {
+
+    const selected =
+        getSelectedCities();
+
+    if (selected.length < 2) {
+        return null;
+    }
+
+    const now = new Date();
+
+    let best = null;
+    let bestScore = -Infinity;
+
+    /*
+       Search every 15 minutes
+       for the next 24 hours.
+    */
+
+    for (
+        let m = 0;
+        m < 24*60;
+        m += 15
+    ) {
+
+        const instant =
+            new Date(
+                now.getTime() +
+                m*60000
+            );
+
+        const valid =
+            selected.every(
+                city =>
+                    isWorkingTime(
+                        instant,
+                        city
+                    )
+            );
+
+        if (!valid) continue;
+
+        let score = 100;
+
+        selected.forEach(city => {
+
+            const p =
+                getLocalParts(
+                    instant,
+                    city.timezone
+                );
+
+            const localMinutes =
+                p.hour * 60 +
+                p.minute;
+
+            /*
+               Prefer meetings near
+               10 AM - 4 PM.
+            */
+
+            const distance =
+                Math.abs(
+                    localMinutes -
+                    13*60
+                );
+
+            score -=
+                distance * 0.05;
+
+            /*
+               Penalize very early or
+               very late working hours.
+            */
+
+            if (localMinutes < 10*60) {
+                score -= 8;
+            }
+
+            if (localMinutes > 16*60) {
+                score -= 8;
+            }
+
+        });
+
+        if (score > bestScore) {
+
+            bestScore = score;
+
+            best = instant;
+
+        }
+
+    }
+
+    return best;
+
+}
+
+
+/* ============================================================
+   DISPLAY BEST MEETING
+   ============================================================ */
+
+function displayBestMeeting() {
+
+    const container =
+        document.getElementById(
+            "bestMeeting"
+        );
+
+    const selected =
+        getSelectedCities();
+
+    if (selected.length < 2) {
+
+        container.innerHTML =
+            "⚠️ Please select at least two cities.";
+
+        return;
+
+    }
+
+    const meeting =
+        findBestMeeting();
+
+    if (!meeting) {
+
+        container.innerHTML = `
+            <div class="result-card">
+                ❌ No common working-hour period
+                was found in the next 24 hours.
+                <br><br>
+                Try extending the working hours.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    let html = `
+        <div class="best-result">
+
+        <div>⭐ RECOMMENDED MEETING TIME</div>
+
+        <div class="best-time">
+            ${formatTime(
+                meeting,
+                selected[0].timezone
+            )}
+        </div>
+
+        <div>
+            ${formatDate(
+                meeting,
+                selected[0].timezone
+            )}
+        </div>
+
+        <hr>
+    `;
+
+    selected.forEach(city => {
+
+        const call =
+            getCallStatus(
+                meeting,
+                city
+            );
+
+        html += `
+
+            <div class="info-row">
+
+                <strong>
+                    ${city.name}
+                </strong>
+
+                <span>
+                    ${formatTime(
+                        meeting,
+                        city.timezone
+                    )}
+                </span>
+
+            </div>
+
+            <div class="${call.class}">
+                ${call.text}
+            </div>
+
+        `;
+
+    });
+
+    html += `
+        </div>
+    `;
+
+    container.innerHTML = html;
+
+}
+
+
+/* ============================================================
+   LIVE CLOCK CARDS
+   ============================================================ */
+
+function displayClocks() {
+
+    const grid =
+        document.getElementById(
+            "clockGrid"
+        );
+
+    const selected =
+        getSelectedCities();
+
+    grid.innerHTML = "";
+
+    selected.forEach(city => {
+
+        const now = new Date();
+
+        const call =
+            getCallStatus(
+                now,
+                city
+            );
+
+        const offset =
+            getOffsetMinutes(
+                now,
+                city.timezone
+            );
+
+        const offsetHours =
+            (offset / 60)
+                .toFixed(1);
+
+        grid.innerHTML += `
+
+        <div class="city-card">
+
+            <div class="city-name">
+                ${city.name}
+            </div>
+
+            <div class="country">
+                ${city.country}
+            </div>
+
+            <div class="live-time"
+                 id="live-${city.name.replaceAll(" ","-")}">
+                ${formatTime(
+                    now,
+                    city.timezone,
+                    true
+                )}
+            </div>
+
+            <div class="local-date"
+                 id="date-${city.name.replaceAll(" ","-")}">
+                ${formatDate(
+                    now,
+                    city.timezone
+                )}
+            </div>
+
+            <div class="info-row">
+                <span>UTC Offset</span>
+                <strong>
+                    UTC ${offset >= 0 ? "+" : ""}
+                    ${offsetHours}
+                </strong>
+            </div>
+
+            <div class="info-row">
+                <span>Call Status</span>
+                <span class="${call.class}">
+                    ${call.text}
+                </span>
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ============================================================
+   UPDATE LIVE CLOCKS
+   ============================================================ */
+
+function updateClocks() {
+
+    const selected =
+        getSelectedCities();
+
+    const now =
+        new Date();
+
+    selected.forEach(city => {
+
+        const id =
+            city.name.replaceAll(
+                " ",
+                "-"
+            );
+
+        const timeElement =
+            document.getElementById(
+                "live-" + id
+            );
+
+        const dateElement =
+            document.getElementById(
+                "date-" + id
+            );
+
+        if (timeElement) {
+
+            timeElement.textContent =
+                formatTime(
+                    now,
+                    city.timezone,
+                    true
+                );
+
+        }
+
+        if (dateElement) {
+
+            dateElement.textContent =
+                formatDate(
+                    now,
+                    city.timezone
+                );
+
+        }
+
+    });
+
+}
+
+
+/* ============================================================
+   SUNRISE / SUNSET
+   NOAA-STYLE CALCULATION
+   ============================================================ */
+
+function calculateSunTime(
+    date,
+    latitude,
+    longitude,
+    timezone,
+    sunrise
+) {
+
+    /*
+       Approximate solar calculation.
+       Accuracy is normally within a few minutes.
+    */
+
+    const local =
+        getLocalParts(
+            date,
+            timezone
+        );
+
+    const dayOfYear =
+        Math.floor(
+            (
+                Date.UTC(
+                    local.year,
+                    local.month-1,
+                    local.day
+                ) -
+                Date.UTC(
+                    local.year,
+                    0,
+                    0
+                )
+            ) / 86400000
+        );
+
+    const zenith = 90.8333;
+
+    const lngHour =
+        longitude / 15;
+
+    const t =
+        sunrise
+        ? dayOfYear +
+          ((6 - lngHour) / 24)
+        : dayOfYear +
+          ((18 - lngHour) / 24);
+
+    const M =
+        (0.9856 * t) - 3.289;
+
+    let L =
+        M +
+        (1.916 *
+            Math.sin(
+                M * Math.PI/180
+            )
+        ) +
+        (0.020 *
+            Math.sin(
+                2*M*Math.PI/180
+            )
+        ) +
+        282.634;
+
+    L =
+        (L + 360) % 360;
+
+    let RA =
+        Math.atan(
+            0.91764 *
+            Math.tan(
+                L*Math.PI/180
+            )
+        ) *
+        180/Math.PI;
+
+    RA =
+        (RA + 360) % 360;
+
+    const Lquadrant =
+        Math.floor(L/90)*90;
+
+    const RAquadrant =
+        Math.floor(RA/90)*90;
+
+    RA =
+        RA +
+        (Lquadrant -
+        RAquadrant);
+
+    RA /= 15;
+
+    const sinDec =
+        0.39782 *
+        Math.sin(
+            L*Math.PI/180
+        );
+
+    const cosDec =
+        Math.cos(
+            Math.asin(sinDec)
+        );
+
+    const cosH =
+        (
+            Math.cos(
+                zenith*Math.PI/180
+            ) -
+            (
+                sinDec *
+                Math.sin(
+                    latitude*Math.PI/180
+                )
+            )
+        ) /
+        (
+            cosDec *
+            Math.cos(
+                latitude*Math.PI/180
+            )
+        );
+
+    if (cosH > 1 || cosH < -1) {
+        return null;
+    }
+
+    let H;
+
+    if (sunrise) {
+        H =
+            360 -
+            Math.acos(cosH) *
+            180/Math.PI;
+    } else {
+        H =
+            Math.acos(cosH) *
+            180/Math.PI;
+    }
+
+    H /= 15;
+
+    const T =
+        H + RA -
+        (0.06571*t) -
+        6.622;
+
+    let UT =
+        (T - lngHour) % 24;
+
+    if (UT < 0) UT += 24;
+
+    /*
+       Convert approximate UTC solar time
+       to actual instant.
+    */
+
+    const utcMidnight =
+        Date.UTC(
+            local.year,
+            local.month-1,
+            local.day
+        );
+
+    const utcDate =
+        new Date(
+            utcMidnight +
+            UT*3600000
+        );
+
+    /*
+       The Date object above is UTC.
+       Format it into the requested city timezone.
+    */
+
+    return formatTime(
+        utcDate,
+        timezone
+    );
+
+}
+
+
+/* ============================================================
+   DISPLAY SUNRISE / SUNSET
+   ============================================================ */
+
+function displaySunTimes() {
+
+    const grid =
+        document.getElementById(
+            "sunGrid"
+        );
+
+    const selected =
+        getSelectedCities();
+
+    const now =
+        new Date();
+
+    grid.innerHTML = "";
+
+    selected.forEach(city => {
+
+        const sunrise =
+            calculateSunTime(
+                now,
+                city.lat,
+                city.lon,
+                city.timezone,
+                true
+            );
+
+        const sunset =
+            calculateSunTime(
+                now,
+                city.lat,
+                city.lon,
+                city.timezone,
+                false
+            );
+
+        grid.innerHTML += `
+
+        <div class="city-card">
+
+            <div class="city-name">
+                ${city.name}
+            </div>
+
+            <div class="country">
+                ${city.country}
+            </div>
+
+            <div class="info-row">
+                <span>🌅 Sunrise</span>
+                <strong>
+                    ${sunrise || "N/A"}
+                </strong>
+            </div>
+
+            <div class="info-row">
+                <span>🌇 Sunset</span>
+                <strong>
+                    ${sunset || "N/A"}
+                </strong>
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+
+function displayTimeline() {
+
+    const container =
+        document.getElementById(
+            "timelineRows"
+        );
+
+    const selected =
+        getSelectedCities();
+
+    container.innerHTML = "";
+
+    selected.forEach(city => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "timeline-row";
+
+        const label =
+            document.createElement("div");
+
+        label.className =
+            "timeline-label";
+
+        label.textContent =
+            city.name;
+
+        const bars =
+            document.createElement("div");
+
+        bars.className =
+            "timeline-bars";
+
+        /*
+           Determine current offset relative
+           to UTC and show working hours
+           approximately on a UTC-based
+           24-hour timeline.
+        */
+
+        const now =
+            new Date();
+
+        const offset =
+            getOffsetMinutes(
+                now,
+                city.timezone
+            );
+
+        const start =
+            getWorkStart();
+
+        const end =
+            getWorkEnd();
+
+        let utcStart =
+            (start - offset) / 60;
+
+        let utcEnd =
+            (end - offset) / 60;
+
+        while (utcStart < 0)
+            utcStart += 24;
+
+        while (utcStart >= 24)
+            utcStart -= 24;
+
+        while (utcEnd < 0)
+            utcEnd += 24;
+
+        while (utcEnd >= 24)
+            utcEnd -= 24;
+
+        let width =
+            end - start;
+
+        /*
+           Create one or two bars if
+           working hours cross UTC midnight.
+        */
+
+        if (utcEnd > utcStart) {
+
+            const bar =
+                document.createElement("div");
+
+            bar.className =
+                "working-bar";
+
+            bar.style.left =
+                (utcStart/24*100) + "%";
+
+            bar.style.width =
+                ((utcEnd-utcStart)/24*100) + "%";
+
+            bars.appendChild(bar);
+
+        } else {
+
+            const bar1 =
+                document.createElement("div");
+
+            bar1.className =
+                "working-bar";
+
+            bar1.style.left =
+                (utcStart/24*100) + "%";
+
+            bar1.style.width =
+                ((24-utcStart)/24*100) + "%";
+
+            bars.appendChild(bar1);
+
+            const bar2 =
+                document.createElement("div");
+
+            bar2.className =
+                "working-bar";
+
+            bar2.style.left = "0%";
+
+            bar2.style.width =
+                (utcEnd/24*100) + "%";
+
+            bars.appendChild(bar2);
+
+        }
+
+        row.appendChild(label);
+        row.appendChild(bars);
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+/* ============================================================
+   MEETING SUMMARY
+   ============================================================ */
+
+let currentSummary = "";
+
+
+function generateSummary() {
+
+    const selected =
+        getSelectedCities();
+
+    const meeting =
+        findBestMeeting();
+
+    if (
+        selected.length < 2 ||
+        !meeting
+    ) {
+
+        currentSummary =
+            "No common meeting time found.";
+
+        document.getElementById(
+            "meetingSummary"
+        ).textContent =
+            currentSummary;
+
+        return;
+
+    }
+
+    let text =
+        "WORLD MEETING PLANNER\n\n";
+
+    text +=
+        "Recommended meeting time:\n";
+
+    text +=
+        formatDate(
+            meeting,
+            selected[0].timezone
+        );
+
+    text += "\n\n";
+
+    selected.forEach(city => {
+
+        text +=
+            city.name +
+            " (" +
+            city.country +
+            "): " +
+            formatTime(
+                meeting,
+                city.timezone
+            ) +
+            "\n";
+
+    });
+
+    text +=
+        "\nWorking hours: " +
+        document.getElementById(
+            "workStart"
+        ).value +
+        " - " +
+        document.getElementById(
+            "workEnd"
+        ).value;
+
+    currentSummary = text;
+
+    document.getElementById(
+        "meetingSummary"
+    ).innerHTML =
+        text.replace(/\n/g,"<br>");
+
+}
+
+
+/* ============================================================
+   COPY
+   ============================================================ */
+
+function copySummary() {
+
+    generateSummary();
+
+    navigator.clipboard.writeText(
+        currentSummary
+    )
+    .then(() => {
+
+        alert(
+            "Meeting summary copied!"
+        );
+
+    });
+
+}
+
+
+/* ============================================================
+   SHARE
+   ============================================================ */
+
+function shareSummary() {
+
+    generateSummary();
+
+    if (
+        navigator.share
+    ) {
+
+        navigator.share({
+
+            title:
+                "World Meeting Planner",
+
+            text:
+                currentSummary
+
+        });
+
+    } else {
+
+        copySummary();
+
+    }
+
+}
+
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+}
+
+
+/* ============================================================
+   REFRESH EVERYTHING
+   ============================================================ */
+
+function refresh() {
+
+    displayBestMeeting();
+
+    displayClocks();
+
+    displaySunTimes();
+
+    displayTimeline();
+
+    generateSummary();
+
+}
+
+
+/* ============================================================
+   WORKING HOURS CHANGE
+   ============================================================ */
+
+document.getElementById(
+    "workStart"
+).addEventListener(
+    "change",
+    refresh
+);
+
+document.getElementById(
+    "workEnd"
+).addEventListener(
+    "change",
+    refresh
+);
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+createCitySelector();
+
+refresh();
+
+
+/* ============================================================
+   LIVE UPDATE
+   ============================================================ */
+
+setInterval(
+    function() {
+
+        updateClocks();
+
+        /*
+           Recalculate recommendation periodically.
+        */
+
+        displayBestMeeting();
+
+    },
+    1000
+);
+
+</script>
+
+</body>
+</html>
