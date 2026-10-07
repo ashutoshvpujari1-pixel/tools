@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DailyDesk - Everyday Utility Dashboard</title>
+
+<meta name="description"
+content="DailyDesk is a free everyday utility dashboard with clock, tasks, notes, calculator, converter, age calculator, timers, world clocks and many useful tools.">
+
+<meta name="keywords"
+content="daily tools, online tools, calculator, timer, notes, todo list, age calculator, unit converter, world clock, percentage calculator">
+
+<meta property="og:title" content="DailyDesk - Everyday Utility Dashboard">
+<meta property="og:description" content="Your free everyday online utility dashboard.">
+<meta property="og:type" content="website">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+    transition:0.3s;
+}
+
+body.dark{
+    background:#101522;
+    color:#f1f5f9;
+}
+
+header{
+    background:linear-gradient(135deg,#182848,#4b6cb7);
+    color:white;
+    padding:25px 20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+header h1{
+    font-size:34px;
+}
+
+header p{
+    margin-top:7px;
+    opacity:.9;
+}
+
+.header-buttons{
+    margin-top:15px;
+}
+
+button{
+    border:none;
+    border-radius:9px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-size:14px;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-1px);
+    opacity:.9;
+}
+
+.primary{
+    background:#2563eb;
+    color:white;
+}
+
+.secondary{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.dark .secondary{
+    background:#334155;
+    color:white;
+}
+
+.danger{
+    background:#dc2626;
+    color:white;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:25px auto;
+}
+
+.search{
+    width:100%;
+    padding:16px;
+    border-radius:12px;
+    border:1px solid #ccd4df;
+    font-size:17px;
+    margin-bottom:20px;
+    outline:none;
+}
+
+.dark .search,
+.dark input,
+.dark textarea,
+.dark select{
+    background:#1e293b;
+    color:white;
+    border-color:#475569;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.dark .card{
+    background:#172033;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+}
+
+.card h2{
+    font-size:20px;
+    margin-bottom:14px;
+}
+
+.big-time{
+    font-size:38px;
+    font-weight:bold;
+    text-align:center;
+    margin:12px 0;
+}
+
+.center{
+    text-align:center;
+}
+
+.small{
+    font-size:13px;
+    opacity:.75;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:11px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    margin-bottom:10px;
+    font-size:15px;
+    outline:none;
+}
+
+textarea{
+    min-height:140px;
+    resize:vertical;
+}
+
+.row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.row > *{
+    flex:1;
+    min-width:100px;
+}
+
+.todo-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px;
+    margin:5px 0;
+    background:#f1f5f9;
+    border-radius:8px;
+}
+
+.dark .todo-item{
+    background:#253247;
+}
+
+.todo-item span{
+    flex:1;
+}
+
+.todo-item.done span{
+    text-decoration:line-through;
+    opacity:.5;
+}
+
+.tool-result{
+    margin-top:10px;
+    padding:12px;
+    background:#eef4ff;
+    border-radius:8px;
+    word-break:break-word;
+}
+
+.dark .tool-result{
+    background:#253247;
+}
+
+.timer{
+    font-size:48px;
+    font-weight:bold;
+    text-align:center;
+    margin:15px;
+}
+
+.color-box{
+    height:70px;
+    border-radius:10px;
+    margin:10px 0;
+}
+
+.emoji-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    max-height:170px;
+    overflow:auto;
+}
+
+.emoji{
+    font-size:25px;
+    background:transparent;
+    padding:4px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    margin-top:12px;
+}
+
+.stat{
+    background:#eef2ff;
+    padding:12px;
+    border-radius:9px;
+    text-align:center;
+}
+
+.dark .stat{
+    background:#263449;
+}
+
+.stat strong{
+    display:block;
+    font-size:20px;
+}
+
+footer{
+    margin-top:35px;
+    background:#172033;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.progress{
+    height:12px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#2563eb;
+}
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:27px;
+    }
+
+    .big-time{
+        font-size:30px;
+    }
+
+    .timer{
+        font-size:38px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>⚡ DailyDesk</h1>
+
+<p>Your everyday collection of useful tools</p>
+
+<div class="header-buttons">
+
+<button class="secondary" onclick="toggleTheme()">
+🌙 Dark / Light
+</button>
+
+<button class="secondary" onclick="sharePage()">
+📤 Share
+</button>
+
+</div>
+
+</header>
+
+
+<div class="container">
+
+<input
+id="search"
+class="search"
+placeholder="🔎 Search tools... e.g. calculator, timer, age, notes..."
+oninput="searchTools()"
+>
+
+
+<div class="dashboard" id="dashboard">
+
+
+<!-- CLOCK -->
+
+<div class="card tool" data-name="clock date time day">
+
+<h2>🕐 Current Time</h2>
+
+<div class="big-time" id="clock">
+00:00:00
+</div>
+
+<div class="center" id="today"></div>
+
+<br>
+
+<div class="small">
+Time remaining today
+</div>
+
+<div class="progress">
+<div class="progress-bar" id="dayProgress"></div>
+</div>
+
+<div class="center small" id="remainingDay"></div>
+
+</div>
+
+
+<!-- TODO -->
+
+<div class="card tool" data-name="todo tasks checklist daily">
+
+<h2>✅ Daily To-Do</h2>
+
+<div class="row">
+
+<input id="todoInput" placeholder="Add a task..."
+onkeydown="if(event.key==='Enter') addTodo()">
+
+<button class="primary" onclick="addTodo()">
+Add
+</button>
+
+</div>
+
+<div id="todoList"></div>
+
+<button class="secondary" onclick="clearCompleted()">
+Clear Completed
+</button>
+
+</div>
+
+
+<!-- NOTES -->
+
+<div class="card tool" data-name="notes memo notepad">
+
+<h2>📝 Quick Notes</h2>
+
+<textarea
+id="notes"
+placeholder="Write something here... Your notes are automatically saved."
+></textarea>
+
+<div class="small" id="saveStatus">
+Auto-save enabled
+</div>
+
+</div>
+
+
+<!-- FOCUS TIMER -->
+
+<div class="card tool" data-name="pomodoro focus timer productivity">
+
+<h2>🎯 Focus Timer</h2>
+
+<div class="timer" id="focusTimer">
+25:00
+</div>
+
+<div class="row">
+
+<button class="primary" onclick="startFocus()">
+▶ Start
+</button>
+
+<button class="secondary" onclick="pauseFocus()">
+⏸ Pause
+</button>
+
+<button class="danger" onclick="resetFocus()">
+↻ Reset
+</button>
+
+</div>
+
+<br>
+
+<div class="center small">
+25 minute focus session
+</div>
+
+</div>
+
+
+<!-- CALCULATOR -->
+
+<div class="card tool" data-name="calculator math calculate">
+
+<h2>🧮 Calculator</h2>
+
+<input id="calcInput"
+placeholder="Example: (100+50)*2/5">
+
+<button class="primary" onclick="calculate()">
+Calculate
+</button>
+
+<div class="tool-result" id="calcResult">
+Result will appear here
+</div>
+
+</div>
+
+
+<!-- PERCENTAGE -->
+
+<div class="card tool" data-name="percentage percent discount tip">
+
+<h2>📊 Percentage Calculator</h2>
+
+<input type="number" id="percentA" placeholder="Value">
+
+<input type="number" id="percentB" placeholder="Percentage">
+
+<button class="primary" onclick="percentage()">
+Calculate
+</button>
+
+<div class="tool-result" id="percentResult">
+Result
+</div>
+
+</div>
+
+
+<!-- AGE -->
+
+<div class="card tool" data-name="age birthday date">
+
+<h2>🎂 Age Calculator</h2>
+
+<input type="date" id="birthDate">
+
+<button class="primary" onclick="calculateAge()">
+Calculate Age
+</button>
+
+<div class="tool-result" id="ageResult">
+Enter your birth date
+</div>
+
+</div>
+
+
+<!-- DATE DIFFERENCE -->
+
+<div class="card tool" data-name="date difference days calendar">
+
+<h2>📅 Date Difference</h2>
+
+<input type="date" id="date1">
+
+<input type="date" id="date2">
+
+<button class="primary" onclick="dateDifference()">
+Calculate
+</button>
+
+<div class="tool-result" id="dateResult">
+Difference
+</div>
+
+</div>
+
+
+<!-- UNIT CONVERTER -->
+
+<div class="card tool" data-name="unit converter conversion">
+
+<h2>🔄 Unit Converter</h2>
+
+<select id="unitType" onchange="updateUnits()">
+
+<option value="length">Length</option>
+<option value="weight">Weight</option>
+<option value="temperature">Temperature</option>
+
+</select>
+
+<div class="row">
+
+<input type="number" id="unitValue" placeholder="Value">
+
+<select id="fromUnit"></select>
+
+<select id="toUnit"></select>
+
+</div>
+
+<button class="primary" onclick="convertUnit()">
+Convert
+</button>
+
+<div class="tool-result" id="unitResult">
+Result
+</div>
+
+</div>
+
+
+<!-- WORLD CLOCK -->
+
+<div class="card tool" data-name="world clock cities time zones">
+
+<h2>🌍 World Clock</h2>
+
+<select id="timezone">
+
+<option value="Asia/Kolkata">🇮🇳 India</option>
+<option value="America/New_York">🇺🇸 New York</option>
+<option value="America/Los_Angeles">🇺🇸 Los Angeles</option>
+<option value="Europe/London">🇬🇧 London</option>
+<option value="Europe/Paris">🇫🇷 Paris</option>
+<option value="Asia/Dubai">🇦🇪 Dubai</option>
+<option value="Asia/Singapore">🇸🇬 Singapore</option>
+<option value="Asia/Tokyo">🇯🇵 Tokyo</option>
+<option value="Australia/Sydney">🇦🇺 Sydney</option>
+
+</select>
+
+<div class="big-time" id="worldClock">
+--:--:--
+</div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
+<div class="card tool" data-name="password generator security random">
+
+<h2>🔐 Password Generator</h2>
+
+<div class="row">
+
+<input type="number"
+id="passwordLength"
+value="16"
+min="6"
+max="64">
+
+<button class="primary" onclick="generatePassword()">
+Generate
+</button>
+
+</div>
+
+<div class="tool-result" id="passwordResult">
+Click Generate
+</div>
+
+<button class="secondary" onclick="copyPassword()">
+📋 Copy
+</button>
+
+</div>
+
+
+<!-- COLOR -->
+
+<div class="card tool" data-name="color generator hex design">
+
+<h2>🎨 Random Color</h2>
+
+<div class="color-box" id="colorBox"></div>
+
+<div class="tool-result center" id="colorCode">
+#FFFFFF
+</div>
+
+<button class="primary" onclick="generateColor()">
+Generate Color
+</button>
+
+<button class="secondary" onclick="copyColor()">
+Copy
+</button>
+
+</div>
+
+
+<!-- EMOJI -->
+
+<div class="card tool" data-name="emoji emojis symbols">
+
+<h2>😀 Emoji Lookup</h2>
+
+<input
+id="emojiSearch"
+placeholder="Search emoji..."
+oninput="filterEmoji()">
+
+<div class="emoji-grid" id="emojiGrid"></div>
+
+</div>
+
+
+<!-- RANDOM NUMBER -->
+
+<div class="card tool" data-name="random number generator">
+
+<h2>🎲 Random Number</h2>
+
+<div class="row">
+
+<input type="number" id="randomMin" value="1">
+
+<input type="number" id="randomMax" value="100">
+
+</div>
+
+<button class="primary" onclick="randomNumber()">
+Generate
+</button>
+
+<div class="tool-result center"
+id="randomResult">
+?
+</div>
+
+</div>
+
+
+<!-- TEXT COUNTER -->
+
+<div class="card tool" data-name="word counter text character count">
+
+<h2>🔤 Text Counter</h2>
+
+<textarea
+id="textCounter"
+placeholder="Enter or paste text..."
+oninput="countText()"></textarea>
+
+<div class="stats">
+
+<div class="stat">
+<strong id="wordCount">0</strong>
+Words
+</div>
+
+<div class="stat">
+<strong id="charCount">0</strong>
+Characters
+</div>
+
+<div class="stat">
+<strong id="lineCount">0</strong>
+Lines
+</div>
+
+<div class="stat">
+<strong id="readingTime">0</strong>
+Min Read
+</div>
+
+</div>
+
+</div>
+
+
+<!-- QUICK LINKS -->
+
+<div class="card tool" data-name="quick links useful websites">
+
+<h2>🔗 Quick Links</h2>
+
+<div class="row">
+
+<button class="secondary"
+onclick="openSite('https://www.google.com')">
+Google
+</button>
+
+<button class="secondary"
+onclick="openSite('https://trends.google.com/trending')">
+Google Trending
+</button>
+
+<button class="secondary"
+onclick="openSite('https://www.youtube.com')">
+YouTube
+</button>
+
+<button class="secondary"
+onclick="openSite('https://www.github.com')">
+GitHub
+</button>
+
+</div>
+
+<br>
+
+<div class="row">
+
+<button class="secondary"
+onclick="openSite('https://calendar.google.com')">
+Calendar
+</button>
+
+<button class="secondary"
+onclick="openSite('https://mail.google.com')">
+Gmail
+</button>
+
+</div>
+
+</div>
+
+
+<!-- DAILY STATS -->
+
+<div class="card tool" data-name="daily statistics day progress">
+
+<h2>📈 Today</h2>
+
+<div class="stats">
+
+<div class="stat">
+<strong id="dayNumber">-</strong>
+Day of Year
+</div>
+
+<div class="stat">
+<strong id="weekNumber">-</strong>
+Week
+</div>
+
+<div class="stat">
+<strong id="monthProgress">-</strong>
+Month Progress
+</div>
+
+<div class="stat">
+<strong id="yearProgress">-</strong>
+Year Progress
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<footer>
+
+<strong>DailyDesk</strong>
+
+<p>Your everyday digital toolbox.</p>
+
+<p class="small">
+Free • Fast • No registration required
+</p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   THEME
+========================= */
+
+function toggleTheme(){
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "dailyTheme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+    );
+}
+
+if(localStorage.getItem("dailyTheme")==="dark"){
+    document.body.classList.add("dark");
+}
+
+
+/* =========================
+   CLOCK
+========================= */
+
+function updateClock(){
+
+    const now=new Date();
+
+    document.getElementById("clock").textContent=
+        now.toLocaleTimeString();
+
+    document.getElementById("today").textContent=
+        now.toLocaleDateString(undefined,{
+            weekday:"long",
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        });
+
+    const start=new Date();
+    start.setHours(0,0,0,0);
+
+    const end=new Date();
+    end.setHours(24,0,0,0);
+
+    const progress=
+        ((now-start)/(end-start))*100;
+
+    document.getElementById("dayProgress").style.width=
+        progress+"%";
+
+    const remaining=end-now;
+
+    const hours=Math.floor(remaining/3600000);
+
+    const minutes=
+        Math.floor((remaining%3600000)/60000);
+
+    document.getElementById("remainingDay").textContent=
+        hours+"h "+minutes+"m remaining today";
+
+    updateStats(now);
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+
+/* =========================
+   DAILY STATS
+========================= */
+
+function updateStats(now){
+
+    const startYear=new Date(now.getFullYear(),0,0);
+
+    const diff=now-startYear;
+
+    const oneDay=86400000;
+
+    const day=Math.floor(diff/oneDay);
+
+    document.getElementById("dayNumber").textContent=day;
+
+    const firstDay=new Date(
+        now.getFullYear(),
+        0,
+        1
+    );
+
+    const week=
+        Math.ceil(
+            ((((now-firstDay)/oneDay)
+            +firstDay.getDay()+1)/7)
+        );
+
+    document.getElementById("weekNumber").textContent=
+        week;
+
+    const monthStart=
+        new Date(now.getFullYear(),now.getMonth(),1);
+
+    const monthEnd=
+        new Date(now.getFullYear(),now.getMonth()+1,0);
+
+    const monthProgress=
+        Math.round(
+            ((now-monthStart)/
+            (monthEnd-monthStart))*100
+        );
+
+    document.getElementById("monthProgress").textContent=
+        monthProgress+"%";
+
+    const yearEnd=
+        new Date(now.getFullYear()+1,0,1);
+
+    const yearProgress=
+        Math.round(
+            ((now-firstDay)/
+            (yearEnd-firstDay))*100
+        );
+
+    document.getElementById("yearProgress").textContent=
+        yearProgress+"%";
+}
+
+
+/* =========================
+   TODO
+========================= */
+
+let todos=
+    JSON.parse(localStorage.getItem("dailyTodos")||"[]");
+
+function saveTodos(){
+
+    localStorage.setItem(
+        "dailyTodos",
+        JSON.stringify(todos)
+    );
+}
+
+function renderTodos(){
+
+    const list=
+        document.getElementById("todoList");
+
+    list.innerHTML="";
+
+    todos.forEach((todo,index)=>{
+
+        const div=document.createElement("div");
+
+        div.className=
+            "todo-item "+(todo.done?"done":"");
+
+        div.innerHTML=`
+
+        <input type="checkbox"
+        ${todo.done?"checked":""}
+        onchange="toggleTodo(${index})">
+
+        <span>${escapeHtml(todo.text)}</span>
+
+        <button class="danger"
+        onclick="deleteTodo(${index})">
+        ×
+        </button>
+
+        `;
+
+        list.appendChild(div);
+
+    });
+}
+
+function addTodo(){
+
+    const input=
+        document.getElementById("todoInput");
+
+    const text=input.value.trim();
+
+    if(!text)return;
+
+    todos.push({
+        text:text,
+        done:false
+    });
+
+    input.value="";
+
+    saveTodos();
+    renderTodos();
+}
+
+function toggleTodo(index){
+
+    todos[index].done=
+        !todos[index].done;
+
+    saveTodos();
+    renderTodos();
+}
+
+function deleteTodo(index){
+
+    todos.splice(index,1);
+
+    saveTodos();
+    renderTodos();
+}
+
+function clearCompleted(){
+
+    todos=
+        todos.filter(t=>!t.done);
+
+    saveTodos();
+    renderTodos();
+}
+
+function escapeHtml(text){
+
+    const div=document.createElement("div");
+
+    div.textContent=text;
+
+    return div.innerHTML;
+}
+
+renderTodos();
+
+
+/* =========================
+   NOTES
+========================= */
+
+const notes=
+    document.getElementById("notes");
+
+notes.value=
+    localStorage.getItem("dailyNotes")||"";
+
+notes.addEventListener("input",()=>{
+
+    localStorage.setItem(
+        "dailyNotes",
+        notes.value
+    );
+
+    document.getElementById("saveStatus")
+        .textContent=
+        "✓ Saved automatically";
+});
+
+
+/* =========================
+   FOCUS TIMER
+========================= */
+
+let focusSeconds=25*60;
+let focusInterval=null;
+
+function displayFocus(){
+
+    const min=
+        Math.floor(focusSeconds/60)
+        .toString().padStart(2,"0");
+
+    const sec=
+        (focusSeconds%60)
+        .toString().padStart(2,"0");
+
+    document.getElementById("focusTimer")
+        .textContent=min+":"+sec;
+}
+
+function startFocus(){
+
+    if(focusInterval)return;
+
+    focusInterval=setInterval(()=>{
+
+        if(focusSeconds<=0){
+
+            clearInterval(focusInterval);
+
+            focusInterval=null;
+
+            alert("🎉 Focus session complete!");
+
+            return;
+        }
+
+        focusSeconds--;
+
+        displayFocus();
+
+    },1000);
+}
+
+function pauseFocus(){
+
+    clearInterval(focusInterval);
+
+    focusInterval=null;
+}
+
+function resetFocus(){
+
+    pauseFocus();
+
+    focusSeconds=25*60;
+
+    displayFocus();
+}
+
+displayFocus();
+
+
+/* =========================
+   CALCULATOR
+========================= */
+
+function calculate(){
+
+    const value=
+        document.getElementById("calcInput").value;
+
+    try{
+
+        if(!/^[0-9+\-*/().%\s]+$/.test(value))
+            throw new Error();
+
+        const result=Function(
+            "return "+value
+        )();
+
+        document.getElementById("calcResult")
+            .textContent=result;
+
+    }catch(e){
+
+        document.getElementById("calcResult")
+            .textContent="Invalid expression";
+
+    }
+}
+
+
+/* =========================
+   PERCENTAGE
+========================= */
+
+function percentage(){
+
+    const value=
+        Number(document.getElementById("percentA").value);
+
+    const percent=
+        Number(document.getElementById("percentB").value);
+
+    if(isNaN(value)||isNaN(percent))return;
+
+    const result=
+        value*percent/100;
+
+    document.getElementById("percentResult")
+        .textContent=
+        percent+"% of "+value+" = "+result;
+}
+
+
+/* =========================
+   AGE
+========================= */
+
+function calculateAge(){
+
+    const birth=
+        new Date(
+            document.getElementById("birthDate").value
+        );
+
+    if(isNaN(birth))return;
+
+    const today=new Date();
+
+    let years=
+        today.getFullYear()-birth.getFullYear();
+
+    let months=
+        today.getMonth()-birth.getMonth();
+
+    if(
+        months<0 ||
+        (months===0 &&
+        today.getDate()<birth.getDate())
+    ){
+        years--;
+    }
+
+    document.getElementById("ageResult")
+        .textContent=
+        "You are "+years+" years old.";
+}
+
+
+/* =========================
+   DATE DIFFERENCE
+========================= */
+
+function dateDifference(){
+
+    const d1=
+        new Date(
+            document.getElementById("date1").value
+        );
+
+    const d2=
+        new Date(
+            document.getElementById("date2").value
+        );
+
+    if(isNaN(d1)||isNaN(d2))return;
+
+    const days=
+        Math.abs(d2-d1)/86400000;
+
+    document.getElementById("dateResult")
+        .textContent=
+        Math.round(days)+" days";
+}
+
+
+/* =========================
+   UNIT CONVERTER
+========================= */
+
+const units={
+
+    length:{
+        meter:1,
+        kilometer:1000,
+        centimeter:.01,
+        millimeter:.001,
+        mile:1609.344,
+        foot:.3048,
+        inch:.0254
+    },
+
+    weight:{
+        kilogram:1,
+        gram:.001,
+        milligram:.000001,
+        pound:.45359237,
+        ounce:.0283495
+    },
+
+    temperature:{
+        Celsius:1,
+        Fahrenheit:1,
+        Kelvin:1
+    }
+
+};
+
+function updateUnits(){
+
+    const type=
+        document.getElementById("unitType").value;
+
+    const list=
+        Object.keys(units[type]);
+
+    const from=
+        document.getElementById("fromUnit");
+
+    const to=
+        document.getElementById("toUnit");
+
+    from.innerHTML="";
+    to.innerHTML="";
+
+    list.forEach(u=>{
+
+        from.innerHTML+=
+            `<option value="${u}">${u}</option>`;
+
+        to.innerHTML+=
+            `<option value="${u}">${u}</option>`;
+
+    });
+
+}
+
+function convertUnit(){
+
+    const type=
+        document.getElementById("unitType").value;
+
+    const value=
+        Number(
+            document.getElementById("unitValue").value
+        );
+
+    const from=
+        document.getElementById("fromUnit").value;
+
+    const to=
+        document.getElementById("toUnit").value;
+
+    if(isNaN(value))return;
+
+    let result;
+
+    if(type==="temperature"){
+
+        let c;
+
+        if(from==="Celsius") c=value;
+
+        if(from==="Fahrenheit")
+            c=(value-32)*5/9;
+
+        if(from==="Kelvin")
+            c=value-273.15;
+
+        if(to==="Celsius")
+            result=c;
+
+        if(to==="Fahrenheit")
+            result=c*9/5+32;
+
+        if(to==="Kelvin")
+            result=c+273.15;
+
+    }else{
+
+        const base=
+            value*units[type][from];
+
+        result=
+            base/units[type][to];
+
+    }
+
+    document.getElementById("unitResult")
+        .textContent=
+        result.toFixed(6);
+}
+
+updateUnits();
+
+
+/* =========================
+   WORLD CLOCK
+========================= */
+
+function updateWorldClock(){
+
+    const zone=
+        document.getElementById("timezone").value;
+
+    const time=
+        new Intl.DateTimeFormat(
+            undefined,
+            {
+                timeZone:zone,
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit",
+                hour12:true
+            }
+        ).format(new Date());
+
+    document.getElementById("worldClock")
+        .textContent=time;
+}
+
+setInterval(updateWorldClock,1000);
+updateWorldClock();
+
+document.getElementById("timezone")
+.addEventListener(
+    "change",
+    updateWorldClock
+);
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+let lastPassword="";
+
+function generatePassword(){
+
+    const length=
+        Number(
+            document.getElementById("passwordLength").value
+        );
+
+    const chars=
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+        "abcdefghijklmnopqrstuvwxyz"+
+        "0123456789"+
+        "!@#$%^&*()_+-=";
+
+    let password="";
+
+    const array=
+        new Uint32Array(length);
+
+    crypto.getRandomValues(array);
+
+    array.forEach(n=>{
+        password+=chars[n%chars.length];
+    });
+
+    lastPassword=password;
+
+    document.getElementById("passwordResult")
+        .textContent=password;
+}
+
+function copyPassword(){
+
+    if(lastPassword)
+        navigator.clipboard.writeText(lastPassword);
+}
+
+
+/* =========================
+   COLOR
+========================= */
+
+let currentColor="#FFFFFF";
+
+function generateColor(){
+
+    currentColor=
+        "#"+
+        Math.floor(
+            Math.random()*16777215
+        ).toString(16)
+        .padStart(6,"0")
+        .toUpperCase();
+
+    document.getElementById("colorBox")
+        .style.background=currentColor;
+
+    document.getElementById("colorCode")
+        .textContent=currentColor;
+}
+
+function copyColor(){
+
+    navigator.clipboard.writeText(currentColor);
+}
+
+generateColor();
+
+
+/* =========================
+   EMOJI
+========================= */
+
+const emojis=[
+"😀","😃","😄","😁","😆","😅","😂","🤣",
+"😊","😇","🙂","🙃","😉","😌","😍","🥰",
+"😘","😎","🤩","🥳","😢","😭","😡","🤔",
+"👍","👎","👏","🙏","❤️","💔","🔥","⭐",
+"🎉","🎂","🎁","🏆","🚀","💡","💻","📱",
+"📧","📅","⏰","🌍","☀️","🌙","☕","🍕",
+"💰","💵","📈","📉","✅","❌","⚡","🎯",
+"🎵","🎶","❤️","💯","✨","🌟","🙌","👌"
+];
+
+function renderEmoji(){
+
+    const grid=
+        document.getElementById("emojiGrid");
+
+    grid.innerHTML="";
+
+    emojis.forEach(e=>{
+
+        const button=
+            document.createElement("button");
+
+        button.className="emoji";
+
+        button.textContent=e;
+
+        button.onclick=()=>{
+            navigator.clipboard.writeText(e);
+        };
+
+        grid.appendChild(button);
+
+    });
+}
+
+function filterEmoji(){
+
+    const search=
+        document.getElementById("emojiSearch")
+        .value.toLowerCase();
+
+    /* Basic emoji lookup:
+       display all when search is used */
+    renderEmoji();
+}
+
+renderEmoji();
+
+
+/* =========================
+   RANDOM NUMBER
+========================= */
+
+function randomNumber(){
+
+    const min=
+        Number(
+            document.getElementById("randomMin").value
+        );
+
+    const max=
+        Number(
+            document.getElementById("randomMax").value
+        );
+
+    const result=
+        Math.floor(
+            Math.random()*(max-min+1)
+        )+min;
+
+    document.getElementById("randomResult")
+        .textContent=result;
+}
+
+
+/* =========================
+   TEXT COUNTER
+========================= */
+
+function countText(){
+
+    const text=
+        document.getElementById("textCounter")
+        .value;
+
+    const words=
+        text.trim()
+        ? text.trim().split(/\s+/).length
+        : 0;
+
+    const chars=text.length;
+
+    const lines=
+        text
+        ? text.split(/\n/).length
+        : 0;
+
+    const reading=
+        Math.ceil(words/200);
+
+    document.getElementById("wordCount")
+        .textContent=words;
+
+    document.getElementById("charCount")
+        .textContent=chars;
+
+    document.getElementById("lineCount")
+        .textContent=lines;
+
+    document.getElementById("readingTime")
+        .textContent=reading;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchTools(){
+
+    const query=
+        document.getElementById("search")
+        .value
+        .toLowerCase();
+
+    document.querySelectorAll(".tool")
+    .forEach(tool=>{
+
+        const name=
+            tool.dataset.name.toLowerCase();
+
+        if(name.includes(query))
+            tool.classList.remove("hidden");
+        else
+            tool.classList.add("hidden");
+
+    });
+}
+
+
+/* =========================
+   SHARE
+========================= */
+
+async function sharePage(){
+
+    if(navigator.share){
+
+        await navigator.share({
+            title:"DailyDesk",
+            text:"Check out DailyDesk - useful everyday online tools.",
+            url:location.href
+        });
+
+    }else{
+
+        await navigator.clipboard.writeText(
+            location.href
+        );
+
+        alert("Page URL copied!");
+    }
+}
+
+
+/* =========================
+   QUICK LINKS
+========================= */
+
+function openSite(url){
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+
+</script>
+
+</body>
+</html>
