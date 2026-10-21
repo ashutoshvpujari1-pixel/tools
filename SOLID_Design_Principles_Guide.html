@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn SOLID object-oriented design principles in simple language with practical Java examples, explanations, and common mistakes.">
+<title>SOLID Design Principles — Simple Guide with Java Examples</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#5b667a;--primary:#2457d6;--accent:#16a085;--border:#dce4f0;--code:#101827;--shadow:0 8px 28px #17203312}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.6}
+header{background:linear-gradient(120deg,#101d42,#2457d6 70%,#4f8cff);color:white;padding:38px 20px 34px}
+.hero{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:.78rem;font-weight:800;opacity:.85}
+h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.12;margin:10px 0}.hero p{max-width:780px;font-size:1.08rem;color:#e9efff}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.pills span{border:1px solid #ffffff55;border-radius:99px;padding:5px 11px;font-size:.85rem}
+main{max-width:1120px;margin:26px auto;padding:0 18px 36px}.intro-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}
+.panel,.principle,.quiz{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+h2{font-size:1.45rem;margin:0 0 10px}h3{margin:0 0 8px}.muted{color:var(--muted)}.mnemonic{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:15px}
+.mnemonic div{background:#edf3ff;border-radius:12px;text-align:center;padding:12px 5px}.mnemonic b{display:block;font-size:1.6rem;color:var(--primary)}.mnemonic small{font-size:.76rem}
+nav{position:sticky;top:0;z-index:5;background:#ffffffed;backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 12px}
+.navinner{max-width:1120px;margin:auto;display:flex;gap:8px;overflow:auto}.navinner a{white-space:nowrap;text-decoration:none;color:#24406e;background:#edf3ff;border-radius:99px;padding:7px 12px;font-size:.88rem;font-weight:700}
+.section-title{margin:34px 0 14px}.principle{margin:14px 0;scroll-margin-top:76px}.principle-head{display:flex;gap:14px;align-items:flex-start}.letter{flex:0 0 52px;height:52px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#2457d6,#4f8cff);color:white;font-size:1.8rem;font-weight:900}
+.subtitle{font-weight:800;color:var(--primary);margin-top:2px}.columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.explain{background:#f6f8fc;border-radius:12px;padding:15px}.explain.good{background:#eaf8f3}.explain.bad{background:#fff2ef}.label{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;font-weight:900;color:var(--muted)}
+pre{background:var(--code);color:#e5edff;padding:16px;border-radius:12px;overflow:auto;font-size:.88rem;line-height:1.55;margin:10px 0 0;tab-size:4}code{font-family:Consolas,Monaco,monospace}.code-label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px}.btn{border:0;border-radius:9px;padding:9px 13px;background:var(--primary);color:#fff;font-weight:750;cursor:pointer}.btn.secondary{background:#e8eefb;color:#24406e}.btn:hover{filter:brightness(.96)}.tip{border-left:4px solid var(--accent);padding:10px 14px;background:#effaf6;border-radius:0 10px 10px 0;margin-top:14px}
+.quiz{margin-top:32px}.question{border-top:1px solid var(--border);padding:16px 0}.question:first-of-type{border-top:0}.question p{font-weight:750;margin:0 0 10px}.options{display:grid;gap:7px}.options label{padding:9px 11px;border:1px solid var(--border);border-radius:9px;cursor:pointer}.options label:has(input:checked){border-color:var(--primary);background:#edf3ff}.result{font-weight:800;margin-top:14px}.footer{text-align:center;color:var(--muted);padding:22px}
+@media(max-width:760px){.intro-grid,.columns{grid-template-columns:1fr}.mnemonic{grid-template-columns:repeat(5,minmax(50px,1fr))}.panel,.principle,.quiz{padding:16px}.letter{flex-basis:44px;height:44px}}
+@media print{nav,.btn,.quiz button{display:none}body{background:white}.panel,.principle{box-shadow:none;break-inside:avoid}header{background:#1d3670!important;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<div class="eyebrow">Object-oriented design • Beginner friendly</div>
+<h1>Learn SOLID Design Principles</h1>
+<p>Five simple habits that help you write software that is easier to understand, change, test, and maintain. Each principle includes a plain-English explanation and a Java example.</p>
+<div class="pills"><span>☕ Java examples</span><span>🧠 Simple explanations</span><span>🧩 Real-world analogies</span><span>📱 Mobile friendly</span></div>
+</div></header>
+<nav><div class="navinner">
+<a href="#overview">Overview</a><a href="#s">S — Single Responsibility</a><a href="#o">O — Open/Closed</a><a href="#l">L — Liskov Substitution</a><a href="#i">I — Interface Segregation</a><a href="#d">D — Dependency Inversion</a><a href="#quiz">Quick Quiz</a>
+</div></nav>
+<main>
+<section id="overview" class="intro-grid">
+<div class="panel"><h2>What does SOLID mean?</h2>
+<p>SOLID is a set of five guidelines for designing object-oriented software. They are not strict laws; they are useful ways to avoid code that becomes difficult to change.</p>
+<p><b>Think of building a house:</b> give each room a clear purpose, allow extensions without rebuilding everything, and make sure parts can be swapped for compatible alternatives.</p>
+<div class="mnemonic"><div><b>S</b><small>One job</small></div><div><b>O</b><small>Extend safely</small></div><div><b>L</b><small>Swap safely</small></div><div><b>I</b><small>Small interfaces</small></div><div><b>D</b><small>Depend on contracts</small></div></div>
+</div>
+<div class="panel"><h2>Why use SOLID?</h2><ul><li>Changes are less likely to break unrelated code.</li><li>Features are easier to add.</li><li>Classes are easier to test.</li><li>Responsibilities are clearer to teammates.</li></ul><p class="muted"><b>Remember:</b> do not add extra classes or interfaces just to follow a rule. Keep the design as simple as the problem allows.</p></div>
+</section>
+
+<h2 class="section-title">The five principles, one by one</h2>
+<section class="principle" id="s">
+<div class="principle-head"><div class="letter">S</div><div><h2>Single Responsibility Principle (SRP)</h2><div class="subtitle">One class should have one main reason to change.</div></div></div>
+<p>In simple language: give a class one clear job. A class that calculates an invoice should not also print it and email it.</p>
+<div class="columns"><div class="explain bad"><div class="label">❌ Before — too many jobs</div><p><code>Invoice</code> calculates totals, prints the invoice, and sends emails. A change to email delivery forces you to edit the invoice class.</p></div><div class="explain good"><div class="label">✅ After — separate jobs</div><p><code>Invoice</code> holds invoice data; <code>InvoicePrinter</code> prints it; <code>InvoiceEmailer</code> sends it.</p></div></div>
+<div class="code-label"><b>Java example</b><button class="btn secondary" onclick="copyCode('code-s',this)">Copy code</button></div>
+<pre id="code-s"><code>class Invoice {
+    private final double amount;
+
+    Invoice(double amount) {
+        this.amount = amount;
+    }
+
+    double total() {
+        return amount * 1.18; // example: add 18% tax
+    }
+}
+
+class InvoicePrinter {
+    void print(Invoice invoice) {
+        System.out.println("Invoice total: " + invoice.total());
+    }
+}
+
+class InvoiceEmailer {
+    void email(String customerEmail, Invoice invoice) {
+        System.out.println("Emailing invoice to " + customerEmail);
+    }
+}</code></pre>
+<div class="tip"><b>Easy memory trick:</b> one class = one main job. If you describe a class using “and” many times, check whether it has too many responsibilities.</div>
+</section>
+
+<section class="principle" id="o">
+<div class="principle-head"><div class="letter">O</div><div><h2>Open/Closed Principle (OCP)</h2><div class="subtitle">Open for adding new behavior, closed for repeatedly changing working code.</div></div></div>
+<p>In simple language: when a new requirement arrives, try to add a new implementation instead of editing a long chain of existing <code>if/else</code> statements.</p>
+<div class="columns"><div class="explain bad"><div class="label">❌ Fragile approach</div><p>A payment method has a long <code>if/else</code> for card, UPI, wallet, and every future payment type. Every new option changes the same class.</p></div><div class="explain good"><div class="label">✅ Extend with a new class</div><p>Define a common <code>PaymentMethod</code> contract. Each payment type implements it; adding another type usually means adding a class.</p></div></div>
+<div class="code-label"><b>Java example</b><button class="btn secondary" onclick="copyCode('code-o',this)">Copy code</button></div>
+<pre id="code-o"><code>interface PaymentMethod {
+    void pay(double amount);
+}
+
+class UpiPayment implements PaymentMethod {
+    public void pay(double amount) {
+        System.out.println("Paid by UPI: " + amount);
+    }
+}
+
+class CardPayment implements PaymentMethod {
+    public void pay(double amount) {
+        System.out.println("Paid by card: " + amount);
+    }
+}
+
+class Checkout {
+    void complete(PaymentMethod method, double amount) {
+        method.pay(amount);
+    }
+}
+
+// To add WalletPayment, create another class
+// implementing PaymentMethod. Checkout stays unchanged.</code></pre>
+<div class="tip"><b>Easy memory trick:</b> add a new option by extending the design, not by constantly rewriting stable code.</div>
+</section>
+
+<section class="principle" id="l">
+<div class="principle-head"><div class="letter">L</div><div><h2>Liskov Substitution Principle (LSP)</h2><div class="subtitle">A subtype should work wherever its parent type is expected.</div></div></div>
+<p>In simple language: if code expects a <code>Bird</code> that can fly, do not make every bird inherit from that type—because a penguin cannot fly. Model only what is true for all members of a type.</p>
+<div class="columns"><div class="explain bad"><div class="label">❌ Broken expectation</div><p>A <code>Penguin</code> extends a <code>FlyingBird</code> class but throws an error when <code>fly()</code> is called. Code using <code>FlyingBird</code> cannot safely use every subtype.</p></div><div class="explain good"><div class="label">✅ Model capabilities correctly</div><p>Use a general <code>Bird</code> type and a separate <code>Flyable</code> capability. Only birds that can fly implement it.</p></div></div>
+<div class="code-label"><b>Java example</b><button class="btn secondary" onclick="copyCode('code-l',this)">Copy code</button></div>
+<pre id="code-l"><code>interface Bird {
+    void eat();
+}
+
+interface Flyable {
+    void fly();
+}
+
+class Sparrow implements Bird, Flyable {
+    public void eat() {
+        System.out.println("Sparrow eats seeds");
+    }
+
+    public void fly() {
+        System.out.println("Sparrow flies");
+    }
+}
+
+class Penguin implements Bird {
+    public void eat() {
+        System.out.println("Penguin eats fish");
+    }
+}
+
+// A method that needs flight accepts Flyable,
+// so Penguin is never passed to it by mistake.
+class FlightLesson {
+    void demonstrateFlight(Flyable bird) {
+        bird.fly();
+    }
+}</code></pre>
+<div class="tip"><b>Easy memory trick:</b> a child class must keep the promises made by its parent type. Do not promise behavior that some child objects cannot provide.</div>
+</section>
+
+<section class="principle" id="i">
+<div class="principle-head"><div class="letter">I</div><div><h2>Interface Segregation Principle (ISP)</h2><div class="subtitle">Prefer small, focused interfaces over one giant interface.</div></div></div>
+<p>In simple language: do not force a class to implement methods it does not need. A basic printer should not be forced to scan or fax.</p>
+<div class="columns"><div class="explain bad"><div class="label">❌ Too broad</div><p>One <code>OfficeMachine</code> interface requires <code>print()</code>, <code>scan()</code>, and <code>fax()</code>. A printer that only prints must provide fake or unsupported methods.</p></div><div class="explain good"><div class="label">✅ Small interfaces</div><p>Separate <code>Printer</code>, <code>Scanner</code>, and <code>Fax</code> capabilities. Each device implements only what it can actually do.</p></div></div>
+<div class="code-label"><b>Java example</b><button class="btn secondary" onclick="copyCode('code-i',this)">Copy code</button></div>
+<pre id="code-i"><code>interface Printer {
+    void print(String document);
+}
+
+interface Scanner {
+    void scan(String document);
+}
+
+class BasicPrinter implements Printer {
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+}
+
+class MultiFunctionPrinter implements Printer, Scanner {
+    public void print(String document) {
+        System.out.println("Printing: " + document);
+    }
+
+    public void scan(String document) {
+        System.out.println("Scanning: " + document);
+    }
+}</code></pre>
+<div class="tip"><b>Easy memory trick:</b> many small, specific promises are better than one huge promise that every class must keep.</div>
+</section>
+
+<section class="principle" id="d">
+<div class="principle-head"><div class="letter">D</div><div><h2>Dependency Inversion Principle (DIP)</h2><div class="subtitle">High-level business logic should depend on abstractions, not on a specific tool.</div></div></div>
+<p>In simple language: your order service should ask for a notification service, not be permanently tied to one email provider. Then you can switch to SMS or another email provider more easily.</p>
+<div class="columns"><div class="explain bad"><div class="label">❌ Tightly coupled</div><p><code>OrderService</code> directly creates a specific email sender using <code>new</code>. Replacing that sender means changing the business logic.</p></div><div class="explain good"><div class="label">✅ Depend on a contract</div><p><code>OrderService</code> receives a <code>Notifier</code>. Any class that implements the interface can be supplied, which also makes testing easier.</p></div></div>
+<div class="code-label"><b>Java example</b><button class="btn secondary" onclick="copyCode('code-d',this)">Copy code</button></div>
+<pre id="code-d"><code>interface Notifier {
+    void send(String message);
+}
+
+class EmailNotifier implements Notifier {
+    public void send(String message) {
+        System.out.println("Email: " + message);
+    }
+}
+
+class SmsNotifier implements Notifier {
+    public void send(String message) {
+        System.out.println("SMS: " + message);
+    }
+}
+
+class OrderService {
+    private final Notifier notifier;
+
+    OrderService(Notifier notifier) {
+        this.notifier = notifier;
+    }
+
+    void placeOrder() {
+        System.out.println("Order placed");
+        notifier.send("Your order is confirmed");
+    }
+}
+
+// Example use:
+// OrderService service = new OrderService(new EmailNotifier());
+// service.placeOrder();
+// Swap EmailNotifier for SmsNotifier when needed.</code></pre>
+<div class="tip"><b>Easy memory trick:</b> depend on what a component can do (an interface), not on the exact component that does it. Passing dependencies in through a constructor is called <b>dependency injection</b>.</div>
+</section>
+
+<section class="quiz" id="quiz">
+<h2>Quick knowledge check</h2><p class="muted">Choose one answer for each question, then check your score.</p>
+<form id="quizForm">
+<div class="question"><p>1. A class calculates invoices and also sends emails. Which principle is most directly relevant?</p><div class="options"><label><input type="radio" name="q1" value="a"> Open/Closed</label><label><input type="radio" name="q1" value="b"> Single Responsibility</label><label><input type="radio" name="q1" value="c"> Liskov Substitution</label></div></div>
+<div class="question"><p>2. You want to add a new payment type without rewriting checkout logic. Which principle helps?</p><div class="options"><label><input type="radio" name="q2" value="a"> Open/Closed</label><label><input type="radio" name="q2" value="b"> Interface Segregation</label><label><input type="radio" name="q2" value="c"> Single Responsibility</label></div></div>
+<div class="question"><p>3. A penguin is passed to code that assumes every bird can fly. Which principle is being broken?</p><div class="options"><label><input type="radio" name="q3" value="a"> Dependency Inversion</label><label><input type="radio" name="q3" value="b"> Interface Segregation</label><label><input type="radio" name="q3" value="c"> Liskov Substitution</label></div></div>
+<div class="question"><p>4. A basic printer is forced to implement scan() and fax(). Which principle would improve this design?</p><div class="options"><label><input type="radio" name="q4" value="a"> Interface Segregation</label><label><input type="radio" name="q4" value="b"> Open/Closed</label><label><input type="radio" name="q4" value="c"> Dependency Inversion</label></div></div>
+<div class="question"><p>5. OrderService receives a Notifier interface rather than creating EmailNotifier itself. Which principle does this illustrate?</p><div class="options"><label><input type="radio" name="q5" value="a"> Single Responsibility</label><label><input type="radio" name="q5" value="b"> Dependency Inversion</label><label><input type="radio" name="q5" value="c"> Liskov Substitution</label></div></div>
+<button class="btn" type="submit">Check my answers</button> <button class="btn secondary" type="button" onclick="resetQuiz()">Try again</button>
+<div id="quizResult" class="result" aria-live="polite"></div>
+</form>
+</section>
+<div class="panel" style="margin-top:24px"><h2>One-minute revision</h2><ul><li><b>S:</b> one class, one main responsibility.</li><li><b>O:</b> add new behavior with extensions where practical.</li><li><b>L:</b> subtypes should honor the expectations of their parent type.</li><li><b>I:</b> keep interfaces small and focused.</li><li><b>D:</b> business logic depends on abstractions, not concrete tools.</li></ul><p class="muted">These examples are teaching illustrations, not complete production payment, invoicing, or notification systems.</p></div>
+</main>
+<div class="footer">SOLID Design Principles • Beginner-friendly Java learning guide</div>
+<script>
+async function copyCode(id,button){
+  const text=document.getElementById(id).innerText;
+  try{
+    await navigator.clipboard.writeText(text);
+    const old=button.textContent;button.textContent='Copied!';
+    setTimeout(()=>button.textContent=old,1400);
+  }catch(e){
+    const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();
+    try{document.execCommand('copy');button.textContent='Copied!';setTimeout(()=>button.textContent='Copy code',1400);}
+    catch(err){alert('Copy failed. Please select the code and copy it manually.');}
+    area.remove();
+  }
+}
+document.getElementById('quizForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const answers={q1:'b',q2:'a',q3:'c',q4:'a',q5:'b'};
+  let score=0,answered=0;
+  for(const [q,a] of Object.entries(answers)){
+    const selected=this.querySelector('input[name="'+q+'"]:checked');
+    if(selected){answered++;if(selected.value===a)score++;}
+  }
+  const result=document.getElementById('quizResult');
+  if(answered<5){result.textContent='You answered '+answered+' of 5 questions. Please answer all five to see your score.';return;}
+  result.textContent='Your score: '+score+'/5. '+(score===5?'Excellent — you know the basics of SOLID!':score>=3?'Good work! Review the principles you missed and try again.':'Keep learning — revisit the examples above, then try again.');
+});
+function resetQuiz(){document.getElementById('quizForm').reset();document.getElementById('quizResult').textContent='';}
+</script>
+</body>
+</html>
