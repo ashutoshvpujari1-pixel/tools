@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn Java design patterns in simple language with practical examples and Java code snippets.">
+<title>Java Design Patterns Explorer</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#637087;--primary:#3659d9;--line:#e0e6f0;--soft:#edf2ff;--code:#101827;--green:#087f5b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.55}
+header{background:linear-gradient(120deg,#172554,#3659d9 65%,#6d5ce7);color:white;padding:34px 20px 30px}
+.hero{max-width:1180px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:.76rem;font-weight:800;opacity:.8}
+h1{font-size:clamp(2rem,5vw,3.25rem);line-height:1.1;margin:9px 0 12px}.hero p{max-width:760px;margin:0;color:#e7ecff;font-size:1.08rem}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.pill{border:1px solid #ffffff55;background:#ffffff15;border-radius:99px;padding:6px 11px;font-size:.85rem}
+main{max-width:1180px;margin:24px auto;padding:0 16px 50px}
+.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:center;margin-bottom:16px}
+input[type=search]{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:12px;font:inherit;background:white;outline-color:var(--primary)}
+.filters{display:flex;gap:7px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:white;color:var(--text);padding:10px 13px;border-radius:10px;font-weight:700;cursor:pointer}.filter.active{background:var(--primary);color:white;border-color:var(--primary)}
+.intro{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 24px}.intro article{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.intro h3{margin:0 0 6px;font-size:1rem}.intro p{margin:0;color:var(--muted);font-size:.92rem}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:26px 0 12px}.section-heading h2{margin:0;font-size:1.4rem}.section-heading p{margin:0;color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pattern{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 4px 15px #17255408}
+.pattern summary{list-style:none;cursor:pointer;padding:18px;display:flex;gap:13px;align-items:flex-start}.pattern summary::-webkit-details-marker{display:none}
+.num{display:grid;place-items:center;flex:0 0 40px;height:40px;background:var(--soft);color:var(--primary);font-weight:900;border-radius:12px}
+.summary-content{min-width:0;flex:1}.pattern h3{margin:0 0 4px;font-size:1.08rem}.tagline{color:var(--muted);font-size:.91rem}.category{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--primary);margin-bottom:4px}
+.chevron{color:var(--muted);font-size:1.2rem;transition:transform .2s}details[open] .chevron{transform:rotate(180deg)}
+.detail{padding:0 18px 18px;border-top:1px solid var(--line)}.detail h4{margin:15px 0 5px;font-size:.95rem}.detail p{margin:0 0 8px}.analogy{background:#f7f9ff;border-left:3px solid var(--primary);padding:10px 12px;border-radius:0 8px 8px 0;color:#33415f}
+pre{background:var(--code);color:#e5edff;border-radius:10px;padding:14px;overflow:auto;font-size:.83rem;line-height:1.5;margin:8px 0 10px;white-space:pre}
+.code-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}.small-btn{background:white;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:700;color:var(--text)}.small-btn:hover{border-color:var(--primary);color:var(--primary)}
+.note{background:#fff9e8;border:1px solid #f3df9e;padding:14px 16px;border-radius:12px;margin:24px 0;color:#684f0a}
+.empty{background:white;border:1px dashed var(--line);border-radius:12px;padding:28px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{text-align:center;color:var(--muted);padding:25px 16px;border-top:1px solid var(--line);background:white;font-size:.9rem}
+@media(max-width:760px){.toolbar{grid-template-columns:1fr}.intro{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.section-heading{align-items:start;flex-direction:column}header{padding:28px 17px}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<div class="eyebrow">Java learning guide</div>
+<h1>Java Design Patterns Explorer</h1>
+<p>Understand common design patterns using plain English, everyday comparisons, and small Java examples. Expand a pattern to learn when it helps and see the code.</p>
+<div class="hero-pills"><span class="pill">23 classic patterns</span><span class="pill">Simple explanations</span><span class="pill">Java examples</span><span class="pill">Search and filter</span></div>
+</div></header>
+<main>
+<div class="toolbar">
+<input id="search" type="search" placeholder="Search patterns, e.g. Singleton, objects, notifications…" aria-label="Search design patterns">
+<div class="filters" role="group" aria-label="Filter patterns">
+<button class="filter active" data-filter="All">All patterns</button><button class="filter" data-filter="Creational">Creational</button><button class="filter" data-filter="Structural">Structural</button><button class="filter" data-filter="Behavioral">Behavioral</button>
+</div>
+</div>
+<section class="intro">
+<article><h3>🏗️ Creational</h3><p>Patterns that help create objects in a controlled or flexible way.</p></article>
+<article><h3>🧩 Structural</h3><p>Patterns that help classes and objects work together neatly.</p></article>
+<article><h3>💬 Behavioral</h3><p>Patterns that organize communication and responsibilities.</p></article>
+</section>
+<div class="section-heading"><h2>Explore the patterns</h2><p id="count" aria-live="polite">Showing 23 patterns</p></div>
+<div class="grid" id="patterns"></div>
+<div class="note"><strong>Remember:</strong> a design pattern is a reusable idea, not a rule you must always follow. Start with the simplest code that solves the problem. Use a pattern when it makes the code easier to change, test, or understand.</div>
+</main>
+<footer>Java Design Patterns Explorer · A beginner-friendly reference for learning and revision</footer>
+<script>
+const patterns = [
+{n:"Singleton",c:"Creational",tag:"One shared instance",simple:"Make sure a class has only one shared object and provide a common way to access it.",analogy:"Like one settings desk for an application: everyone uses the same desk instead of creating a new one.",when:"Useful for a shared, stateless service or application configuration. Avoid it when global state makes testing difficult.",code:`public final class AppConfig {
+    private static final AppConfig INSTANCE = new AppConfig();
+
+    private AppConfig() { }
+
+    public static AppConfig getInstance() {
+        return INSTANCE;
+    }
+}
+
+// Usage:
+AppConfig config = AppConfig.getInstance();`},
+{n:"Factory Method",c:"Creational",tag:"Let a method choose the object",simple:"Ask a creation method for an object instead of deciding the exact class everywhere.",analogy:"A notification desk gives you an EmailNotification or SMSNotification based on what you ask for.",when:"Useful when the exact implementation can vary or new types may be added.",code:`interface Notification {
+    void send(String message);
+}
+class EmailNotification implements Notification {
+    public void send(String message) {
+        System.out.println("Email: " + message);
+    }
+}
+class NotificationFactory {
+    static Notification create(String type) {
+        if ("email".equalsIgnoreCase(type))
+            return new EmailNotification();
+        throw new IllegalArgumentException("Unknown type");
+    }
+}
+
+// Usage:
+Notification n = NotificationFactory.create("email");
+n.send("Hello!");`},
+{n:"Abstract Factory",c:"Creational",tag:"Create matching families of objects",simple:"Create a set of related objects without naming their concrete classes in the calling code.",analogy:"A furniture shop offers a matching modern set or a matching classic set: chair and table styles belong together.",when:"Useful when an application supports multiple related product families, such as light and dark UI controls.",code:`interface Button { void render(); }
+interface Checkbox { void render(); }
+
+interface UIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+// LightFactory and DarkFactory implement UIFactory
+// and create matching Button and Checkbox objects.
+
+// Usage:
+UIFactory factory = getFactoryForTheme();
+Button button = factory.createButton();
+Checkbox checkbox = factory.createCheckbox();`},
+{n:"Builder",c:"Creational",tag:"Build a complex object step by step",simple:"Construct an object by setting the parts you need, rather than using a huge constructor.",analogy:"Ordering a sandwich: choose bread, filling, and sauce step by step.",when:"Useful when an object has many optional settings or construction steps.",code:`class User {
+    private final String name;
+    private final String city;
+
+    private User(Builder b) {
+        name = b.name;
+        city = b.city;
+    }
+    static class Builder {
+        private final String name;
+        private String city = "Unknown";
+        Builder(String name) { this.name = name; }
+        Builder city(String city) { this.city = city; return this; }
+        User build() { return new User(this); }
+    }
+}
+
+// Usage:
+User user = new User.Builder("Asha")
+        .city("Pune").build();`},
+{n:"Prototype",c:"Creational",tag:"Copy an existing object",simple:"Create a new object by copying a ready-made object instead of building it from scratch.",analogy:"Make a copy of a document template, then change the copy.",when:"Useful when setup is expensive or many objects start with similar values. Define whether nested objects are shallow- or deep-copied.",code:`class Profile {
+    String name;
+    String theme;
+
+    Profile(String name, String theme) {
+        this.name = name;
+        this.theme = theme;
+    }
+    Profile copy() {
+        return new Profile(name, theme);
+    }
+}
+
+// Usage:
+Profile original = new Profile("Asha", "dark");
+Profile copy = original.copy();
+copy.name = "Ravi";`},
+{n:"Adapter",c:"Structural",tag:"Make incompatible interfaces fit",simple:"Wrap an existing class so it looks like the interface your code expects.",analogy:"A travel plug adapter lets a plug fit a different socket.",when:"Useful when integrating a legacy library or third-party API with a different interface.",code:`interface Printer {
+    void print(String text);
+}
+class OldPrinter {
+    void printText(String text) {
+        System.out.println(text);
+    }
+}
+class PrinterAdapter implements Printer {
+    private final OldPrinter old = new OldPrinter();
+    public void print(String text) {
+        old.printText(text);
+    }
+}
+
+// Usage:
+Printer printer = new PrinterAdapter();
+printer.print("Hello");`},
+{n:"Bridge",c:"Structural",tag:"Separate two things that vary",simple:"Keep an abstraction and its implementation separate so each can change independently.",analogy:"A remote control can work with different TV brands; remote features and TV brands vary separately.",when:"Useful when two dimensions (such as shape and rendering method) both have multiple variations.",code:`interface Device {
+    void turnOn();
+}
+class TV implements Device {
+    public void turnOn() { System.out.println("TV on"); }
+}
+class Remote {
+    private final Device device;
+    Remote(Device device) { this.device = device; }
+    void powerOn() { device.turnOn(); }
+}
+
+// Usage:
+Remote remote = new Remote(new TV());
+remote.powerOn();`},
+{n:"Composite",c:"Structural",tag:"Treat groups and single items alike",simple:"Put individual objects and groups behind the same interface.",analogy:"A folder can contain a file or another folder, and both can be displayed in a file explorer.",when:"Useful for tree structures such as menus, folders, or organization charts.",code:`interface Item {
+    void show();
+}
+class FileItem implements Item {
+    public void show() { System.out.println("File"); }
+}
+class Folder implements Item {
+    private final java.util.List<Item> items =
+        new java.util.ArrayList<>();
+    void add(Item item) { items.add(item); }
+    public void show() {
+        items.forEach(Item::show);
+    }
+}
+
+// Usage:
+Folder folder = new Folder();
+folder.add(new FileItem());
+folder.show();`},
+{n:"Decorator",c:"Structural",tag:"Add behavior by wrapping",simple:"Add extra features to an object without changing its original class.",analogy:"Start with coffee, then wrap it with optional milk or syrup additions.",when:"Useful for optional combinations of features, such as streams, logging, or formatting.",code:`interface Coffee {
+    String description();
+}
+class PlainCoffee implements Coffee {
+    public String description() { return "Coffee"; }
+}
+class MilkDecorator implements Coffee {
+    private final Coffee coffee;
+    MilkDecorator(Coffee coffee) { this.coffee = coffee; }
+    public String description() {
+        return coffee.description() + " + milk";
+    }
+}
+
+// Usage:
+Coffee drink = new MilkDecorator(new PlainCoffee());
+System.out.println(drink.description());`},
+{n:"Facade",c:"Structural",tag:"One simple entry point",simple:"Provide one easy method that coordinates a complicated set of classes.",analogy:"A hotel receptionist coordinates cleaning, room service, and bookings for you.",when:"Useful when a subsystem has many steps or classes callers should not need to manage.",code:`class Lights { void dim() { System.out.println("Dim lights"); } }
+class Projector { void on() { System.out.println("Projector on"); } }
+class MovieFacade {
+    private final Lights lights = new Lights();
+    private final Projector projector = new Projector();
+    void startMovie() {
+        lights.dim();
+        projector.on();
+    }
+}
+
+// Usage:
+new MovieFacade().startMovie();`},
+{n:"Flyweight",c:"Structural",tag:"Share common data",simple:"Reuse shared, unchanged data across many small objects to save memory.",analogy:"A game stores one tree model and reuses it at many positions, rather than duplicating the model each time.",when:"Useful for huge numbers of similar objects. Keep shared intrinsic data separate from per-object state.",code:`class TreeType {
+    final String name;
+    TreeType(String name) { this.name = name; }
+}
+class TreeFactory {
+    private static final java.util.Map<String, TreeType> TYPES =
+        new java.util.HashMap<>();
+    static TreeType get(String name) {
+        return TYPES.computeIfAbsent(name, TreeType::new);
+    }
+}
+
+// Usage: many trees can share one TreeType.
+TreeType oak = TreeFactory.get("Oak");`},
+{n:"Proxy",c:"Structural",tag:"A stand-in that controls access",simple:"Use a representative object to control access to the real object.",analogy:"A security guard checks permission before letting someone enter a room.",when:"Useful for lazy loading, access checks, caching, or remote objects.",code:`interface Report {
+    void open();
+}
+class RealReport implements Report {
+    public void open() { System.out.println("Opening report"); }
+}
+class SecureReportProxy implements Report {
+    private final boolean allowed;
+    private RealReport real;
+    SecureReportProxy(boolean allowed) { this.allowed = allowed; }
+    public void open() {
+        if (!allowed) throw new SecurityException("Not allowed");
+        if (real == null) real = new RealReport();
+        real.open();
+    }
+}
+
+// Usage:
+Report report = new SecureReportProxy(true);
+report.open();`},
+{n:"Chain of Responsibility",c:"Behavioral",tag:"Pass a request along handlers",simple:"Let several handlers check a request; each can handle it or pass it to the next.",analogy:"A support request moves from help desk to specialist to manager if needed.",when:"Useful for validation pipelines, approval flows, and HTTP middleware.",code:`abstract class Handler {
+    private Handler next;
+    Handler linkWith(Handler next) { this.next = next; return next; }
+    void handle(int amount) {
+        if (!process(amount) && next != null) next.handle(amount);
+    }
+    protected abstract boolean process(int amount);
+}
+class SmallApproval extends Handler {
+    protected boolean process(int amount) {
+        if (amount <= 100) { System.out.println("Approved here"); return true; }
+        return false;
+    }
+}
+
+// Usage: link handlers and call the first handler.
+// first.handle(50);`},
+{n:"Command",c:"Behavioral",tag:"Turn a request into an object",simple:"Package an action as an object so it can be queued, logged, or undone.",analogy:"A remote-control button stores the action it should perform.",when:"Useful for job queues, undo/redo, and separating a button from the action it triggers.",code:`interface Command { void execute(); }
+class Light {
+    void on() { System.out.println("Light on"); }
+}
+class LightOnCommand implements Command {
+    private final Light light;
+    LightOnCommand(Light light) { this.light = light; }
+    public void execute() { light.on(); }
+}
+class Button {
+    private final Command command;
+    Button(Command command) { this.command = command; }
+    void click() { command.execute(); }
+}
+
+// Usage:
+new Button(new LightOnCommand(new Light())).click();`},
+{n:"Interpreter",c:"Behavioral",tag:"Represent and evaluate a small language",simple:"Create objects that understand simple rules or expressions in a tiny language.",analogy:"A basic calculator interprets an expression such as 2 + 3.",when:"Useful for small rule languages or expression evaluators. For complex languages, use a parser library.",code:`interface Expression { int interpret(); }
+class NumberExpr implements Expression {
+    private final int value;
+    NumberExpr(int value) { this.value = value; }
+    public int interpret() { return value; }
+}
+class AddExpr implements Expression {
+    private final Expression left, right;
+    AddExpr(Expression left, Expression right) {
+        this.left = left; this.right = right;
+    }
+    public int interpret() {
+        return left.interpret() + right.interpret();
+    }
+}
+
+// Usage:
+Expression sum = new AddExpr(new NumberExpr(2), new NumberExpr(3));
+System.out.println(sum.interpret()); // 5`},
+{n:"Iterator",c:"Behavioral",tag:"Visit items without exposing storage",simple:"Provide a standard way to move through a collection one item at a time.",analogy:"A playlist's Next button moves through songs without revealing how the playlist stores them.",when:"Useful for traversing collections. Java collections already provide Iterator and enhanced for loops.",code:`java.util.List<String> names =
+    java.util.List.of("Asha", "Ravi", "Mina");
+java.util.Iterator<String> iterator = names.iterator();
+
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+
+// Enhanced for-loop is often simpler:
+for (String name : names) {
+    System.out.println(name);
+}`},
+{n:"Mediator",c:"Behavioral",tag:"Coordinate through a central object",simple:"Objects communicate through a coordinator instead of knowing about each other directly.",analogy:"An air-traffic controller coordinates planes so every plane does not need to coordinate with every other plane.",when:"Useful for chat rooms, UI widgets, and workflows with many interacting participants.",code:`class ChatRoom {
+    void send(String from, String message) {
+        System.out.println(from + ": " + message);
+    }
+}
+class User {
+    private final String name;
+    private final ChatRoom room;
+    User(String name, ChatRoom room) {
+        this.name = name; this.room = room;
+    }
+    void send(String message) { room.send(name, message); }
+}
+
+// Usage:
+ChatRoom room = new ChatRoom();
+new User("Asha", room).send("Hello everyone");`},
+{n:"Memento",c:"Behavioral",tag:"Save and restore an object's state",simple:"Save a snapshot so an object can return to an earlier state without exposing its internals.",analogy:"An Undo button restores the previous version of a document.",when:"Useful for undo, checkpoints, or restoring editor state.",code:`class Editor {
+    private String text = "";
+    void write(String value) { text = value; }
+    String save() { return text; } // snapshot
+    void restore(String snapshot) { text = snapshot; }
+    String text() { return text; }
+}
+
+// Usage:
+Editor editor = new Editor();
+editor.write("Version 1");
+String snapshot = editor.save();
+editor.write("Version 2");
+editor.restore(snapshot);
+System.out.println(editor.text()); // Version 1`},
+{n:"Observer",c:"Behavioral",tag:"Notify interested listeners",simple:"When one object changes, it tells registered listeners that something happened.",analogy:"Subscribers receive a notification when a channel publishes a new video.",when:"Useful for event systems, UI updates, and publish/subscribe behavior. Unregister listeners when no longer needed.",code:`interface Listener { void update(String event); }
+class NewsPublisher {
+    private final java.util.List<Listener> listeners =
+        new java.util.ArrayList<>();
+    void subscribe(Listener l) { listeners.add(l); }
+    void publish(String news) {
+        listeners.forEach(l -> l.update(news));
+    }
+}
+
+// Usage:
+NewsPublisher publisher = new NewsPublisher();
+publisher.subscribe(event -> System.out.println("Got: " + event));
+publisher.publish("New article!");`},
+{n:"State",c:"Behavioral",tag:"Behavior depends on current state",simple:"Move state-specific behavior into separate classes so an object acts differently in different states.",analogy:"A vending machine behaves differently when waiting for money and when ready to dispense.",when:"Useful when many if/else branches depend on the same object's current state.",code:`interface PlayerState { void pressPlay(Player player); }
+class Playing implements PlayerState {
+    public void pressPlay(Player p) {
+        System.out.println("Pausing");
+        p.setState(new Paused());
+    }
+}
+class Paused implements PlayerState {
+    public void pressPlay(Player p) {
+        System.out.println("Playing");
+        p.setState(new Playing());
+    }
+}
+class Player {
+    private PlayerState state = new Playing();
+    void setState(PlayerState state) { this.state = state; }
+    void pressPlay() { state.pressPlay(this); }
+}
+
+// Usage:
+Player player = new Player();
+player.pressPlay();`},
+{n:"Strategy",c:"Behavioral",tag:"Swap an algorithm easily",simple:"Put alternative ways of doing a task behind one interface and choose one when needed.",analogy:"Choose walking, driving, or public transport as different route strategies.",when:"Useful when a task has interchangeable algorithms, such as payment, sorting, or discount calculation.",code:`interface PaymentStrategy {
+    void pay(double amount);
+}
+class CardPayment implements PaymentStrategy {
+    public void pay(double amount) {
+        System.out.println("Card payment: " + amount);
+    }
+}
+class Checkout {
+    void pay(PaymentStrategy strategy, double amount) {
+        strategy.pay(amount);
+    }
+}
+
+// Usage:
+new Checkout().pay(new CardPayment(), 250.0);`},
+{n:"Template Method",c:"Behavioral",tag:"Keep the steps, customize one step",simple:"Define the outline of an algorithm in a base class, while subclasses customize selected steps.",analogy:"A recipe has the same main steps, but the ingredients can vary.",when:"Useful when several workflows share a fixed sequence but differ in some details.",code:`abstract class DataImporter {
+    public final void importData() {
+        read();
+        validate();
+        save();
+    }
+    protected abstract void read();
+    protected void validate() { System.out.println("Validate data"); }
+    protected abstract void save();
+}
+class CsvImporter extends DataImporter {
+    protected void read() { System.out.println("Read CSV"); }
+    protected void save() { System.out.println("Save rows"); }
+}
+
+// Usage:
+new CsvImporter().importData();`},
+{n:"Visitor",c:"Behavioral",tag:"Add operations to object structures",simple:"Put a new operation in a visitor object instead of adding that operation to every element class.",analogy:"Different inspectors can visit the same building rooms and each perform a different inspection.",when:"Useful when the object types are stable but new operations are added often. It can be awkward when element types change frequently.",code:`interface Shape {
+    void accept(ShapeVisitor visitor);
+}
+interface ShapeVisitor {
+    void visit(Circle circle);
+}
+class Circle implements Shape {
+    final double radius;
+    Circle(double radius) { this.radius = radius; }
+    public void accept(ShapeVisitor visitor) { visitor.visit(this); }
+}
+class AreaVisitor implements ShapeVisitor {
+    public void visit(Circle c) {
+        System.out.println(Math.PI * c.radius * c.radius);
+    }
+}
+
+// Usage:
+new Circle(2).accept(new AreaVisitor());`},
+{n:"Null Object",c:"Behavioral",tag:"Use a harmless object instead of null",simple:"Provide a default implementation that does nothing, so callers do not need repeated null checks.",analogy:"A silent notification service follows the same interface but intentionally sends nothing.",when:"Useful when 'no operation' is a valid behavior. Do not use it to hide unexpected errors.",code:`interface Logger { void log(String message); }
+class ConsoleLogger implements Logger {
+    public void log(String message) { System.out.println(message); }
+}
+class NoOpLogger implements Logger {
+    public void log(String message) { /* intentionally do nothing */ }
+}
+
+// Usage:
+Logger logger = new NoOpLogger();
+logger.log("This is safely ignored");`},
+{n:"Dependency Injection",c:"Creational",tag:"Give a class its dependencies",simple:"Pass required helper objects into a class instead of making the class create them itself. Often used with frameworks such as Spring.",analogy:"A cook is given ingredients and tools instead of having to manufacture them.",when:"Useful for easier testing, swapping implementations, and reducing tight coupling. This is a design technique, not one of the original 23 GoF patterns.",code:`interface MessageService {
+    void send(String message);
+}
+class EmailService implements MessageService {
+    public void send(String message) {
+        System.out.println("Email: " + message);
+    }
+}
+class AlertManager {
+    private final MessageService service;
+    AlertManager(MessageService service) {
+        this.service = service;
+    }
+    void alert() { service.send("System alert"); }
+}
+
+// Usage:
+AlertManager manager = new AlertManager(new EmailService());
+manager.alert();`}
+];
+const container = document.getElementById('patterns');
+const search = document.getElementById('search');
+let activeFilter = 'All';
+function esc(s){return s.replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function render(){
+ const q = search.value.trim().toLowerCase();
+ const filtered = patterns.filter(p => (activeFilter==='All'||p.c===activeFilter) &&
+   [p.n,p.c,p.tag,p.simple,p.analogy,p.when,p.code].join(' ').toLowerCase().includes(q));
+ document.getElementById('count').textContent = `Showing ${filtered.length} of ${patterns.length} patterns`;
+ if(!filtered.length){container.innerHTML='<div class="empty">No patterns found. Try another search.</div>';return;}
+ container.innerHTML = filtered.map((p,i)=>`
+ <details class="pattern">
+  <summary><span class="num">${String(patterns.indexOf(p)+1).padStart(2,'0')}</span><span class="summary-content"><span class="category">${esc(p.c)}</span><h3>${esc(p.n)}</h3><span class="tagline">${esc(p.tag)}</span></span><span class="chevron">⌄</span></summary>
+  <div class="detail">
+   <h4>In simple words</h4><p>${esc(p.simple)}</p>
+   <h4>Everyday example</h4><p class="analogy">${esc(p.analogy)}</p>
+   <h4>When might you use it?</h4><p>${esc(p.when)}</p>
+   <h4>Java example</h4><p class="tagline">Illustrative snippet: add the related classes and imports where indicated before running. Some examples show only the key part of a pattern.</p>
+   <pre><code>${esc(p.code)}</code></pre>
+   <div class="code-actions"><button class="small-btn copy" type="button">Copy Java code</button></div>
+  </div>
+ </details>`).join('');
+}
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
+ activeFilter=btn.dataset.filter;
+ document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b===btn));
+ render();
+}));
+search.addEventListener('input',render);
+container.addEventListener('click',async e=>{
+ const btn=e.target.closest('.copy');
+ if(!btn)return;
+ const code=btn.closest('.detail').querySelector('pre code').textContent;
+ try{await navigator.clipboard.writeText(code);btn.textContent='Copied!';}
+ catch(err){
+   const area=document.createElement('textarea');area.value=code;document.body.appendChild(area);area.select();
+   const ok=document.execCommand('copy');area.remove();btn.textContent=ok?'Copied!':'Select code to copy';
+ }
+ setTimeout(()=>btn.textContent='Copy Java code',1600);
+});
+render();
+</script>
+</body>
+</html>
