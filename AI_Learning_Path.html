@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A practical AI learning roadmap with free courses, study links, videos, hands-on projects, and progress tracking from beginner to advanced.">
+<meta name="keywords" content="AI learning path, learn artificial intelligence, free AI courses, machine learning, generative AI, Python, Java AI">
+<meta property="og:title" content="AI Learning Path Explorer">
+<meta property="og:description" content="Your guided journey from AI beginner to AI application builder.">
+<title>AI Learning Path Explorer | Study, Practice & Build</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#627087;--line:#dce4ef;--primary:#5546e8;--primary2:#7b61ff;--soft:#eeecff;--green:#16835c;--shadow:0 12px 35px #26375a12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1200px;margin:auto;padding:0 22px}
+header{background:#11172b;color:#fff;padding:18px 0;border-bottom:1px solid #ffffff1b}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{font-size:1.15rem;font-weight:800;letter-spacing:.2px}.brand span{color:#a99bff}.navlinks{display:flex;gap:18px;flex-wrap:wrap}.navlinks a{color:#dce2ff;font-size:.93rem}
+.hero{background:radial-gradient(circle at 80% 20%,#7566ff 0,transparent 30%),linear-gradient(125deg,#11172b,#29265f 65%,#4338a9);color:white;padding:58px 0 44px}.hero-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:center}.eyebrow{display:inline-block;padding:6px 12px;border-radius:30px;background:#ffffff1c;border:1px solid #ffffff35;font-size:.82rem;color:#e7e3ff}.hero h1{font-size:clamp(2.1rem,5vw,3.8rem);line-height:1.08;margin:18px 0}.hero p{max-width:680px;color:#e0e3f7;font-size:1.08rem}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{border:0;border-radius:11px;padding:12px 17px;font-weight:750;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.94rem}.btn-primary{background:#fff;color:#30277f}.btn-ghost{border:1px solid #ffffff6b;color:white;background:#ffffff0d}.btn-main{background:var(--primary);color:#fff}.btn-light{background:var(--soft);color:#4032bb}.hero-panel{background:#ffffff12;border:1px solid #ffffff2a;border-radius:22px;padding:23px;backdrop-filter:blur(8px)}.hero-panel h3{margin:0 0 12px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:#ffffff12;border-radius:14px;padding:14px}.stat strong{display:block;font-size:1.6rem}.stat small{color:#d6d9f3}
+main{padding:32px 0 55px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin:18px 0}.section-head h2{margin:0;font-size:1.65rem}.section-head p{margin:5px 0 0;color:var(--muted)}.progress-card{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;background:var(--card);padding:18px 20px;border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);margin-bottom:24px}.progress-track{height:10px;background:#e7eaf3;border-radius:20px;overflow:hidden;margin-top:9px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),#25b99a);transition:width .25s}.progress-number{font-size:1.5rem;font-weight:850;color:var(--primary)}
+.toolbar{display:grid;grid-template-columns:1.5fr .7fr .7fr;gap:12px;margin-bottom:22px}.field{width:100%;padding:12px 13px;border:1px solid var(--line);background:#fff;border-radius:11px;color:var(--ink);font:inherit}.path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.path-card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0}.path-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.emoji{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:1.45rem}.tag{font-size:.75rem;padding:5px 9px;border-radius:30px;background:#edf7f2;color:#16734f;font-weight:750;white-space:nowrap}.path-card h3{margin:13px 0 6px;font-size:1.12rem}.path-card p{margin:0;color:var(--muted);font-size:.92rem}.meta{display:flex;gap:12px;flex-wrap:wrap;margin:13px 0;color:var(--muted);font-size:.82rem}.path-card details{border-top:1px solid var(--line);margin-top:13px;padding-top:12px}.path-card summary{font-weight:750;cursor:pointer;color:#3e35a9}.lesson{padding:12px 0;border-bottom:1px dashed var(--line)}.lesson:last-child{border-bottom:0}.lesson label{display:flex;gap:9px;align-items:flex-start;font-size:.92rem}.lesson input{margin-top:5px;accent-color:var(--primary);width:16px;height:16px;flex-shrink:0}.lesson-title{font-weight:700}.lesson-links{display:flex;gap:10px;flex-wrap:wrap;margin:7px 0 0 25px;font-size:.84rem}.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:15px}.card-actions .btn{padding:9px 12px;font-size:.83rem}
+.resources{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.resource{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px}.resource h3{font-size:1rem;margin:8px 0}.resource p{color:var(--muted);font-size:.9rem;margin:0 0 10px}.resource .icon{font-size:1.4rem}.project-box{background:linear-gradient(120deg,#211c57,#5143d6);border-radius:20px;color:#fff;padding:25px;margin-top:28px}.project-box p{color:#e4e2ff}.project-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.project{background:#ffffff12;border:1px solid #ffffff24;border-radius:13px;padding:14px}.project strong{display:block;margin-bottom:5px}.project small{color:#e0ddff}
+footer{background:#11172b;color:#cbd2e8;padding:25px 0;font-size:.9rem}.footer-row{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}footer a{color:#c9c0ff}.note{color:var(--muted);font-size:.83rem;margin-top:15px}.empty{grid-column:1/-1;background:#fff;border:1px dashed var(--line);border-radius:14px;padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:900px){.path-grid,.resources{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-grid{grid-template-columns:1fr}.hero-panel{max-width:500px}.project-list{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.wrap{padding:0 14px}.hero{padding:40px 0 32px}.toolbar{grid-template-columns:1fr}.path-grid,.resources{grid-template-columns:1fr}.progress-card{grid-template-columns:1fr}.project-list{grid-template-columns:1fr}.navlinks{gap:10px}.navlinks a{font-size:.85rem}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><div class="brand">✦ AI <span>Learning Path</span> Explorer</div><nav class="navlinks"><a href="#roadmap">Roadmap</a><a href="#resources">Study Links</a><a href="#projects">Projects</a><a href="#videos">Videos</a></nav></div></header>
+<section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">YOUR PERSONAL AI STUDY COMPANION</span><h1>Learn AI. Build Skills.<br>Make Something Real.</h1><p>A step-by-step roadmap from AI fundamentals to machine learning, Generative AI, RAG, AI agents and production-ready applications. Learn at your own pace using curated learning resources.</p><div class="hero-actions"><a class="btn btn-primary" href="#roadmap">🚀 Start Learning</a><a class="btn btn-ghost" href="#projects">🛠 Explore Projects</a></div></div><div class="hero-panel"><h3>Your learning dashboard</h3><div class="stat-grid"><div class="stat"><strong>6</strong><small>Learning stages</small></div><div class="stat"><strong>24</strong><small>Study milestones</small></div><div class="stat"><strong>Free</strong><small>Curated resources</small></div><div class="stat"><strong>Build</strong><small>Portfolio projects</small></div></div><p style="font-size:.83rem;margin-bottom:0">✓ Progress saves in this browser on this device.</p></div></div></section>
+<main class="wrap">
+<section id="roadmap"><div class="section-head"><div><h2>Your AI learning roadmap</h2><p>Follow the stages in order, or choose a path that matches your goal.</p></div></div>
+<div class="progress-card"><div><strong>Overall learning progress</strong><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="note" id="progressText">0 of 24 milestones completed</div></div><div class="progress-number" id="progressPct">0%</div></div>
+<div class="toolbar"><input class="field" id="searchInput" type="search" placeholder="Search topics, skills or courses…"><select class="field" id="levelFilter" aria-label="Filter by level"><option value="all">All levels</option><option value="Beginner">Beginner</option><option value="Beginner–Intermediate">Beginner–Intermediate</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select><select class="field" id="goalFilter" aria-label="Filter by goal"><option value="all">All career goals</option><option value="Foundations">AI foundations</option><option value="ML">Machine learning</option><option value="GenAI">Generative AI</option><option value="Developer">AI application developer</option><option value="Agents">AI agents</option></select></div>
+<div class="path-grid" id="pathGrid"></div><p class="note">External course availability, videos and certificate policies can change. Check each provider's page for current access and requirements.</p></section>
+<section id="resources" style="margin-top:45px"><div class="section-head"><div><h2>Trusted study resources</h2><p>Useful places to learn concepts, practise, and find official documentation.</p></div></div><div class="resources">
+<article class="resource"><div class="icon">🌱</div><h3>Google AI Learning</h3><p>Introductory Generative AI learning paths and more advanced developer content.</p><a href="https://cloud.google.com/learn/training/machinelearning-ai" target="_blank" rel="noopener">Open Google learning ↗</a></article>
+<article class="resource"><div class="icon">🧠</div><h3>Microsoft Generative AI for Beginners</h3><p>Open curriculum with lessons and code examples for understanding and building GenAI apps.</p><a href="https://github.com/microsoft/generative-ai-for-beginners" target="_blank" rel="noopener">Open GitHub course ↗</a></article>
+<article class="resource"><div class="icon">🐍</div><h3>Python Official Tutorial</h3><p>Learn Python syntax, data structures, functions, modules and exceptions.</p><a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">Read the tutorial ↗</a></article>
+<article class="resource"><div class="icon">📊</div><h3>Google Machine Learning Crash Course</h3><p>Interactive lessons and exercises for key machine-learning concepts.</p><a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Start ML course ↗</a></article>
+<article class="resource"><div class="icon">🤗</div><h3>Hugging Face Learn</h3><p>Explore language models, NLP, datasets, transformers and AI agents.</p><a href="https://huggingface.co/learn" target="_blank" rel="noopener">Explore courses ↗</a></article>
+<article class="resource"><div class="icon">🎓</div><h3>Practicum AI Beginner Series</h3><p>Introductions to AI, computing tools, Python and deep-learning foundations.</p><a href="https://practicumai.org/paths/beginner/" target="_blank" rel="noopener">View beginner series ↗</a></article>
+</div></section>
+<section id="videos" style="margin-top:45px"><div class="section-head"><div><h2>Learning videos</h2><p>Open curated YouTube searches for lessons, walkthroughs and practical demos.</p></div></div><div class="resources">
+<article class="resource"><div class="icon">▶️</div><h3>AI explained for beginners</h3><p>Start with simple explanations of AI, machine learning and neural networks.</p><a href="https://www.youtube.com/results?search_query=artificial+intelligence+explained+for+beginners+full+course" target="_blank" rel="noopener">Find beginner videos ↗</a></article>
+<article class="resource"><div class="icon">▶️</div><h3>Python for AI</h3><p>Video courses covering Python basics, NumPy, Pandas and notebooks.</p><a href="https://www.youtube.com/results?search_query=Python+for+AI+machine+learning+full+course" target="_blank" rel="noopener">Find Python videos ↗</a></article>
+<article class="resource"><div class="icon">▶️</div><h3>Build GenAI apps with Java</h3><p>Learn Spring AI, LLM integration, prompt templates and retrieval-augmented generation.</p><a href="https://www.youtube.com/results?search_query=Spring+AI+RAG+tutorial+Java+full+course" target="_blank" rel="noopener">Find Java AI videos ↗</a></article>
+</div></section>
+<section id="projects" class="project-box"><h2>Turn learning into portfolio projects</h2><p>Try one small project after each stage. Publish your code, explain what you learned, and keep improving it.</p><div class="project-list"><div class="project"><strong>1. AI Study Assistant</strong><small>Use an LLM API to answer questions about a topic and explain answers simply.</small></div><div class="project"><strong>2. ML Prediction App</strong><small>Train a small model on a public dataset, evaluate it and expose a prediction endpoint.</small></div><div class="project"><strong>3. Document Q&A (RAG)</strong><small>Load sample documents, retrieve relevant passages and answer with source references.</small></div><div class="project"><strong>4. Java AI Chat API</strong><small>Create a Spring Boot REST endpoint that calls an AI model and returns the response.</small></div><div class="project"><strong>5. Tool-Using AI Agent</strong><small>Build a constrained agent that calls a safe calculator or a search function.</small></div><div class="project"><strong>6. AI App Evaluation</strong><small>Create test questions, score answer quality, and document limitations and failure cases.</small></div></div><div class="hero-actions"><a class="btn btn-primary" href="https://github.com/" target="_blank" rel="noopener">Create a GitHub portfolio ↗</a><button class="btn btn-ghost" id="exportBtn" type="button">⬇ Export my progress</button><button class="btn btn-ghost" id="resetBtn" type="button">Reset progress</button></div></section>
+<section style="margin-top:35px"><h2>Suggested weekly study routine</h2><div class="resources"><article class="resource"><h3>📖 Learn — 2 sessions</h3><p>Study one concept and take short notes in your own words.</p></article><article class="resource"><h3>💻 Practise — 2 sessions</h3><p>Run the examples, change inputs, and explain the results.</p></article><article class="resource"><h3>🚀 Build — 1 session</h3><p>Make a small improvement to your project and record what you learned.</p></article></div><p class="note">Tip: consistency matters more than rushing through many courses. You do not need to master every topic before building your first useful AI application.</p></section>
+</main>
+<footer><div class="wrap footer-row"><div><strong>AI Learning Path Explorer</strong><br><span>Learn continuously. Build responsibly.</span></div><div>Made for self-paced learning · <a href="#roadmap">Back to roadmap ↑</a></div></div></footer>
+<script>
+const stages = [
+{ id:"s1", title:"AI Foundations & Responsible Use", icon:"🌱", level:"Beginner", goal:"Foundations", time:"1–2 weeks", desc:"Understand what AI can do, where it fails, and how to use it thoughtfully.", lessons:[
+["Understand AI, ML and deep learning","https://cloud.google.com/learn/training/machinelearning-ai","https://www.youtube.com/results?search_query=AI+machine+learning+deep+learning+explained"],
+["Explore generative AI and large language models","https://www.skills.google/paths/118","https://www.youtube.com/results?search_query=large+language+models+explained+beginner"],
+["Learn privacy, bias, hallucinations and responsible AI","https://www.microsoft.com/ai/principles-and-approach","https://www.youtube.com/results?search_query=responsible+AI+explained"],
+["Practise clear prompts and verify outputs","https://academy.openai.com/","https://www.youtube.com/results?search_query=prompt+engineering+beginner+tutorial"]]},
+{ id:"s2", title:"Python, Git & Data Basics", icon:"🐍", level:"Beginner", goal:"ML", time:"2–4 weeks", desc:"Learn enough programming and data handling to experiment with AI.", lessons:[
+["Learn Python variables, loops, functions and classes","https://docs.python.org/3/tutorial/","https://www.youtube.com/results?search_query=Python+full+course+beginner"],
+["Practise notebooks, arrays and data tables","https://jupyter.org/try","https://www.youtube.com/results?search_query=Jupyter+Notebook+NumPy+Pandas+tutorial"],
+["Learn Git and GitHub basics","https://docs.github.com/en/get-started","https://www.youtube.com/results?search_query=Git+and+GitHub+beginner+course"],
+["Clean and explore a small dataset","https://www.kaggle.com/learn","https://www.youtube.com/results?search_query=Pandas+data+analysis+beginner+project"]]},
+{ id:"s3", title:"Machine Learning Essentials", icon:"📊", level:"Beginner–Intermediate", goal:"ML", time:"3–6 weeks", desc:"Learn how models learn patterns, make predictions and are evaluated.", lessons:[
+["Understand supervised and unsupervised learning","https://developers.google.com/machine-learning/crash-course","https://www.youtube.com/results?search_query=machine+learning+full+course+beginner"],
+["Study regression, classification and clustering","https://scikit-learn.org/stable/user_guide.html","https://www.youtube.com/results?search_query=regression+classification+clustering+explained"],
+["Learn training, validation, overfitting and metrics","https://developers.google.com/machine-learning/crash-course","https://www.youtube.com/results?search_query=overfitting+train+test+validation+explained"],
+["Build and evaluate a small prediction model","https://www.kaggle.com/learn/intro-to-machine-learning","https://www.youtube.com/results?search_query=scikit+learn+beginner+machine+learning+project"]]},
+{ id:"s4", title:"Deep Learning & Transformers", icon:"🧠", level:"Intermediate", goal:"ML", time:"3–6 weeks", desc:"Explore neural networks, embeddings, attention and the transformer architecture.", lessons:[
+["Learn neural networks and gradient descent","https://www.deeplearning.ai/","https://www.youtube.com/results?search_query=neural+networks+explained+beginner"],
+["Understand embeddings, tokens and attention","https://huggingface.co/learn","https://www.youtube.com/results?search_query=transformers+attention+embeddings+explained"],
+["Explore pretrained models and inference","https://huggingface.co/docs/transformers/index","https://www.youtube.com/results?search_query=Hugging+Face+Transformers+tutorial"],
+["Experiment with a model on sample text","https://huggingface.co/tasks","https://www.youtube.com/results?search_query=use+pretrained+transformer+model+Python+tutorial"]]},
+{ id:"s5", title:"Generative AI Application Development", icon:"✨", level:"Intermediate", goal:"GenAI", time:"2–4 weeks", desc:"Build applications with language models, structured outputs and external data.", lessons:[
+["Learn prompt patterns and structured outputs","https://github.com/microsoft/generative-ai-for-beginners","https://www.youtube.com/results?search_query=LLM+prompt+engineering+structured+outputs+tutorial"],
+["Call a model through an API and manage secrets safely","https://platform.openai.com/docs/overview","https://www.youtube.com/results?search_query=LLM+API+application+tutorial"],
+["Build a retrieval-augmented generation (RAG) app","https://huggingface.co/learn","https://www.youtube.com/results?search_query=RAG+retrieval+augmented+generation+full+tutorial"],
+["For Java developers: explore Spring AI","https://docs.spring.io/spring-ai/reference/","https://www.youtube.com/results?search_query=Spring+AI+Java+tutorial+RAG"]]},
+{ id:"s6", title:"AI Agents, Evaluation & Deployment", icon:"🤖", level:"Advanced", goal:"Agents", time:"3–6 weeks", desc:"Create reliable tool-using workflows, test results and deploy responsibly.", lessons:[
+["Understand agent loops, tools and boundaries","https://huggingface.co/learn","https://www.youtube.com/results?search_query=AI+agents+tools+function+calling+explained"],
+["Build a small agent with one safe tool","https://platform.openai.com/docs/guides","https://www.youtube.com/results?search_query=build+AI+agent+tool+calling+tutorial"],
+["Evaluate responses, safety and failure cases","https://platform.openai.com/docs/guides/evals","https://www.youtube.com/results?search_query=LLM+evaluation+testing+RAG+tutorial"],
+["Deploy, monitor and document a portfolio project","https://learn.microsoft.com/en-us/azure/ai-services/","https://www.youtube.com/results?search_query=deploy+production+LLM+application+monitoring"]]}
+];
+const STORAGE_KEY="aiLearningPathExplorerProgressV1";
+let completed = {};
+try { completed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch(e) { completed = {}; }
+const grid=document.getElementById("pathGrid");
+function safeText(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const q=document.getElementById("searchInput").value.trim().toLowerCase();
+ const level=document.getElementById("levelFilter").value, goal=document.getElementById("goalFilter").value;
+ const filtered=stages.filter(s=>(level==="all"||s.level===level)&&(goal==="all"||s.goal===goal)&&(!q||(s.title+" "+s.desc+" "+s.goal+" "+s.lessons.flat().join(" ")).toLowerCase().includes(q)));
+ grid.innerHTML=filtered.length?filtered.map(s=>{
+ const done=s.lessons.filter((l,i)=>completed[s.id+"-"+i]).length;
+ return `<article class="path-card"><div class="path-top"><div class="emoji">${s.icon}</div><span class="tag">${done}/${s.lessons.length} completed</span></div><h3>${safeText(s.title)}</h3><p>${safeText(s.desc)}</p><div class="meta"><span>📍 ${safeText(s.level)}</span><span>⏱ ${safeText(s.time)}</span></div><details ${q?"open":""}><summary>View study milestones</summary>${s.lessons.map((l,i)=>{const key=s.id+"-"+i;return `<div class="lesson"><label><input type="checkbox" data-key="${key}" ${completed[key]?"checked":""}><span><span class="lesson-title">${safeText(l[0])}</span><span class="lesson-links"><a href="${l[1]}" target="_blank" rel="noopener">📘 Study link ↗</a><a href="${l[2]}" target="_blank" rel="noopener">▶ Video lessons ↗</a></span></span></label></div>`}).join("")}</details><div class="card-actions"><button class="btn btn-light" data-open="${s.id}">Open milestones</button><a class="btn btn-main" href="${s.lessons[0][1]}" target="_blank" rel="noopener">Start stage ↗</a></div></article>`;
+ }).join(""):'<div class="empty">No learning stages match your search. Try a different keyword or filter.</div>';
+ updateProgress();
+}
+function updateProgress(){
+ const all=stages.reduce((n,s)=>n+s.lessons.length,0), done=Object.values(completed).filter(Boolean).length, pct=Math.round(done/all*100);
+ document.getElementById("progressFill").style.width=pct+"%";
+ document.getElementById("progressPct").textContent=pct+"%";
+ document.getElementById("progressText").textContent=`${done} of ${all} milestones completed`;
+}
+grid.addEventListener("change",e=>{if(e.target.matches('input[type="checkbox"][data-key]')){completed[e.target.dataset.key]=e.target.checked;localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));render();}});
+grid.addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(b){const card=b.closest(".path-card");const d=card.querySelector("details");d.open=!d.open;b.textContent=d.open?"Hide milestones":"Open milestones";}});
+["searchInput","levelFilter","goalFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",render));
+document.getElementById("exportBtn").addEventListener("click",()=>{
+ const lines=["AI Learning Path Explorer - Progress Report","Generated: "+new Date().toLocaleString(),""];
+ stages.forEach(s=>{lines.push(s.title);s.lessons.forEach((l,i)=>lines.push((completed[s.id+"-"+i]?"[x] ":"[ ] ")+l[0]));lines.push("");});
+ const blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="ai-learning-progress.txt";a.click();URL.revokeObjectURL(url);
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(confirm("Reset all saved learning progress on this browser?")){completed={};localStorage.removeItem(STORAGE_KEY);render();}});
+render();
+</script>
+</body>
+</html>
