@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Generate a ready-to-open Spring Boot MVC Java project with Maven or Gradle.">
+<meta property="og:title" content="Spring Boot MVC Project Generator">
+<meta property="og:description" content="Generate a starter Spring Boot MVC project from a project name and build tool.">
+<title>Spring Boot MVC Project Generator</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+<style>
+:root{--bg:#f3f6fb;--panel:#fff;--text:#172033;--muted:#64748b;--line:#dbe3ef;--primary:#2563eb;--primary2:#1d4ed8;--soft:#eaf1ff;--ok:#087443}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#edf4ff,#f8fafc 55%,#eef2ff);font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);font-size:16px}
+header{padding:28px 20px 24px;background:#111c36;color:#fff}header .wrap,main,.footer-wrap{max-width:1080px;margin:auto}
+.brand{font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#9fc0ff}
+h1{font-size:clamp(28px,4vw,42px);margin:12px 0 8px;line-height:1.12}header p{color:#d5def1;max-width:720px;line-height:1.6;margin:0}
+main{padding:28px 18px 44px}.layout{display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:22px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 32px #1e3a5f0c}
+h2{font-size:20px;margin:0 0 18px}label{display:block;font-weight:750;margin:18px 0 8px}
+input[type=text],select{width:100%;padding:14px 13px;border:1px solid #cbd5e1;border-radius:10px;font:inherit;background:white;color:var(--text)}
+input:focus,select:focus{outline:3px solid #bfdbfe;border-color:var(--primary)}
+.hint{color:var(--muted);font-size:13px;line-height:1.5;margin:7px 0 0}
+.radio-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.radio-card{border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;display:flex;gap:9px;align-items:center;font-weight:700}.radio-card:has(input:checked){border-color:var(--primary);background:var(--soft);color:#1744a2}
+button{font:inherit;font-weight:750;border:0;border-radius:10px;padding:13px 16px;cursor:pointer;transition:transform .12s,background .12s}button:active{transform:scale(.98)}
+.primary{background:var(--primary);color:#fff;width:100%;margin-top:22px}.primary:hover{background:var(--primary2)}
+.secondary{background:#edf2f8;color:#24324a}.actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.actions button{flex:1;min-width:120px}
+.status{font-size:14px;color:var(--ok);min-height:20px;margin-top:10px}
+.summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.chip{background:#eef2ff;color:#263e8b;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.tree{background:#101827;color:#dbeafe;border-radius:12px;padding:16px;font:13px/1.7 Consolas,Monaco,monospace;white-space:pre;overflow:auto;max-height:390px}
+pre{margin:0;background:#0b1220;color:#dbeafe;border-radius:12px;padding:16px;overflow:auto;max-height:520px;font:12px/1.6 Consolas,Monaco,monospace;white-space:pre}
+.preview-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:24px 0 12px}.preview-title h3{margin:0;font-size:17px}
+.note{background:#fff8e7;border:1px solid #f4d58b;border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.55;color:#6c4c08;margin-top:18px}
+.steps{padding-left:20px;line-height:1.75;color:#475569}.steps code{background:#edf2f7;padding:2px 5px;border-radius:4px;color:#1e293b}
+footer{padding:22px 18px;color:#64748b;text-align:center;font-size:13px}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.panel{padding:19px}header{padding:24px 18px}main{padding-top:18px}.preview-title{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="brand">Java Developer Toolkit</div>
+<h1>Spring Boot MVC Project Generator</h1>
+<p>Enter a project name, choose Maven or Gradle, and generate a downloadable Spring Boot MVC starter project with controllers, services, repositories, a Thymeleaf view, validation, and useful dependencies.</p>
+</div></header>
+<main>
+<div class="layout">
+<section class="panel">
+<h2>Project settings</h2>
+<form id="projectForm">
+<label for="projectName">Java project name</label>
+<input id="projectName" type="text" value="employee-management" maxlength="60" required autocomplete="off" placeholder="e.g. employee-management">
+<p class="hint">Use letters, numbers, hyphens or underscores. The Java package will be generated automatically.</p>
+<label>Build tool</label>
+<div class="radio-row">
+<label class="radio-card"><input type="radio" name="buildTool" value="gradle" checked> Gradle</label>
+<label class="radio-card"><input type="radio" name="buildTool" value="maven"> Maven</label>
+</div>
+<button class="primary" type="submit">Generate Spring Boot Project</button>
+</form>
+<div class="note"><strong>Included by default:</strong> Spring Web MVC, Thymeleaf, Spring Data JPA, Bean Validation, H2 database, Spring Boot Actuator, and Spring Boot Test.</div>
+</section>
+<section class="panel">
+<h2>Generated project</h2>
+<div class="summary" id="summary"><span class="chip">Spring Boot MVC</span><span class="chip">Java 17+</span><span class="chip">Gradle</span></div>
+<div class="tree" id="tree" aria-label="Project file tree"></div>
+<div class="actions">
+<button class="primary" id="downloadBtn" type="button">Download ZIP</button>
+<button class="secondary" id="copyTreeBtn" type="button">Copy project tree</button>
+</div>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+<div class="preview-title"><h3>Key file preview</h3><select id="fileSelect" aria-label="Choose file preview"></select></div>
+<pre id="preview"></pre>
+<h3 style="margin:24px 0 8px">Run the project</h3>
+<ol class="steps">
+<li>Extract the downloaded ZIP.</li>
+<li>Open the extracted project in Eclipse or IntelliJ as an existing Gradle/Maven project.</li>
+<li>Use JDK 17 or newer.</li>
+<li>Run the generated main class, or run <code>./gradlew bootRun</code> (Gradle) / <code>mvn spring-boot:run</code> (Maven).</li>
+<li>Open <code>http://localhost:8080</code> in your browser.</li>
+</ol>
+</section>
+</div>
+</main>
+<footer>Generated locally in your browser. No project details are uploaded to a server.</footer>
+<script>
+(() => {
+  const form = document.getElementById('projectForm');
+  const nameInput = document.getElementById('projectName');
+  const treeEl = document.getElementById('tree');
+  const summaryEl = document.getElementById('summary');
+  const previewEl = document.getElementById('preview');
+  const fileSelect = document.getElementById('fileSelect');
+  const statusEl = document.getElementById('status');
+  let files = {};
+  let projectName = 'employee-management';
+  let buildTool = 'gradle';
+  let packageName = 'com.example.employeemanagement';
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  }
+  function cleanName(raw) {
+    return raw.trim().replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-').toLowerCase();
+  }
+  function toPascal(raw) {
+    const words = raw.replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(/[^A-Za-z0-9]+/).filter(Boolean);
+    return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('') || 'Application';
+  }
+  function javaPackage(raw) {
+    const parts = raw.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    let suffix = parts.map(p => /^[0-9]/.test(p) ? 'app' + p : p).join('');
+    if (!suffix) suffix = 'application';
+    return 'com.example.' + suffix;
+  }
+  function add(path, content) { files[path] = content.replace(/^\n/, ''); }
+  function buildProject() {
+    const base = cleanName(nameInput.value);
+    if (!base) { statusEl.textContent = 'Enter a valid Java project name.'; nameInput.focus(); return false; }
+    projectName = base;
+    buildTool = document.querySelector('input[name="buildTool"]:checked').value;
+    packageName = javaPackage(base);
+    const pascal = toPascal(base);
+    const pkgPath = packageName.replace(/\./g, '/');
+    const root = projectName + '/';
+    files = {};
+
+    if (buildTool === 'gradle') {
+      add(root + 'settings.gradle', `rootProject.name = '${projectName}'\n`);
+      add(root + 'build.gradle', `plugins {\n    id 'java'\n    id 'org.springframework.boot' version '3.5.6'\n    id 'io.spring.dependency-management' version '1.1.7'\n}\n\ngroup = '${packageName}'\nversion = '0.0.1-SNAPSHOT'\n\ndefaultTasks 'bootRun'\n\njava {\n    toolchain { languageVersion = JavaLanguageVersion.of(17) }\n}\n\nrepositories { mavenCentral() }\n\ndependencies {\n    implementation 'org.springframework.boot:spring-boot-starter-web'\n    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'\n    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'\n    implementation 'org.springframework.boot:spring-boot-starter-validation'\n    implementation 'org.springframework.boot:spring-boot-starter-actuator'\n    runtimeOnly 'com.h2database:h2'\n    developmentOnly 'org.springframework.boot:spring-boot-devtools'\n    testImplementation 'org.springframework.boot:spring-boot-starter-test'\n}\n\ntasks.named('test') { useJUnitPlatform() }\n`);
+      add(root + 'gradle.properties', 'org.gradle.jvmargs=-Xmx1g -Dfile.encoding=UTF-8\n');
+    } else {
+      add(root + 'pom.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">\n  <modelVersion>4.0.0</modelVersion>\n  <parent>\n    <groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId><version>3.5.6</version><relativePath/>\n  </parent>\n  <groupId>${packageName}</groupId><artifactId>${projectName}</artifactId><version>0.0.1-SNAPSHOT</version>\n  <name>${projectName}</name><description>Spring Boot MVC application</description>\n  <properties><java.version>17</java.version></properties>\n  <dependencies>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-thymeleaf</artifactId></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-validation</artifactId></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>\n    <dependency><groupId>com.h2database</groupId><artifactId>h2</artifactId><scope>runtime</scope></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-devtools</artifactId><scope>runtime</scope><optional>true</optional></dependency>\n    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-test</artifactId><scope>test</scope></dependency>\n  </dependencies>\n  <build><plugins><plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin></plugins></build>\n</project>\n`);
+    }
+    add(root + '.gitignore', `/target/\n/build/\n/.gradle/\n/.idea/\n*.iml\n.classpath\n.project\n.settings/\n`);
+    add(root + 'README.md', `# ${pascal}\n\nSpring Boot MVC starter generated by Spring Boot MVC Project Generator.\n\n## Requirements\n- JDK 17 or newer\n- Internet access on first build to download dependencies\n\n## Run\n${buildTool === 'gradle' ? 'Windows: `gradlew.bat bootRun` (if wrapper files are present) or `gradle bootRun`\\n\\nmacOS/Linux: `gradle bootRun`' : '`mvn spring-boot:run`'}\n\nThen visit http://localhost:8080\n\n## Included\n- Spring MVC / REST support\n- Thymeleaf server-side views\n- Spring Data JPA with H2 in-memory database\n- Bean Validation\n- Actuator health endpoint at /actuator/health\n- Sample employee CRUD flow (in-memory H2; data resets when app restarts)\n- JUnit / Spring Boot test starter\n\nThe generator does not bundle Gradle wrapper or Maven wrapper binaries. Use your installed build tool, or import the project into your IDE.\n`);
+    add(root + 'src/main/java/' + pkgPath + '/' + pascal + 'Application.java', `package ${packageName};\n\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\n\n@SpringBootApplication\npublic class ${pascal}Application {\n    public static void main(String[] args) {\n        SpringApplication.run(${pascal}Application.class, args);\n    }\n}\n`);
+    add(root + 'src/main/java/' + pkgPath + '/controller/HomeController.java', `package ${packageName}.controller;\n\nimport org.springframework.stereotype.Controller;\nimport org.springframework.ui.Model;\nimport org.springframework.web.bind.annotation.GetMapping;\n\n@Controller\npublic class HomeController {\n    @GetMapping(\"/\")\n    public String home(Model model) {\n        model.addAttribute(\"pageTitle\", \"${pascal} - Spring Boot MVC\");\n        return \"index\";\n    }\n}\n`);
+    add(root + 'src/main/java/' + pkgPath + '/controller/EmployeeController.java', `package ${packageName}.controller;\n\nimport ${packageName}.model.Employee;\nimport ${packageName}.service.EmployeeService;\nimport jakarta.validation.Valid;\nimport org.springframework.stereotype.Controller;\nimport org.springframework.ui.Model;\nimport org.springframework.validation.BindingResult;\nimport org.springframework.web.bind.annotation.*;\nimport org.springframework.web.servlet.mvc.support.RedirectAttributes;\n\n@Controller\n@RequestMapping(\"/employees\")\npublic class EmployeeController {\n    private final EmployeeService employeeService;\n    public EmployeeController(EmployeeService employeeService) { this.employeeService = employeeService; }\n\n    @GetMapping\n    public String list(Model model) {\n        model.addAttribute(\"employees\", employeeService.findAll());\n        model.addAttribute(\"employee\", new Employee());\n        return \"employees\";\n    }\n\n    @PostMapping\n    public String create(@Valid @ModelAttribute(\"employee\") Employee employee,\n                         BindingResult result, Model model, RedirectAttributes redirect) {\n        if (result.hasErrors()) {\n            model.addAttribute(\"employees\", employeeService.findAll());\n            return \"employees\";\n        }\n        employeeService.save(employee);\n        redirect.addFlashAttribute(\"message\", \"Employee added successfully.\");\n        return \"redirect:/employees\";\n    }\n\n    @PostMapping(\"/{id}/delete\")\n    public String delete(@PathVariable Long id, RedirectAttributes redirect) {\n        employeeService.deleteById(id);\n        redirect.addFlashAttribute(\"message\", \"Employee deleted if it existed.\");\n        return \"redirect:/employees\";\n    }\n}\n`);
+    add(root + 'src/main/java/' + pkgPath + '/model/Employee.java', `package ${packageName}.model;\n\nimport jakarta.persistence.*;\nimport jakarta.validation.constraints.Email;\nimport jakarta.validation.constraints.NotBlank;\n\n@Entity\npublic class Employee {\n    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n\n    @NotBlank(message = \"Name is required\")\n    @Column(nullable = false)\n    private String name;\n\n    @NotBlank(message = \"Email is required\")\n    @Email(message = \"Enter a valid email address\")\n    @Column(nullable = false)\n    private String email;\n\n    public Employee() {}\n    public Employee(String name, String email) { this.name = name; this.email = email; }\n    public Long getId() { return id; }\n    public void setId(Long id) { this.id = id; }\n    public String getName() { return name; }\n    public void setName(String name) { this.name = name; }\n    public String getEmail() { return email; }\n    public void setEmail(String email) { this.email = email; }\n}\n`);
+    add(root + 'src/main/java/' + pkgPath + '/repository/EmployeeRepository.java', `package ${packageName}.repository;\n\nimport ${packageName}.model.Employee;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface EmployeeRepository extends JpaRepository<Employee, Long> {\n}\n`);
+    add(root + 'src/main/java/' + pkgPath + '/service/EmployeeService.java', `package ${packageName}.service;\n\nimport ${packageName}.model.Employee;\nimport ${packageName}.repository.EmployeeRepository;\nimport org.springframework.stereotype.Service;\nimport java.util.List;\n\n@Service\npublic class EmployeeService {\n    private final EmployeeRepository employeeRepository;\n    public EmployeeService(EmployeeRepository employeeRepository) { this.employeeRepository = employeeRepository; }\n    public List<Employee> findAll() { return employeeRepository.findAll(); }\n    public Employee save(Employee employee) { return employeeRepository.save(employee); }\n    public void deleteById(Long id) {\n        if (employeeRepository.existsById(id)) employeeRepository.deleteById(id);\n    }\n}\n`);
+    add(root + 'src/main/resources/application.properties', `spring.application.name=${projectName}\nserver.port=8080\n\n# H2 in-memory database (data is cleared when the app stops)\nspring.datasource.url=jdbc:h2:mem:${projectName.replace(/[^a-zA-Z0-9]/g, '')};DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE\nspring.datasource.driver-class-name=org.h2.Driver\nspring.datasource.username=sa\nspring.datasource.password=\nspring.jpa.hibernate.ddl-auto=update\nspring.jpa.open-in-view=false\nspring.h2.console.enabled=true\nspring.h2.console.path=/h2-console\n\nmanagement.endpoints.web.exposure.include=health,info\nmanagement.endpoint.health.show-details=never\n`);
+    add(root + 'src/main/resources/templates/index.html', `<!DOCTYPE html>\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title th:text=\"\${pageTitle}\">Spring Boot MVC</title><link rel=\"stylesheet\" th:href=\"@{/css/style.css}\"></head>\n<body><main class=\"container\"><div class=\"eyebrow\">SPRING BOOT · MVC · THYMELEAF</div><h1 th:text=\"\${pageTitle}\">Welcome</h1><p class=\"lead\">Your Spring Boot MVC project is running. This starter separates web controllers, business services, persistence repositories, and server-side views.</p><div class=\"cards\"><a class=\"card\" th:href=\"@{/employees}\"><span>01</span><h2>Employee management</h2><p>Try the sample create, list and delete flow.</p><strong>Open employees →</strong></a><div class=\"card\"><span>02</span><h2>Application health</h2><p>Check the Spring Boot Actuator health endpoint.</p><a href=\"/actuator/health\">Open health endpoint →</a></div><div class=\"card\"><span>03</span><h2>H2 database console</h2><p>Local development database console.</p><a href=\"/h2-console\">Open H2 console →</a></div></div><footer>Generated starter project · Customize before production use.</footer></main></body></html>\n`);
+    add(root + 'src/main/resources/templates/employees.html', `<!DOCTYPE html>\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Employees</title><link rel=\"stylesheet\" th:href=\"@{/css/style.css}\"></head>\n<body><main class=\"container\"><a class=\"back\" th:href=\"@{/}\">← Home</a><div class=\"eyebrow\">SAMPLE CRUD</div><h1>Employee management</h1><p class=\"lead\">Add employees, view saved records, or remove a record. Data is held in the H2 in-memory database.</p><p class=\"notice\" th:if=\"\${message}\" th:text=\"\${message}\"></p><section class=\"form-card\"><h2>Add employee</h2><form th:action=\"@{/employees}\" th:object=\"\${employee}\" method=\"post\"><label for=\"name\">Full name</label><input id=\"name\" type=\"text\" th:field=\"*{name}\" placeholder=\"Jane Smith\"><small class=\"error\" th:if=\"\${#fields.hasErrors('name')}\" th:errors=\"*{name}\"></small><label for=\"email\">Email address</label><input id=\"email\" type=\"email\" th:field=\"*{email}\" placeholder=\"jane@example.com\"><small class=\"error\" th:if=\"\${#fields.hasErrors('email')}\" th:errors=\"*{email}\"></small><button type=\"submit\">Save employee</button></form></section><section class=\"table-card\"><h2>Employees</h2><div class=\"empty\" th:if=\"\${#lists.isEmpty(employees)}\">No employees yet. Add your first employee above.</div><div class=\"table-scroll\" th:unless=\"\${#lists.isEmpty(employees)}\"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Action</th></tr></thead><tbody><tr th:each=\"emp : \${employees}\"><td th:text=\"\${emp.id}\">1</td><td th:text=\"\${emp.name}\">Name</td><td th:text=\"\${emp.email}\">email</td><td><form class=\"inline\" th:action=\"@{/employees/{id}/delete(id=\${emp.id})}\" method=\"post\"><button class=\"danger\" type=\"submit\">Delete</button></form></td></tr></tbody></table></div></section></main></body></html>\n`);
+    add(root + 'src/main/resources/static/css/style.css', `:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fb}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#edf4ff,#f8fafc 60%,#eef2ff);min-height:100vh}.container{max-width:1000px;margin:0 auto;padding:48px 22px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.15em;color:#2563eb}h1{font-size:clamp(32px,5vw,48px);line-height:1.1;margin:14px 0}.lead{color:#64748b;font-size:17px;line-height:1.7;max-width:760px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:34px}.card,.form-card,.table-card{display:block;background:white;border:1px solid #dbe3ef;border-radius:16px;padding:22px;box-shadow:0 10px 30px #1e3a5f0a;text-decoration:none;color:inherit}.card span{font-size:12px;font-weight:900;color:#2563eb}.card h2,.form-card h2,.table-card h2{font-size:20px;margin:12px 0}.card p{color:#64748b;line-height:1.55}.card a,.card strong{color:#1d4ed8}.card:hover{transform:translateY(-2px);transition:.15s}footer{margin-top:36px;color:#64748b;font-size:13px}.back{display:inline-block;margin-bottom:28px;color:#1d4ed8;text-decoration:none;font-weight:700}.form-card,.table-card{margin-top:20px}label{display:block;font-weight:700;margin:14px 0 7px}input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit}button{border:0;border-radius:9px;padding:11px 15px;margin-top:14px;background:#2563eb;color:#fff;font:inherit;font-weight:750;cursor:pointer}button:hover{background:#1d4ed8}.error{display:block;color:#b91c1c;margin-top:5px}.notice{padding:12px 14px;background:#dcfce7;color:#166534;border-radius:10px}.empty{padding:16px;color:#64748b;background:#f8fafc;border-radius:10px}.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0}th{font-size:12px;text-transform:uppercase;color:#64748b}.inline{display:inline}.danger{background:#fee2e2;color:#991b1b;margin:0}.danger:hover{background:#fecaca}@media(max-width:600px){.container{padding:28px 15px}th,td{padding:9px}}\n`);
+    add(root + 'src/test/java/' + pkgPath + '/' + pascal + 'ApplicationTests.java', `package ${packageName};\n\nimport org.junit.jupiter.api.Test;\nimport org.springframework.boot.test.context.SpringBootTest;\n\n@SpringBootTest\nclass ${pascal}ApplicationTests {\n    @Test\n    void contextLoads() {\n    }\n}\n`);
+    return true;
+  }
+  function render() {
+    const paths = Object.keys(files).sort();
+    treeEl.textContent = projectName + '/\\n' + paths.map(p => '├── ' + p.slice(projectName.length + 1)).join('\\n');
+    summaryEl.innerHTML = `<span class="chip">Spring Boot MVC</span><span class="chip">Java 17</span><span class="chip">${buildTool.toUpperCase()}</span><span class="chip">${paths.length} files</span>`;
+    fileSelect.innerHTML = '';
+    paths.filter(p => /\.(java|html|properties|gradle|xml|md|css)$/.test(p)).forEach(p => {
+      const opt = document.createElement('option'); opt.value = p; opt.textContent = p.slice(projectName.length + 1); fileSelect.appendChild(opt);
+    });
+    showPreview();
+    statusEl.textContent = `Ready: ${paths.length} project files generated locally.`;
+  }
+  function showPreview() { previewEl.textContent = files[fileSelect.value] || 'Select a file to preview.'; }
+  function crc32(bytes) {
+    let c = -1;
+    for (let i = 0; i < bytes.length; i++) {
+      c ^= bytes[i];
+      for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xEDB88320 & -(c & 1));
+    }
+    return (c ^ -1) >>> 0;
+  }
+  const encoder = new TextEncoder();
+  function makeZip(fileMap) {
+    const local = [], central = [];
+    let offset = 0;
+    const names = Object.keys(fileMap);
+    for (const name of names) {
+      const nameBytes = encoder.encode(name);
+      const data = encoder.encode(fileMap[name]);
+      const crc = crc32(data);
+      const l = new Uint8Array(30 + nameBytes.length);
+      const lv = new DataView(l.buffer);
+      lv.setUint32(0, 0x04034b50, true); lv.setUint16(4, 20, true); lv.setUint16(6, 0x0800, true);
+      lv.setUint16(8, 0, true); lv.setUint16(10, 0, true); lv.setUint16(12, 0, true);
+      lv.setUint32(14, crc, true); lv.setUint32(18, data.length, true); lv.setUint32(22, data.length, true);
+      lv.setUint16(26, nameBytes.length, true); lv.setUint16(28, 0, true); l.set(nameBytes, 30);
+      local.push(l, data);
+      const c = new Uint8Array(46 + nameBytes.length);
+      const cv = new DataView(c.buffer);
+      cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+      cv.setUint16(8, 0x0800, true); cv.setUint16(10, 0, true); cv.setUint16(12, 0, true); cv.setUint16(14, 0, true);
+      cv.setUint32(16, crc, true); cv.setUint32(20, data.length, true); cv.setUint32(24, data.length, true);
+      cv.setUint16(28, nameBytes.length, true); cv.setUint16(30, 0, true); cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true); cv.setUint16(36, 0, true); cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+      c.set(nameBytes, 46); central.push(c); offset += l.length + data.length;
+    }
+    const centralSize = central.reduce((n, b) => n + b.length, 0);
+    const end = new Uint8Array(22), ev = new DataView(end.buffer);
+    ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+    ev.setUint16(8, names.length, true); ev.setUint16(10, names.length, true);
+    ev.setUint32(12, centralSize, true); ev.setUint32(16, offset, true); ev.setUint16(20, 0, true);
+    return new Blob([...local, ...central, end], {type:'application/zip'});
+  }
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (buildProject()) render();
+  });
+  fileSelect.addEventListener('change', showPreview);
+  document.getElementById('copyTreeBtn').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(treeEl.textContent); statusEl.textContent = 'Project tree copied.'; }
+    catch { statusEl.textContent = 'Clipboard access is unavailable. Select and copy the project tree manually.'; }
+  });
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    if (!Object.keys(files).length) { if (!buildProject()) return; render(); }
+    const blob = makeZip(files);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = projectName + '.zip'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    statusEl.textContent = 'ZIP download started. Import the extracted folder into your IDE.';
+  });
+  buildProject(); render();
+})();
+</script>
+</body>
+</html>
