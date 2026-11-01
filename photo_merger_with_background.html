@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Compositor & Overlay Tool</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for control panels */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 1);
+        }
+        .checkerboard {
+            background-image: linear-gradient(45deg, #1e293b 25%, transparent 25%), linear-gradient(-45deg, #1e293b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1e293b 75%), linear-gradient(-45deg, transparent 75%, #1e293b 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased bg-slate-950 text-slate-100 overflow-x-hidden">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid font-bold fa-layer-group text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-tight text-white">Photo Merger Studio</h1>
+                    <p class="text-xs text-slate-400">Combine images with precision overlay</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <button id="reset-all-btn" class="text-xs sm:text-sm text-slate-400 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Controls Column (Left) -->
+        <div class="w-full lg:w-96 flex flex-col gap-6 shrink-0">
+            
+            <!-- Step 1: Upload Controls -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">1</span>
+                    Upload Images
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Background Upload -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1.5">Background Image</label>
+                        <div id="bg-dropzone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 bg-slate-950/50 hover:bg-slate-800/50 rounded-xl p-4 text-center cursor-pointer transition relative group">
+                            <input type="file" id="bg-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="flex flex-col items-center justify-center py-1">
+                                <i class="fa-solid fa-image text-slate-500 group-hover:text-indigo-400 text-2xl mb-2 transition"></i>
+                                <p class="text-xs text-slate-300 font-medium" id="bg-label-text">Select or drop background</p>
+                                <p class="text-[10px] text-slate-500 mt-0.5">JPG, PNG, WebP up to 15MB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Front Photo Upload -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1.5">Front Photo (Overlay)</label>
+                        <div id="fg-dropzone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 bg-slate-950/50 hover:bg-slate-800/50 rounded-xl p-4 text-center cursor-pointer transition relative group">
+                            <input type="file" id="fg-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="flex flex-col items-center justify-center py-1">
+                                <i class="fa-solid fa-user-tag text-slate-500 group-hover:text-indigo-400 text-2xl mb-2 transition"></i>
+                                <p class="text-xs text-slate-300 font-medium" id="fg-label-text">Select or drop front photo</p>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Transparent PNG works great</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Customization Adjustments -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex-1 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">2</span>
+                        Adjust Overlay Position
+                    </h2>
+
+                    <div class="space-y-4">
+                        <!-- Scale Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>Scale Size</span>
+                                <span id="scale-val" class="font-mono text-indigo-400">40%</span>
+                            </div>
+                            <input type="range" id="scale-slider" min="10" max="100" value="40" class="w-full accent-indigo-500 bg-slate-800 h-2 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Vertical Offset Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>Bottom Margin / Offset</span>
+                                <span id="offset-val" class="font-mono text-indigo-400">0px</span>
+                            </div>
+                            <input type="range" id="offset-slider" min="-100" max="200" value="0" class="w-full accent-indigo-500 bg-slate-800 h-2 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Horizontal Nudge -->
+                        <div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>Horizontal Position</span>
+                                <span id="h-offset-val" class="font-mono text-indigo-400">Center (50%)</span>
+                            </div>
+                            <input type="range" id="h-offset-slider" min="0" max="100" value="50" class="w-full accent-indigo-500 bg-slate-800 h-2 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Corner Radius -->
+                        <div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>Front Photo Rounded Corners</span>
+                                <span id="radius-val" class="font-mono text-indigo-400">0px</span>
+                            </div>
+                            <input type="range" id="radius-slider" min="0" max="100" value="0" class="w-full accent-indigo-500 bg-slate-800 h-2 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Drop Shadow Toggle -->
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                            <span class="text-xs font-medium text-slate-300">Add Soft Drop Shadow</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="shadow-toggle" class="sr-only peer" checked>
+                                <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Action Button -->
+                <div class="mt-6">
+                    <button id="generate-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Render Composite Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas / Preview Workspace (Right) -->
+        <div class="flex-1 flex flex-col bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl min-h-[450px]">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-800 gap-2">
+                <div>
+                    <h2 class="text-base font-semibold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-eye text-indigo-400"></i> Live Canvas Preview
+                    </h2>
+                    <p class="text-xs text-slate-400">The front photo is anchored to the bottom-center of your background</p>
+                </div>
+                <span id="resolution-badge" class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700">
+                    Res: Default (1080x1080)
+                </span>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="flex-1 flex items-center justify-center checkerboard rounded-xl p-4 overflow-hidden min-h-[350px] relative border border-slate-800/80">
+                <canvas id="composite-canvas" class="max-w-full max-h-[500px] object-contain rounded-lg shadow-2xl transition-all duration-200"></canvas>
+            </div>
+
+            <!-- Action Toolbar (Export / Share) -->
+            <div class="pt-5 mt-4 border-t border-slate-800">
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Export & Sharing Options</div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    
+                    <!-- Download -->
+                    <button id="download-btn" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-3 rounded-xl transition text-xs sm:text-sm shadow-md">
+                        <i class="fa-solid fa-download"></i> Download
+                    </button>
+
+                    <!-- Copy to Clipboard -->
+                    <button id="copy-btn" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 px-3 rounded-xl transition text-xs sm:text-sm border border-slate-700">
+                        <i class="fa-solid fa-copy"></i> Copy Image
+                    </button>
+
+                    <!-- Email -->
+                    <button id="email-btn" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 px-3 rounded-xl transition text-xs sm:text-sm border border-slate-700">
+                        <i class="fa-solid fa-envelope"></i> Email Image
+                    </button>
+
+                    <!-- Share -->
+                    <button id="share-btn" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 px-3 rounded-xl transition text-xs sm:text-sm border border-slate-700">
+                        <i class="fa-solid fa-share-nodes"></i> Web Share
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500 mt-auto">
+        <p>Merged images are processed entirely in your web browser. No photos are uploaded to any server.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // DOM Elements Configuration
+        const bgInput = document.getElementById('bg-input');
+        const fgInput = document.getElementById('fg-input');
+        const bgDropzone = document.getElementById('bg-dropzone');
+        const fgDropzone = document.getElementById('fg-dropzone');
+        const bgLabelText = document.getElementById('bg-label-text');
+        const fgLabelText = document.getElementById('fg-label-text');
+
+        const scaleSlider = document.getElementById('scale-slider');
+        const scaleVal = document.getElementById('scale-val');
+        const offsetSlider = document.getElementById('offset-slider');
+        const offsetVal = document.getElementById('offset-val');
+        const hOffsetSlider = document.getElementById('h-offset-slider');
+        const hOffsetVal = document.getElementById('h-offset-val');
+        const radiusSlider = document.getElementById('radius-slider');
+        const radiusVal = document.getElementById('radius-val');
+        const shadowToggle = document.getElementById('shadow-toggle');
+
+        const generateBtn = document.getElementById('generate-btn');
+        const resetBtn = document.getElementById('reset-all-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const emailBtn = document.getElementById('email-btn');
+        const shareBtn = document.getElementById('share-btn');
+
+        const canvas = document.getElementById('composite-canvas');
+        const ctx = canvas.getContext('2d');
+        const resolutionBadge = document.getElementById('resolution-badge');
+
+        // State Management
+        let bgImg = null;
+        let fgImg = null;
+
+        // Default placeholder visuals initialization
+        function initPlaceholders() {
+            // Generate simple placeholder background canvas
+            const defaultBg = document.createElement('canvas');
+            defaultBg.width = 1080;
+            defaultBg.height = 1080;
+            const dCtx = defaultBg.getContext('2d');
+            
+            // Gradient background
+            const grad = dCtx.createLinearGradient(0, 0, 1080, 1080);
+            grad.addColorStop(0, '#3b82f6');
+            grad.addColorStop(0.5, '#6366f1');
+            grad.addColorStop(1, '#8b5cf6');
+            dCtx.fillStyle = grad;
+            dCtx.fillRect(0, 0, 1080, 1080);
+
+            // Add decorative geometric shapes
+            dCtx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            dCtx.beginPath();
+            dCtx.arc(540, 540, 400, 0, Math.PI * 2);
+            dCtx.fill();
+
+            dCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            dCtx.font = 'bold 36px Inter, sans-serif';
+            dCtx.textAlign = 'center';
+            dCtx.fillText('Background Placeholder', 540, 400);
+            dCtx.font = '24px Inter, sans-serif';
+            dCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            dCtx.fillText('Upload your background to replace', 540, 450);
+
+            bgImg = new Image();
+            bgImg.src = defaultBg.toDataURL();
+
+            // Default Front Photo Placeholder
+            const defaultFg = document.createElement('canvas');
+            defaultFg.width = 400;
+            defaultFg.height = 400;
+            const fCtx = defaultFg.getContext('2d');
+
+            fCtx.fillStyle = '#ec4899';
+            fCtx.beginPath();
+            fCtx.arc(200, 200, 180, 0, Math.PI * 2);
+            fCtx.fill();
+
+            fCtx.fillStyle = '#ffffff';
+            fCtx.font = 'bold 120px FontAwesome, Inter';
+            fCtx.textAlign = 'center';
+            fCtx.textBaseline = 'middle';
+            fCtx.fillText('👤', 200, 180);
+
+            fgImg = new Image();
+            fgImg.src = defaultFg.toDataURL();
+
+            // Render initial composite when images load
+            bgImg.onload = () => renderCanvas();
+            fgImg.onload = () => renderCanvas();
+        }
+
+        // Render Canvas Function
+        function renderCanvas() {
+            if (!bgImg) return;
+
+            // Set canvas size to match background image native size
+            canvas.width = bgImg.naturalWidth || bgImg.width || 1080;
+            canvas.height = bgImg.naturalHeight || bgImg.height || 1080;
+
+            resolutionBadge.textContent = `Res: ${canvas.width} x ${canvas.height} px`;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Draw Background Image
+            ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+            // 2. Draw Front Overlay Photo (if available)
+            if (fgImg) {
+                const scaleFactor = parseFloat(scaleSlider.value) / 100;
+                
+                // Maintain aspect ratio of front image
+                const fgAspect = fgImg.naturalWidth / fgImg.naturalHeight;
+                let targetWidth = canvas.width * scaleFactor;
+                let targetHeight = targetWidth / fgAspect;
+
+                // Ensure target width never strictly exceeds canvas width
+                if (targetWidth > canvas.width) {
+                    targetWidth = canvas.width;
+                    targetHeight = targetWidth / fgAspect;
+                }
+
+                // Position calculation (Bottom Center default + sliders)
+                const vOffset = parseFloat(offsetSlider.value);
+                const hPercent = parseFloat(hOffsetSlider.value) / 100;
+
+                // Maximum X position allowing photo to touch extreme right edge
+                const maxX = Math.max(0, canvas.width - targetWidth);
+                
+                // Direct interpolation between 0 (extreme left) and maxX (extreme right)
+                const xPos = hPercent * maxX;
+
+                // Calculate Y position
+                const yPos = (canvas.height - targetHeight) - vOffset;
+
+                const radius = parseFloat(radiusSlider.value);
+
+                ctx.save();
+
+                // Clip canvas to background bounds to prevent any overflow artifacts
+                ctx.beginPath();
+                ctx.rect(0, 0, canvas.width, canvas.height);
+                ctx.clip();
+
+                // Apply Drop Shadow if toggled
+                if (shadowToggle.checked) {
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+                    ctx.shadowBlur = canvas.width * 0.02;
+                    ctx.shadowOffsetY = canvas.height * 0.01;
+                }
+
+                // Apply Rounded Corner Clipping if specified
+                if (radius > 0) {
+                    const normalizedRadius = (radius / 100) * (Math.min(targetWidth, targetHeight) / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(xPos + normalizedRadius, yPos);
+                    ctx.lineTo(xPos + targetWidth - normalizedRadius, yPos);
+                    ctx.quadraticCurveTo(xPos + targetWidth, yPos, xPos + targetWidth, yPos + normalizedRadius);
+                    ctx.lineTo(xPos + targetWidth, yPos + targetHeight - normalizedRadius);
+                    ctx.quadraticCurveTo(xPos + targetWidth, yPos + targetHeight, xPos + targetWidth - normalizedRadius, yPos + targetHeight);
+                    ctx.lineTo(xPos + normalizedRadius, yPos + targetHeight);
+                    ctx.quadraticCurveTo(xPos, yPos + targetHeight, xPos, yPos + targetHeight - normalizedRadius);
+                    ctx.lineTo(xPos, yPos + normalizedRadius);
+                    ctx.quadraticCurveTo(xPos, yPos, xPos + normalizedRadius, yPos);
+                    ctx.closePath();
+                    ctx.clip();
+                }
+
+                // Render Front Photo
+                ctx.drawImage(fgImg, xPos, yPos, targetWidth, targetHeight);
+                ctx.restore();
+            }
+        }
+
+        // Image Reader Helper
+        function handleFileSelect(file, isBackground) {
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast('Please upload a valid image file (JPG, PNG, WebP).', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    if (isBackground) {
+                        bgImg = img;
+                        bgLabelText.textContent = file.name;
+                        showToast('Background image loaded successfully!', 'success');
+                    } else {
+                        fgImg = img;
+                        fgLabelText.textContent = file.name;
+                        showToast('Front photo loaded successfully!', 'success');
+                    }
+                    renderCanvas();
+                };
+                img.onerror = function () {
+                    showToast('Failed to parse selected image.', 'error');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Drag and Drop Event Listeners setup
+        function setupDragAndDrop(dropzoneEl, inputEl, isBackground) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzoneEl.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzoneEl.classList.add('border-indigo-500', 'bg-indigo-950/20');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzoneEl.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzoneEl.classList.remove('border-indigo-500', 'bg-indigo-950/20');
+                }, false);
+            });
+
+            dropzoneEl.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    inputEl.files = files;
+                    handleFileSelect(files[0], isBackground);
+                }
+            });
+
+            inputEl.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0], isBackground);
+                }
+            });
+        }
+
+        // Slider Event Listeners
+        scaleSlider.addEventListener('input', (e) => {
+            scaleVal.textContent = `${e.target.value}%`;
+            renderCanvas();
+        });
+
+        offsetSlider.addEventListener('input', (e) => {
+            offsetVal.textContent = `${e.target.value}px`;
+            renderCanvas();
+        });
+
+        hOffsetSlider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            if (val === 50) {
+                hOffsetVal.textContent = 'Center (50%)';
+            } else if (val === 0) {
+                hOffsetVal.textContent = 'Extreme Left (0%)';
+            } else if (val === 100) {
+                hOffsetVal.textContent = 'Extreme Right (100%)';
+            } else {
+                hOffsetVal.textContent = `${val}%`;
+            }
+            renderCanvas();
+        });
+
+        radiusSlider.addEventListener('input', (e) => {
+            radiusVal.textContent = `${e.target.value}px`;
+            renderCanvas();
+        });
+
+        shadowToggle.addEventListener('change', () => {
+            renderCanvas();
+        });
+
+        generateBtn.addEventListener('click', () => {
+            renderCanvas();
+            showToast('Merged composite regenerated!', 'info');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            scaleSlider.value = 40;
+            scaleVal.textContent = '40%';
+            offsetSlider.value = 0;
+            offsetVal.textContent = '0px';
+            hOffsetSlider.value = 50;
+            hOffsetVal.textContent = 'Center (50%)';
+            radiusSlider.value = 0;
+            radiusVal.textContent = '0px';
+            shadowToggle.checked = true;
+            initPlaceholders();
+            bgLabelText.textContent = 'Select or drop background';
+            fgLabelText.textContent = 'Select or drop front photo';
+            showToast('Workspace reset to default', 'info');
+        });
+
+        // Export Action 1: Download
+        downloadBtn.addEventListener('click', () => {
+            try {
+                const link = document.createElement('a');
+                link.download = `merged-photo-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('Image downloaded successfully!', 'success');
+            } catch (err) {
+                showToast('Download failed. Canvas error.', 'error');
+            }
+        });
+
+        // Export Action 2: Copy to Clipboard
+        copyBtn.addEventListener('click', async () => {
+            try {
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        showToast('Failed to create image blob.', 'error');
+                        return;
+                    }
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        showToast('Copied composite image to clipboard!', 'success');
+                    } catch (err) {
+                        // Fallback copy notification
+                        showToast('Direct image clipboard copy not supported on this browser.', 'error');
+                    }
+                }, 'image/png');
+            } catch (err) {
+                showToast('Clipboard copy failed.', 'error');
+            }
+        });
+
+        // Export Action 3: Email
+        emailBtn.addEventListener('click', () => {
+            const subject = encodeURIComponent('Merged Photo Creation');
+            const body = encodeURIComponent('Check out the photo composite I generated with Photo Merger Studio!');
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+            showToast('Opening default email client...', 'info');
+        });
+
+        // Export Action 4: Web Share API
+        shareBtn.addEventListener('click', async () => {
+            if (!navigator.share) {
+                showToast('Web Share API is not supported on this browser.', 'error');
+                return;
+            }
+
+            try {
+                canvas.toBlob(async (blob) => {
+                    const file = new File([blob], 'merged-photo.png', { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: 'Merged Photo Composite',
+                            text: 'Check out my composite image!',
+                            files: [file]
+                        });
+                        showToast('Shared successfully!', 'success');
+                    } else {
+                        await navigator.share({
+                            title: 'Merged Photo Composite',
+                            text: 'Check out my composite image created with Photo Merger Studio!',
+                            url: window.location.href
+                        });
+                        showToast('Shared link successfully!', 'success');
+                    }
+                }, 'image/png');
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showToast('Sharing failed or was cancelled.', 'error');
+                }
+            }
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgBg = 'bg-slate-800 border-slate-700 text-white';
+            let icon = 'fa-info-circle text-indigo-400';
+
+            if (type === 'success') {
+                bgBg = 'bg-slate-900 border-emerald-500/50 text-emerald-200';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                bgBg = 'bg-slate-900 border-rose-500/50 text-rose-200';
+                icon = 'fa-circle-exclamation text-rose-400';
+            }
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl text-xs sm:text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${bgBg}`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            // Auto dismiss
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        // Window Load Initialization
+        window.onload = function () {
+            setupDragAndDrop(bgDropzone, bgInput, true);
+            setupDragAndDrop(fgDropzone, fgInput, false);
+            initPlaceholders();
+        };
+    </script>
+</body>
+</html>

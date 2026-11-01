@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create a beautiful zigzag photo gift collage on a clean white background. Upload 1 to 10 photos, customize the title, and print, copy, share or email your creation.">
+<meta property="og:title" content="Zigzag Photo Gift Studio">
+<meta property="og:description" content="Turn your favorite memories into a stylish zigzag photo gift.">
+<title>Zigzag Photo Gift Studio</title>
+<style>
+:root{--ink:#202438;--muted:#687087;--accent:#7257e8;--accent2:#ed6a9b;--line:#e7e8ef;--bg:#f5f6fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}
+header{background:linear-gradient(120deg,#29234d,#654ed0 65%,#a45a9b);color:white;padding:28px 20px 34px;text-align:center}
+header h1{margin:0;font-size:clamp(25px,4vw,38px);letter-spacing:.2px}header p{margin:9px auto 0;max-width:700px;color:#eee9ff;font-size:15px;line-height:1.5}
+main{max-width:1180px;margin:24px auto;padding:0 16px 40px;display:grid;grid-template-columns:330px minmax(0,1fr);gap:20px;align-items:start}
+.panel,.preview-wrap{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px #24244a0b}
+.panel{padding:20px;position:sticky;top:16px}.panel h2{font-size:18px;margin:0 0 15px}
+.field{margin:15px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+input[type=text],select{width:100%;padding:11px 12px;border:1px solid #dfe1eb;border-radius:10px;font:inherit;color:var(--ink);background:white}
+input[type=file]{width:100%;font-size:13px}
+.hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:7px}
+.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:700;font-size:13px;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn:hover{transform:translateY(-1px);filter:brightness(.97)}.primary{background:var(--accent);color:#fff}.secondary{background:#f0edff;color:#5139bd}.dark{background:#24263a;color:white}.pink{background:#ffedf4;color:#b33b6d}.outline{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}.actions .wide{grid-column:1/-1}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.preview-wrap{padding:18px;min-width:0}.preview-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px;flex-wrap:wrap}.preview-head h2{font-size:18px;margin:0}.count{font-size:12px;color:var(--muted)}
+.stage{background:#f0f1f6;border-radius:13px;padding:14px;overflow:auto}
+#giftCanvas{display:block;width:100%;height:auto;background:white;box-shadow:0 3px 18px #1d24401c;border-radius:3px}
+.thumb-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.thumb{width:76px;height:76px;object-fit:cover;border-radius:9px;border:2px solid white;box-shadow:0 0 0 1px var(--line);display:block}
+.note{font-size:12px;color:var(--muted);margin-top:13px;line-height:1.55}
+footer{text-align:center;color:#85899a;font-size:12px;padding:0 15px 25px}
+@media(max-width:800px){main{grid-template-columns:1fr}.panel{position:static}}
+@media print{
+ @page{size:A4 portrait;margin:8mm}
+ body{background:white!important}
+ header,.panel,.preview-head,.thumb-list,.note,footer,.screen-only{display:none!important}
+ main{display:block;margin:0;padding:0;max-width:none}
+ .preview-wrap{border:0;box-shadow:none;padding:0}
+ .stage{background:white;padding:0;overflow:visible}
+ #giftCanvas{width:100%;height:auto;max-height:275mm;object-fit:contain;box-shadow:none;border-radius:0}
+}
+</style>
+</head>
+<body>
+<header>
+ <h1>✨ Zigzag Photo Gift Studio</h1>
+ <p>Turn your favorite moments into a beautiful photo gift. Arrange 1–10 photos in a stylish zigzag layout on a clean white canvas.</p>
+</header>
+<main>
+ <aside class="panel">
+  <h2>🎁 Create your photo gift</h2>
+  <div class="field">
+   <label for="photos">Upload photos (1–10)</label>
+   <input id="photos" type="file" accept="image/*" multiple>
+   <div class="hint">Choose up to 10 JPG, PNG or WEBP images. The complete original photo is preserved without cropping.</div>
+  </div>
+  <div class="field">
+   <label for="giftTitle">Gift title</label>
+   <input id="giftTitle" type="text" maxlength="70" value="" placeholder="Enter a title">
+  </div>
+  <div class="field">
+   <label for="subtitle">Small message (optional)</label>
+   <input id="subtitle" type="text" maxlength="100" value="A collection of moments to treasure forever" placeholder="Add a personal message">
+  </div>
+  <div class="field">
+   <label for="layout">Zigzag style</label>
+   <select id="layout">
+    <option value="classic">Classic zigzag</option>
+    <option value="gentle">Gentle zigzag</option>
+    <option value="bold">Bold zigzag</option>
+   </select>
+  </div>
+  <div class="field">
+   <label for="caption">Photo frame</label>
+   <select id="caption">
+    <option value="shadow">Soft shadow</option>
+    <option value="polaroid">Polaroid style</option>
+    <option value="simple">Clean white border</option>
+   </select>
+  </div>
+  <div class="actions">
+   <button class="btn primary wide" id="generate">✨ Generate gift</button>
+   <button class="btn secondary" id="print">🖨️ Print</button>
+   <button class="btn secondary" id="download">⬇ Download PNG</button>
+   <button class="btn outline" id="copy">📋 Copy image</button>
+   <button class="btn outline" id="share">↗ Share</button>
+   <button class="btn pink wide" id="email">✉ Email</button>
+  </div>
+  <p class="note">Your photos are processed locally in this browser. They are not uploaded to a server. Email opens your email app with a message; attach the downloaded PNG yourself because browsers do not allow a webpage to silently attach files.</p>
+ </aside>
+ <section class="preview-wrap">
+  <div class="preview-head">
+   <h2>Your gift preview</h2><span class="count" id="count">No photos selected</span>
+  </div>
+  <div class="stage" id="stage">
+   <canvas id="giftCanvas" width="1600" height="2200" hidden></canvas>
+  </div>
+  <div class="thumb-list" id="thumbs" aria-label="Selected photo thumbnails"></div>
+  <p class="note screen-only">Tip: For the best print quality, use clear, high-resolution photos. The canvas is designed in an A4 portrait proportion and can be printed or saved as a PNG.</p>
+ </section>
+</main>
+<footer>Made for memories • Zigzag Photo Gift Studio</footer>
+<script>
+(() => {
+ const fileInput=document.getElementById('photos'), canvas=document.getElementById('giftCanvas'), ctx=canvas.getContext('2d');
+ const count=document.getElementById('count'), thumbs=document.getElementById('thumbs');
+ const titleInput=document.getElementById('giftTitle'), subtitleInput=document.getElementById('subtitle');
+ const layoutInput=document.getElementById('layout'), frameInput=document.getElementById('caption');
+ let images=[], generated=false;
+ const W=1600,H=2200;
+ // Use data URLs for previews so thumbnail images remain available after loading.
+ const loadImage=file=>new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=()=>reject(new Error('Could not read '+file.name));
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>resolve(img);
+   img.onerror=()=>reject(new Error('Could not load '+file.name));
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ });
+ function roundedRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
+ // Fit the complete original photo inside its frame without cropping or stretching.
+ function drawCover(img,x,y,w,h){
+  ctx.save();
+  ctx.fillStyle='#ffffff';
+  ctx.fillRect(x,y,w,h);
+  const scale=Math.min(w/img.width,h/img.height);
+  const drawW=img.width*scale;
+  const drawH=img.height*scale;
+  const drawX=x+(w-drawW)/2;
+  const drawY=y+(h-drawH)/2;
+  ctx.drawImage(img,drawX,drawY,drawW,drawH);
+  ctx.restore();
+ }
+ function wrapText(text,x,y,maxWidth,lineHeight,maxLines=2){
+  ctx.textAlign='center';let words=text.split(/\s+/),line='',lines=[];
+  for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}
+  if(line)lines.push(line);lines=lines.slice(0,maxLines);
+  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight));
+ }
+ function render(){
+  if(!images.length){alert('Please upload at least one photo first.');return}
+  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+  // Decorative header
+  ctx.fillStyle='#30294d';ctx.textAlign='center';ctx.font='bold 68px Georgia,serif';
+  if(titleInput.value.trim())wrapText(titleInput.value.trim(),W/2,145,1370,78,2);
+  ctx.fillStyle='#777487';ctx.font='28px Arial,sans-serif';
+  if(subtitleInput.value.trim())wrapText(subtitleInput.value.trim(),W/2,220,1320,38,2);
+  const n=images.length, top=340, bottom=H-125, usable=bottom-top;
+  const rowH=Math.min(usable/n,390), photoW=Math.min(760, W*.58);
+  const style=layoutInput.value, frame=frameInput.value;
+  images.forEach((img,i)=>{
+   const center=W/2+(i%2===0?-1:1)*(style==='gentle'?135:style==='bold'?245:190);
+   const angle=(i%2===0?-1:1)*(style==='gentle'?.025:style==='bold'?.065:.045);
+   const photoH=Math.min(rowH*.73,photoW*0.72);
+   const x=center-photoW/2,y=top+i*rowH+(rowH-photoH)/2;
+   ctx.save();ctx.translate(center,y+photoH/2);ctx.rotate(angle);
+   if(frame==='shadow'){ctx.shadowColor='rgba(35,30,65,.22)';ctx.shadowBlur=24;ctx.shadowOffsetY=10}
+   const pad=frame==='polaroid'?22:frame==='simple'?18:18, extra=frame==='polaroid'?75:18;
+   ctx.fillStyle='#fff';ctx.fillRect(-photoW/2-pad,-photoH/2-pad,photoW+pad*2,photoH+pad*2+extra);
+   ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+   drawCover(img,-photoW/2,-photoH/2,photoW,photoH);
+   if(frame==='polaroid'){ctx.fillStyle='#4c465b';ctx.font='italic 23px Georgia,serif';ctx.textAlign='center';ctx.fillText('Memory '+(i+1),0,photoH/2+53)}
+   ctx.restore();
+   // Delicate dotted connector, behind visual rhythm
+   if(i<n-1){ctx.save();ctx.strokeStyle='#d9d2f1';ctx.lineWidth=4;ctx.setLineDash([7,13]);ctx.beginPath();ctx.moveTo(center+(i%2===0?photoW*.37:-photoW*.37),y+photoH*.75);ctx.lineTo(W/2+(i%2===0?125:-125),top+(i+1)*rowH+rowH*.18);ctx.stroke();ctx.restore()}
+  });
+  ctx.fillStyle='#aaa5b5';ctx.textAlign='center';ctx.font='22px Arial,sans-serif';ctx.fillText('♥  Made with love  ♥',W/2,H-55);
+  canvas.hidden=false;generated=true;
+ }
+ function downloadBlob(blob,name){const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+ function canvasBlob(){return new Promise(resolve=>canvas.toBlob(resolve,'image/png'))}
+ fileInput.addEventListener('change',async()=>{
+  const files=Array.from(fileInput.files||[]);
+  if(files.length>10){alert('Please select no more than 10 photos.');fileInput.value='';return}
+  if(files.some(f=>!f.type.startsWith('image/'))){alert('Please select image files only.');return}
+  try{
+   images=await Promise.all(files.map(loadImage));
+   count.textContent=images.length+' photo'+(images.length===1?'':'s')+' selected';
+   thumbs.innerHTML='';
+   images.forEach(img=>{const t=document.createElement('img');t.src=img.src;t.className='thumb';t.alt='Selected photo preview';thumbs.appendChild(t)});
+   if(images.length)render();
+  }catch(e){alert(e.message)}
+ });
+ document.getElementById('generate').addEventListener('click',render);
+ [titleInput,subtitleInput,layoutInput,frameInput].forEach(el=>el.addEventListener('change',()=>{if(images.length)render()}));
+ document.getElementById('print').addEventListener('click',()=>{if(!generated){alert('Generate your gift first.');return}window.print()});
+ document.getElementById('download').addEventListener('click',async()=>{if(!generated){alert('Generate your gift first.');return}const b=await canvasBlob();downloadBlob(b,'zigzag-photo-gift.png')});
+ document.getElementById('copy').addEventListener('click',async()=>{
+  if(!generated){alert('Generate your gift first.');return}
+  try{const b=await canvasBlob();await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);alert('Photo gift copied to clipboard.')}
+  catch(e){alert('Image copy is not supported by this browser or requires HTTPS. Please use Download PNG instead.')}
+ });
+ document.getElementById('share').addEventListener('click',async()=>{
+  if(!generated){alert('Generate your gift first.');return}
+  const b=await canvasBlob(),f=new File([b],'zigzag-photo-gift.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'My Zigzag Photo Gift',text:'A collection of beautiful memories.'})}catch(e){}}
+  else if(navigator.share){try{await navigator.share({title:'My Zigzag Photo Gift',text:'I created this photo gift!'});}catch(e){}}
+  else alert('File sharing is not available in this browser. Please download the PNG and share it manually.');
+ });
+ document.getElementById('email').addEventListener('click',()=>{
+  if(!generated){alert('Generate your gift first.');return}
+  const subject=encodeURIComponent('A photo gift made with love');
+  const body=encodeURIComponent('Hello,\n\nI created a zigzag photo gift for you. Please find the downloaded file zigzag-photo-gift.png attached to this email.\n\nWith love.');
+  window.location.href='mailto:?subject='+subject+'&body='+body;
+ });
+})();
+</script>
+</body>
+</html>
