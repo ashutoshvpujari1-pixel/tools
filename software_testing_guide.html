@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Testing Ecosystem & SDLC Guide</title>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-334DZV34L8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-334DZV34L8');
+</script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(156, 163, 175, 0.1);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.5);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-panel {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 border-b border-slate-200 dark:border-slate-800 glass-panel shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-indigo-600 rounded-lg text-white shadow-md shadow-indigo-500/20">
+                        <i class="fa-solid fa-vial-circle-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-tight bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                            QA Testing Hub & SDLC Map
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Comprehensive Software Testing Reference Architecture</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs & Theme Toggle -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <nav class="hidden md:flex space-x-1 bg-slate-200/60 dark:bg-slate-800/60 p-1 rounded-xl text-sm font-medium">
+                        <button onclick="switchMainTab('sdlc')" id="nav-sdlc" class="px-3 py-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 bg-white dark:bg-slate-700 shadow-sm transition">
+                            <i class="fa-solid fa-diagram-project mr-1.5"></i>SDLC Lifecycle
+                        </button>
+                        <button onclick="switchMainTab('catalog')" id="nav-catalog" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                            <i class="fa-solid fa-boxes-stacked mr-1.5"></i>Knowledge Base
+                        </button>
+                        <button onclick="switchMainTab('matrix')" id="nav-matrix" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                            <i class="fa-solid fa-table-cells mr-1.5"></i>Comparison Matrix
+                        </button>
+                    </nav>
+
+                    <!-- Theme Toggle Button -->
+                    <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition" aria-label="Toggle Theme">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Navigation Bar -->
+            <div class="flex md:hidden border-t border-slate-200 dark:border-slate-800 py-2 justify-around text-xs font-medium">
+                <button onclick="switchMainTab('sdlc')" id="mob-nav-sdlc" class="py-1 px-3 rounded-lg text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50">
+                    <i class="fa-solid fa-diagram-project block text-center mb-0.5"></i>Lifecycle
+                </button>
+                <button onclick="switchMainTab('catalog')" id="mob-nav-catalog" class="py-1 px-3 rounded-lg text-slate-600 dark:text-slate-400">
+                    <i class="fa-solid fa-boxes-stacked block text-center mb-0.5"></i>Catalog
+                </button>
+                <button onclick="switchMainTab('matrix')" id="mob-nav-matrix" class="py-1 px-3 rounded-lg text-slate-600 dark:text-slate-400">
+                    <i class="fa-solid fa-table-cells block text-center mb-0.5"></i>Matrix
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- VIEW 1: SDLC Interactive Pipeline View -->
+        <section id="view-sdlc" class="space-y-6">
+            <!-- Header Intro -->
+            <div class="bg-gradient-to-r from-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-bug-slash"></i>
+                </div>
+                <div class="max-w-3xl relative z-10 space-y-2">
+                    <span class="inline-block px-3 py-1 bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Shift-Left & Continuous Testing</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">SDLC Interactive Testing Pipeline</h2>
+                    <p class="text-slate-300 text-sm sm:text-base">
+                        Testing is not an isolated phase at the end of development. Select any phase in the Software Development Life Cycle below to explore integrated quality practices, strategies, and industry standard tooling.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pipeline Stepper / Flow Bar -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-2" id="sdlc-pipeline-buttons">
+                    <!-- Dynamic Buttons rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Stage Detail Content Card -->
+            <div id="sdlc-stage-detail" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg p-6 transition-all duration-300">
+                <!-- JS Populates this with stage details -->
+            </div>
+        </section>
+
+        <!-- VIEW 2: Searchable Knowledge Base Catalog -->
+        <section id="view-catalog" class="hidden space-y-6">
+            <!-- Search & Filtering Header -->
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <!-- Search Input -->
+                    <div class="relative w-full md:w-96">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="searchInput" placeholder="Search approaches, tools, or methodologies..." oninput="handleSearchFilter()" class="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- Category Pills Filter -->
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto text-xs font-medium" id="category-filter-pills">
+                        <button onclick="filterCategory('all')" data-cat="all" class="cat-pill active px-3 py-2 rounded-xl bg-indigo-600 text-white shadow-sm">All Items (<span id="count-all">0</span>)</button>
+                        <button onclick="filterCategory('approach')" data-cat="approach" class="cat-pill px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200">Approaches (<span id="count-approach">0</span>)</button>
+                        <button onclick="filterCategory('methodology')" data-cat="methodology" class="cat-pill px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200">Methodologies (<span id="count-methodology">0</span>)</button>
+                        <button onclick="filterCategory('tool')" data-cat="tool" class="cat-pill px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200">Testing Tools (<span id="count-tool">0</span>)</button>
+                    </div>
+                </div>
+
+                <!-- Secondary Sub-domain Filter (Dynamic for Tools / Approaches) -->
+                <div id="sub-filter-container" class="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <!-- Dynamic Subcategory Tags populated by JS -->
+                </div>
+            </div>
+
+            <!-- Items Grid Container -->
+            <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Cards injected dynamically -->
+            </div>
+
+            <!-- Empty Search State -->
+            <div id="empty-state" class="hidden text-center py-16 space-y-3">
+                <div class="inline-flex p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 text-3xl mb-2">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200">No testing assets found</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">We couldn't find anything matching your query. Try searching for "Selenium", "Agile", "Exploratory", or clear filters.</p>
+                <button onclick="resetFilters()" class="mt-2 px-4 py-2 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition">Reset All Filters</button>
+            </div>
+        </section>
+
+        <!-- VIEW 3: Interactive Matrix View -->
+        <section id="view-matrix" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+                <div class="mb-6 space-y-2">
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-indigo-500"></i>
+                        Software Testing Taxonomy & Trade-off Matrix
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Side-by-side comparison of fundamental testing paradigms across execution mode, structural visibility, objective, and automation suitability.
+                    </p>
+                </div>
+
+                <!-- Matrix Table Container -->
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
+                                <th class="p-3.5 rounded-tl-xl">Testing Dimension</th>
+                                <th class="p-3.5">Primary Focus / Objective</th>
+                                <th class="p-3.5">Knowledge Required</th>
+                                <th class="p-3.5">Optimal SDLC Stage</th>
+                                <th class="p-3.5">Automation Potential</th>
+                                <th class="p-3.5 rounded-tr-xl">Representative Tools</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-600 dark:text-slate-300" id="matrix-table-body">
+                            <!-- Matrix rows generated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Detail Drawer / Modal -->
+    <div id="drawerOverlay" onclick="closeDrawer()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="detailDrawer" class="fixed inset-y-0 right-0 w-full max-w-2xl bg-white dark:bg-slate-900 z-50 shadow-2xl border-l border-slate-200 dark:border-slate-800 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Drawer Header -->
+        <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
+            <div class="flex items-center space-x-3">
+                <span id="drawerBadge" class="px-2.5 py-1 rounded-md text-xs font-semibold">Category</span>
+                <span id="drawerSubCategory" class="text-xs text-slate-400 font-medium">Domain</span>
+            </div>
+            <button onclick="closeDrawer()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Content Body -->
+        <div class="p-6 overflow-y-auto custom-scrollbar flex-grow space-y-6" id="drawerBody">
+            <!-- Dynamically Populated Content -->
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex justify-end">
+            <button onclick="closeDrawer()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition">
+                Close Guide
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Data and Logic -->
+    <script>
+        /* ==========================================================================
+           DATA STRUCTURES: SDLC Stages, Testing Catalog, Matrix Data
+           ========================================================================== */
+        
+        const SDLC_STAGES = [
+            {
+                id: 'requirements',
+                name: 'Requirements & Planning',
+                icon: 'fa-clipboard-list',
+                tagline: 'Define quality metrics early & validate specifications',
+                color: 'from-amber-500 to-orange-600',
+                badgeBg: 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+                overview: 'The Requirements phase lays the quality foundation. Testing here involves reviewing business requirements, specifications, and acceptance criteria to spot ambiguities, gaps, or logic bugs before a single line of code is written.',
+                activities: [
+                    'Requirement Traceability Matrix (RTM) setup',
+                    'Behavior-Driven Development (BDD) Feature Writing',
+                    'Risk-Based Testing (RBT) Assessment',
+                    'Static Specification Reviews & Walkthroughs'
+                ],
+                testingTypes: ['Static Testing', 'Risk-Based Testing', 'Acceptance Test-Driven Development (ATDD)'],
+                recommendedTools: ['Jira', 'Confluence', 'Cucumber', 'Zephyr Scale']
+            },
+            {
+                id: 'design',
+                name: 'Architecture & Design',
+                icon: 'fa-compass-drafting',
+                tagline: 'Review system architecture for testability, security & scale',
+                color: 'from-blue-500 to-cyan-600',
+                badgeBg: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
+                overview: 'During Architecture Design, testing focuses on structural soundness, security threat modeling, and interface definitions to ensure high testability, scalable integration, and robust performance.',
+                activities: [
+                    'Threat Modeling & Security Architecture Review',
+                    'API Contract Definition & OpenAPI Spec Reviews',
+                    'Test Strategy & Test Environment Architecture Design',
+                    'NFR (Non-Functional Requirements) Benchmarking Planning'
+                ],
+                testingTypes: ['Threat Modeling', 'Static Code/Architecture Analysis', 'Testability Review'],
+                recommendedTools: ['OWASP Threat Dragon', 'SonarQube', 'Postman Specs', 'Draw.io']
+            },
+            {
+                id: 'development',
+                name: 'Development & Build',
+                icon: 'fa-code',
+                tagline: 'Shift-Left testing with automated unit & developer tests',
+                color: 'from-indigo-500 to-purple-600',
+                badgeBg: 'bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
+                overview: 'Developer-driven testing phase. Developers write fast, micro-level automated unit tests, integration contracts, and perform static analysis checks prior to submitting pull requests.',
+                activities: [
+                    'Test-Driven Development (TDD) red-green-refactor loops',
+                    'Unit Testing & Code Coverage Measurement',
+                    'Component & Microservices Integration Testing',
+                    'Static Code Analysis & Linting'
+                ],
+                testingTypes: ['Unit Testing', 'Integration Testing', 'White-Box Testing', 'Static Application Security Testing (SAST)'],
+                recommendedTools: ['JUnit', 'Jest', 'PyTest', 'SonarQube', 'ESLint', 'Mockiti']
+            },
+            {
+                id: 'testing',
+                name: 'System & Verification',
+                icon: 'fa-flask-vial',
+                tagline: 'Comprehensive functional, performance & security validation',
+                color: 'from-emerald-500 to-teal-600',
+                badgeBg: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
+                overview: 'The dedicated quality verification stage where integrated assemblies, APIs, and UIs undergo intensive functional, non-functional, exploratory, and regression testing.',
+                activities: [
+                    'End-to-End Automated UI & API Regression Suites',
+                    'Performance, Load, and Stress Testing',
+                    'Dynamic Security Penetration Testing (DAST)',
+                    'Exploratory & Edge-Case Bug Hunting'
+                ],
+                testingTypes: ['Functional Testing', 'Regression Testing', 'Performance Testing', 'DAST Security', 'System Testing', 'Exploratory Testing'],
+                recommendedTools: ['Playwright', 'Cypress', 'Selenium', 'Postman', 'JMeter', 'OWASP ZAP']
+            },
+            {
+                id: 'deployment',
+                name: 'Deployment & Release',
+                icon: 'fa-rocket',
+                tagline: 'Validate release readiness, smoke tests & User Acceptance',
+                color: 'from-rose-500 to-pink-600',
+                badgeBg: 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800',
+                overview: 'Testing during deployment ensures that candidate builds transition smoothly into production using automated pipelines, User Acceptance Testing (UAT), and canary verification.',
+                activities: [
+                    'User Acceptance Testing (UAT) Sign-off',
+                    'Smoke & Sanity Pipeline Execution',
+                    'Canary & Blue/Green Deployment Verification',
+                    'Environment Infrastructure & Configuration Validation'
+                ],
+                testingTypes: ['Smoke Testing', 'Sanity Testing', 'User Acceptance Testing (UAT)', 'Infrastructure Testing'],
+                recommendedTools: ['Jenkins', 'GitHub Actions', 'BrowserStack', 'Argocd']
+            },
+            {
+                id: 'maintenance',
+                name: 'Production & Monitor',
+                icon: 'fa-heart-pulse',
+                tagline: 'Continuous monitoring, synthetic testing & chaos engineering',
+                color: 'from-violet-500 to-purple-800',
+                badgeBg: 'bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800',
+                overview: 'Quality assurance extends into live production. Continuous testing monitors real-user performance, uptime synthetics, chaos resilience, and rapid hotfix verification.',
+                activities: [
+                    'Synthetic User Flow Monitoring',
+                    'Real User Monitoring (RUM) & Telemetry Analytics',
+                    'Chaos Engineering Experiments',
+                    'Production Defect Regression & Patch Testing'
+                ],
+                testingTypes: ['Synthetic Testing', 'Chaos Testing', 'Production Regression', 'Continuous Monitoring'],
+                recommendedTools: ['Datadog', 'Dynatrace', 'Gremlin', 'Grafana', 'Sentry']
+            }
+        ];
+
+        const CATALOG_DATA = [
+            // --- TESTING APPROACHES ---
+            {
+                id: 'app-functional',
+                category: 'approach',
+                subCategory: 'Functional Testing',
+                title: 'Functional Testing',
+                icon: 'fa-gears',
+                iconColor: 'text-blue-500',
+                summary: 'Verifies that software features function according to specified business requirements.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Black-Box',
+                whenToUse: 'Executed continuously during development sprint cycles and system verification to ensure requirements are met.',
+                pros: ['Ensures system conforms to business logic', 'Focuses directly on user user-stories', 'Easily mapped to acceptance criteria'],
+                cons: ['Does not evaluate internal code quality or efficiency', 'Can obscure underlying architectural defects'],
+                bestPractices: ['Maintain a clear Requirements Traceability Matrix', 'Automate high-priority repetitive functional test cases', 'Combine happy-path with negative scenarios'],
+                tools: ['Selenium', 'Playwright', 'Cypress', 'Postman']
+            },
+            {
+                id: 'app-nonfunctional',
+                category: 'approach',
+                subCategory: 'Non-Functional',
+                title: 'Non-Functional Testing',
+                icon: 'fa-gauge-high',
+                iconColor: 'text-purple-500',
+                summary: 'Evaluates system attributes like performance, usability, reliability, security, and scalability.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Black-Box / Gray-Box',
+                whenToUse: 'Conducted alongside functional testing to verify system readiness under stress, load, and security threats.',
+                pros: ['Prevents system crashes under heavy usage', 'Ensures security and data protection', 'Enhances end-user UX'],
+                cons: ['Requires specialized tools and dedicated test environments', 'Often difficult to simulate realistic production load'],
+                bestPractices: ['Define measurable SLAs (e.g., response time < 200ms)', 'Incorporate load testing early into CI/CD pipelines', 'Run security scans on every build'],
+                tools: ['JMeter', 'k6', 'Gatling', 'OWASP ZAP']
+            },
+            {
+                id: 'app-blackbox',
+                category: 'approach',
+                subCategory: 'Structural',
+                title: 'Black-Box Testing',
+                icon: 'fa-cube',
+                iconColor: 'text-slate-700 dark:text-slate-300',
+                summary: 'Testing system behavior from an end-user perspective without knowledge of internal code structure.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Black-Box',
+                whenToUse: 'Ideal for system testing, acceptance testing, and user-facing end-to-end scenarios.',
+                pros: ['Tester does not need programming knowledge', 'Unbiased testing focused purely on inputs/outputs', 'Reflects real user experience'],
+                cons: ['May miss internal code paths or redundant code', 'Can result in duplicate test cases'],
+                bestPractices: ['Use equivalence partitioning and boundary value analysis', 'Derive test cases directly from user stories'],
+                tools: ['Selenium', 'Cypress', 'Manual Testing']
+            },
+            {
+                id: 'app-whitebox',
+                category: 'approach',
+                subCategory: 'Structural',
+                title: 'White-Box Testing',
+                icon: 'fa-microscope',
+                iconColor: 'text-emerald-500',
+                summary: 'Testing internal logic, code paths, structures, and data flows using full visibility into implementation code.',
+                sdlcStage: 'Development & Build',
+                visibility: 'White-Box',
+                whenToUse: 'Applied during development for unit testing, integration testing, and static code security scans.',
+                pros: ['Identifies hidden internal bugs and dead code', 'Achieves high code/branch coverage', 'Optimizes code design and efficiency'],
+                cons: ['Requires skilled developers/testers with programming expertise', 'Maintenance heavy when code changes'],
+                bestPractices: ['Aim for meaningful branch/line coverage (>80%)', 'Integrate static analyzers in developer IDEs', 'Use mocking frameworks to isolate units'],
+                tools: ['JUnit', 'PyTest', 'Jest', 'SonarQube']
+            },
+            {
+                id: 'app-graybox',
+                category: 'approach',
+                subCategory: 'Structural',
+                title: 'Gray-Box Testing',
+                icon: 'fa-cubes text-indigo-500',
+                iconColor: 'text-indigo-500',
+                summary: 'Hybrid technique with partial knowledge of internal structures, databases, or API protocols.',
+                sdlcStage: 'Development / Verification',
+                visibility: 'Gray-Box',
+                whenToUse: 'Perfect for API testing, integration testing, database validation, and security vulnerability scans.',
+                pros: ['Combines end-user perspective with architectural awareness', 'Improves test design based on known data flows'],
+                cons: ['Coverage can be incomplete compared to pure white-box testing'],
+                bestPractices: ['Inspect log files while executing UI operations', 'Validate DB state updates following API calls'],
+                tools: ['Postman', 'Burp Suite', 'SoapUI']
+            },
+            {
+                id: 'app-exploratory',
+                category: 'approach',
+                subCategory: 'Execution',
+                title: 'Exploratory Testing',
+                icon: 'fa-compass',
+                iconColor: 'text-amber-500',
+                summary: 'Simultaneous learning, test design, and execution driven by tester intuition, domain experience, and curiosity.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Black-Box / Gray-Box',
+                whenToUse: 'When requirements are vague, time is constrained, or after automated regression runs to uncover complex edge cases.',
+                pros: ['Uncovers critical edge-case bugs automation misses', 'Flexible and rapid execution with low upfront documentation'],
+                cons: ['Difficult to replicate and track coverage systematically', 'Highly dependent on individual tester skills'],
+                bestPractices: ['Timebox sessions (Charter-based testing)', 'Record video/screen sessions for reproducible bug reporting'],
+                tools: ['Session Inspector', 'Exploratory Testing Chrome Plugins', 'TestRail']
+            },
+            {
+                id: 'app-riskbased',
+                category: 'approach',
+                subCategory: 'Execution',
+                title: 'Risk-Based Testing (RBT)',
+                icon: 'fa-shield-halved',
+                iconColor: 'text-rose-500',
+                summary: 'Prioritizes test creation and execution based on risk probability and business impact.',
+                sdlcStage: 'Requirements & Planning',
+                visibility: 'All Types',
+                whenToUse: 'Essential when release schedules are tight or resource constraints require focused testing efforts.',
+                pros: ['Maximized ROI by catching critical bugs early', 'Ensures high-impact core features are thoroughly vetted'],
+                cons: ['Lower priority areas may retain undetected minor defects'],
+                bestPractices: ['Conduct joint risk assessment workshops with stakeholders', 'Categorize modules by Likelihood vs. Impact'],
+                tools: ['Jira Risk Matrix', 'Zephyr']
+            },
+
+            // --- METHODOLOGIES ---
+            {
+                id: 'meth-agile',
+                category: 'methodology',
+                subCategory: 'Lifecycle Model',
+                title: 'Agile Testing (Scrum / Kanban)',
+                icon: 'fa-arrows-spin',
+                iconColor: 'text-cyan-500',
+                summary: 'Continuous testing integrated directly into iterative, short sprint cycles alongside developer activities.',
+                sdlcStage: 'Continuous (All Stages)',
+                visibility: 'Cross-functional',
+                whenToUse: 'Standard methodology for dynamic projects with evolving customer requirements.',
+                pros: ['Fast feedback loops', 'Early bug detection', 'High collaboration across Dev, QA, and Product'],
+                cons: ['Requires discipline to prevent scope creep', 'Frequent code changes can break automation suites'],
+                bestPractices: ['Participate in Sprint Planning & Definition of Done (DoD)', 'Automate regression early in the sprint'],
+                tools: ['Jira', 'Zephyr', 'Slack', 'GitLab']
+            },
+            {
+                id: 'meth-tdd',
+                category: 'methodology',
+                subCategory: 'Dev Methodology',
+                title: 'Test-Driven Development (TDD)',
+                icon: 'fa-rotate-right',
+                iconColor: 'text-emerald-600',
+                summary: 'Development process where automated unit tests are written *before* writing production code.',
+                sdlcStage: 'Development & Build',
+                visibility: 'White-Box',
+                whenToUse: 'Used by developers to design modular, clean, and bug-resistant unit code.',
+                pros: ['Ensures high unit test coverage by default', 'Promotes clean, decoupled architecture', 'Reduces debugging time'],
+                cons: ['Initial development velocity can feel slower', 'Requires developer mindset transformation'],
+                bestPractices: ['Follow Red-Green-Refactor strictly', 'Keep unit tests isolated and blazing fast'],
+                tools: ['JUnit', 'Jest', 'PyTest', 'NUnit']
+            },
+            {
+                id: 'meth-bdd',
+                category: 'methodology',
+                subCategory: 'Dev Methodology',
+                title: 'Behavior-Driven Development (BDD)',
+                icon: 'fa-comments',
+                iconColor: 'text-indigo-600',
+                summary: 'Collaborative practice using plain-text Given-When-Then syntax to define software behavior.',
+                sdlcStage: 'Requirements to Testing',
+                visibility: 'Black-Box',
+                whenToUse: 'Bridges communication gaps between non-technical business stakeholders, developers, and testers.',
+                pros: ['Single source of truth in human-readable language', 'Automated specs serve as living documentation'],
+                cons: ['Maintenance overhead for feature files and step definitions'],
+                bestPractices: ['Write scenarios collaboratively (Three Amigos: Product, Dev, QA)', 'Keep step definitions reusable'],
+                tools: ['Cucumber', 'SpecFlow', 'Behave', 'Gauge']
+            },
+            {
+                id: 'meth-devops',
+                category: 'methodology',
+                subCategory: 'Lifecycle Model',
+                title: 'DevOps & Continuous Testing',
+                icon: 'fa-infinity',
+                iconColor: 'text-purple-600',
+                summary: 'Embedding automated testing seamlessly into CI/CD build pipelines from commit to deployment.',
+                sdlcStage: 'Continuous / Deployment',
+                visibility: 'Automated Suite',
+                whenToUse: 'Essential for modern high-velocity continuous delivery (CD) and microservices architectures.',
+                pros: ['Zero-friction deployment pipelines', 'Immediate pipeline build failure on regressions', 'High confidence releases'],
+                cons: ['Requires heavy infrastructure setup and flaky test management'],
+                bestPractices: ['Maintain fast-running smoke suites (< 10 mins)', 'Quarantine flaky tests immediately to keep builds green'],
+                tools: ['Jenkins', 'GitHub Actions', 'GitLab CI', 'Docker']
+            },
+            {
+                id: 'meth-vmodel',
+                category: 'methodology',
+                subCategory: 'Lifecycle Model',
+                title: 'V-Model (Validation & Verification)',
+                icon: 'fa-v',
+                iconColor: 'text-blue-600',
+                summary: 'Sequential methodology pairing every development phase directly with a corresponding testing phase.',
+                sdlcStage: 'Structured Sequential',
+                visibility: 'Phase-mapped',
+                whenToUse: 'Safety-critical industries (aerospace, medical devices, automotive) requiring rigid regulatory compliance.',
+                pros: ['Disciplined and highly structured', 'Clear traceability between specs and verification'],
+                cons: ['Inflexible to changing requirements', 'Late software delivery'],
+                bestPractices: ['Formally review requirements before design execution', 'Maintain strict traceability matrices'],
+                tools: ['DOORS', 'Jira Enterprise', 'ALM Quality Center']
+            },
+
+            // --- TESTING TOOLS ---
+            {
+                id: 'tool-playwright',
+                category: 'tool',
+                subCategory: 'UI Automation',
+                title: 'Playwright',
+                icon: 'fa-code-branch',
+                iconColor: 'text-emerald-500',
+                summary: 'Modern, fast Node.js framework for resilient cross-browser E2E Web & API testing by Microsoft.',
+                sdlcStage: 'Development / Testing',
+                visibility: 'Automation Framework',
+                whenToUse: 'Automating modern web apps requiring multi-browser, multi-tab, auto-waiting, and fast execution.',
+                pros: ['Built-in auto-waiting prevents flakiness', 'Native multi-browser & shadow DOM support', 'Fast parallel execution'],
+                cons: ['Smaller legacy plugin ecosystem compared to Selenium'],
+                bestPractices: ['Use Page Object Model (POM)', 'Leverage trace viewer for instant debug analysis'],
+                tools: ['Node.js', 'TypeScript', 'VS Code']
+            },
+            {
+                id: 'tool-cypress',
+                category: 'tool',
+                subCategory: 'UI Automation',
+                title: 'Cypress',
+                icon: 'fa-circle-check',
+                iconColor: 'text-teal-500',
+                summary: 'Developer-friendly front-end testing tool built for web apps executing directly inside the browser.',
+                sdlcStage: 'Development & Build',
+                visibility: 'Automation Framework',
+                whenToUse: 'Component testing and end-to-end JavaScript/TypeScript front-end verification.',
+                pros: ['Real-time browser time-travel debugging', 'Easy setup and clean syntax', 'Great developer experience'],
+                cons: ['Limited multi-tab and multi-origin iframe support'],
+                bestPractices: ['Mock external backend APIs to speed up UI tests', 'Avoid arbitrary cy.wait() delays'],
+                tools: ['JavaScript', 'TypeScript']
+            },
+            {
+                id: 'tool-selenium',
+                category: 'tool',
+                subCategory: 'UI Automation',
+                title: 'Selenium WebDriver',
+                icon: 'fa-robot',
+                iconColor: 'text-red-500',
+                summary: 'Industry standard open-source framework supporting cross-browser, multi-language web automation.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Automation Framework',
+                whenToUse: 'Large enterprise test suites requiring flexibility across multiple programming languages (Java, C#, Python, Ruby).',
+                pros: ['Massive global community & ecosystem', 'Supports almost all browser engines and coding languages'],
+                cons: ['Requires heavy boilerplate code and explicit wait management'],
+                bestPractices: ['Combine with Grid / Cloud providers for cross-browser matrix testing'],
+                tools: ['Grid', 'Appium', 'TestNG']
+            },
+            {
+                id: 'tool-postman',
+                category: 'tool',
+                subCategory: 'API Testing',
+                title: 'Postman',
+                icon: 'fa-paper-plane',
+                iconColor: 'text-orange-500',
+                summary: 'Popular API platform for building, manual testing, mocking, and automating REST & GraphQL APIs.',
+                sdlcStage: 'Design, Dev & Verification',
+                visibility: 'API Platform',
+                whenToUse: 'Validating API endpoints, contract testing, and executing automated CLI collections via Newman in CI/CD.',
+                pros: ['Intuitive UI for quick manual API exploratory checks', 'Built-in assertion runner and environment variables'],
+                cons: ['Heavy memory footprint for complex workspaces'],
+                bestPractices: ['Organize endpoints in collections with environment variables', 'Integrate Newman into CI pipelines'],
+                tools: ['Newman CLI', 'Swagger/OpenAPI']
+            },
+            {
+                id: 'tool-jmeter',
+                category: 'tool',
+                subCategory: 'Performance',
+                title: 'Apache JMeter',
+                icon: 'fa-tachometer-alt',
+                iconColor: 'text-amber-600',
+                summary: 'Java-based performance, load, and stress testing tool for protocol-level application benchmarking.',
+                sdlcStage: 'System & Verification',
+                visibility: 'Protocol Engine',
+                whenToUse: 'Simulating concurrent heavy traffic loads against APIs, Web services, and database servers.',
+                pros: ['Free, open-source with extensive plugin library', 'Supports HTTP, HTTPS, JDBC, FTP, SOAP'],
+                cons: ['GUI mode is resource-heavy for huge loads (requires CLI mode execution)'],
+                bestPractices: ['Run tests in Non-GUI mode', 'Parameterize test data using CSV datasets'],
+                tools: ['Blazemeter', 'InfluxDB + Grafana']
+            },
+            {
+                id: 'tool-k6',
+                category: 'tool',
+                subCategory: 'Performance',
+                title: 'Grafana k6',
+                icon: 'fa-bolt',
+                iconColor: 'text-purple-500',
+                summary: 'Modern, developer-centric load testing tool built in Go with JavaScript test scripting.',
+                sdlcStage: 'DevOps & Pipeline',
+                visibility: 'Code-based Load',
+                whenToUse: 'Shifting load testing left by incorporating performance assertions directly into GitHub Actions or GitLab pipelines.',
+                pros: ['Lightweight CLI engine', 'Code-first approach using JS', 'Native Grafana integration'],
+                cons: ['Does not render full browser JS by default (focused on protocol level)'],
+                bestPractices: ['Define thresholds for system response SLAs in test scripts'],
+                tools: ['Grafana Cloud', 'Prometheus']
+            },
+            {
+                id: 'tool-owaspzap',
+                category: 'tool',
+                subCategory: 'Security (DAST)',
+                title: 'OWASP ZAP',
+                icon: 'fa-user-shield',
+                iconColor: 'text-blue-600',
+                summary: 'Open-source Dynamic Application Security Testing (DAST) scanner for detecting web application vulnerabilities.',
+                sdlcStage: 'System & Deployment',
+                visibility: 'DAST Security',
+                whenToUse: 'Automated vulnerability scanning against live endpoints for SQLi, XSS, and misconfigurations.',
+                pros: ['Free and maintained by worldwide security community', 'Easy integration into CI/CD build scripts'],
+                cons: ['Can yield false positives requiring security analyst triage'],
+                bestPractices: ['Run baseline scans on every nightly build', 'Pair with manual penetration testing'],
+                tools: ['Burp Suite', 'SonarQube']
+            },
+            {
+                id: 'tool-sonarqube',
+                category: 'tool',
+                subCategory: 'Security (SAST)',
+                title: 'SonarQube',
+                icon: 'fa-file-code',
+                iconColor: 'text-sky-500',
+                summary: 'Static Code Analysis platform inspecting code quality, security vulnerabilities, code smells, and unit coverage.',
+                sdlcStage: 'Development & Build',
+                visibility: 'SAST & Quality Gate',
+                whenToUse: 'Enforcing Quality Gates on pull requests during developer code check-ins.',
+                pros: ['Supports 30+ programming languages', 'Identifies security hot-spots and code smells automatically'],
+                cons: ['Requires administrative setup and rules tuning for custom standards'],
+                bestPractices: ['Block PR merges if Sonar Quality Gate fails', 'Keep technical debt targets low'],
+                tools: ['GitLab', 'GitHub Actions', 'Jenkins']
+            },
+            {
+                id: 'tool-jira',
+                category: 'tool',
+                subCategory: 'Test Management',
+                title: 'Jira + Zephyr / TestRail',
+                icon: 'fa-list-check',
+                iconColor: 'text-blue-700',
+                summary: 'Centralized defect tracking, agile sprint management, and test case repository management platform.',
+                sdlcStage: 'All SDLC Phases',
+                visibility: 'Project Management',
+                whenToUse: 'Tracking user stories, linking test cases to requirements, and managing bug lifecycles.',
+                pros: ['Industry standard integration with developer workflows', 'Comprehensive reporting dashboards'],
+                cons: ['Requires careful setup to avoid bloated workflows'],
+                bestPractices: ['Link every defect directly to its failing test case and user story'],
+                tools: ['TestRail', 'Zephyr Scale', 'Xray']
+            }
+        ];
+
+        const MATRIX_DATA = [
+            {
+                dimension: 'Unit Testing',
+                objective: 'Verify individual functions, methods, or components in isolation.',
+                knowledge: 'White-Box (Full source code access)',
+                stage: 'Development & Build',
+                automation: '100% Automated (Mandatory)',
+                tools: 'JUnit, Jest, PyTest, NUnit'
+            },
+            {
+                dimension: 'Integration Testing',
+                objective: 'Validate interactions and data flow between connected modules or microservices.',
+                knowledge: 'Gray-Box / White-Box',
+                stage: 'Development / Verification',
+                automation: 'High (API & Contract tests)',
+                tools: 'Postman, REST Assured, WireMock'
+            },
+            {
+                dimension: 'System / E2E Testing',
+                objective: 'Verify complete integrated system against business specifications.',
+                knowledge: 'Black-Box (User Perspective)',
+                stage: 'System & Verification',
+                automation: 'High for Regression, Manual for New Features',
+                tools: 'Playwright, Cypress, Selenium'
+            },
+            {
+                dimension: 'Exploratory Testing',
+                objective: 'Uncover complex bugs through intuitive, unscripted user interaction.',
+                knowledge: 'Domain & System Knowledge',
+                stage: 'System Verification',
+                automation: 'Manual (Human-centric)',
+                tools: 'Exploratory Plugins, Session Recorders'
+            },
+            {
+                dimension: 'Performance / Load',
+                objective: 'Measure system responsiveness, stability, and bottleneck points under load.',
+                knowledge: 'Gray-Box (Protocol & Metrics)',
+                stage: 'System Verification / Continuous',
+                automation: '100% Automated Scripting',
+                tools: 'JMeter, k6, Gatling, Locust'
+            },
+            {
+                dimension: 'Security (SAST/DAST)',
+                objective: 'Identify security vulnerabilities, leaks, and compliance flaws.',
+                knowledge: 'White-Box (SAST) / Black-Box (DAST)',
+                stage: 'Development (SAST) to Deploy (DAST)',
+                automation: 'High (Continuous Scanner Integration)',
+                tools: 'SonarQube, OWASP ZAP, Burp Suite'
+            },
+            {
+                dimension: 'User Acceptance (UAT)',
+                objective: 'Validate system fitness for business operations directly with end-users.',
+                knowledge: 'Black-Box (Business focus)',
+                stage: 'Deployment & Release',
+                automation: 'Primarily Manual / Scripted Acceptance',
+                tools: 'Jira, TestRail, User Beta Builds'
+            }
+        ];
+
+        /* ==========================================================================
+           STATE & RENDER LOGIC
+           ========================================================================== */
+        
+        let currentActiveTab = 'sdlc';
+        let currentSdlcStageIndex = 0;
+        let selectedCategoryFilter = 'all';
+        let selectedSubCategoryFilter = 'all';
+
+        // Initialize App on DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSdlcPipeline();
+            renderSdlcStageDetail(0);
+            renderSubFilters();
+            renderCatalogGrid();
+            renderMatrixTable();
+            updateCounts();
+        });
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('qa_theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('qa_theme', 'dark');
+            }
+        }
+
+        // Apply saved theme preference if present
+        if (localStorage.getItem('qa_theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Switch Top Level Tabs
+        function switchMainTab(tabId) {
+            currentActiveTab = tabId;
+            const tabs = ['sdlc', 'catalog', 'matrix'];
+            
+            tabs.forEach(t => {
+                const viewEl = document.getElementById(`view-${t}`);
+                const navBtn = document.getElementById(`nav-${t}`);
+                const mobBtn = document.getElementById(`mob-nav-${t}`);
+
+                if (t === tabId) {
+                    viewEl.classList.remove('hidden');
+                    if (navBtn) {
+                        navBtn.className = 'px-3 py-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 bg-white dark:bg-slate-700 shadow-sm font-semibold transition';
+                    }
+                    if (mobBtn) {
+                        mobBtn.className = 'py-1 px-3 rounded-lg text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 font-semibold';
+                    }
+                } else {
+                    viewEl.classList.add('hidden');
+                    if (navBtn) {
+                        navBtn.className = 'px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition';
+                    }
+                    if (mobBtn) {
+                        mobBtn.className = 'py-1 px-3 rounded-lg text-slate-600 dark:text-slate-400';
+                    }
+                }
+            });
+        }
+
+        /* --------------------------------------------------------------------------
+           VIEW 1: SDLC PIPELINE RENDER LOGIC
+           -------------------------------------------------------------------------- */
+        function renderSdlcPipeline() {
+            const container = document.getElementById('sdlc-pipeline-buttons');
+            container.innerHTML = SDLC_STAGES.map((stage, idx) => {
+                const isActive = idx === currentSdlcStageIndex;
+                const activeClass = isActive 
+                    ? 'ring-2 ring-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 border-indigo-500 text-indigo-700 dark:text-indigo-300 font-bold shadow-md' 
+                    : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800';
+
+                return `
+                    <button onclick="selectSdlcStage(${idx})" class="flex flex-col items-center p-3 rounded-xl border text-center transition-all group ${activeClass}">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2 bg-gradient-to-tr ${stage.color} text-white shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid ${stage.icon} text-sm"></i>
+                        </div>
+                        <span class="text-xs tracking-tight line-clamp-1">${idx + 1}. ${stage.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectSdlcStage(index) {
+            currentSdlcStageIndex = index;
+            renderSdlcPipeline();
+            renderSdlcStageDetail(index);
+        }
+
+        function renderSdlcStageDetail(index) {
+            const stage = SDLC_STAGES[index];
+            const container = document.getElementById('sdlc-stage-detail');
+
+            container.innerHTML = `
+                <div class="space-y-6 animate-fadeIn">
+                    <!-- Stage Header -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-tr ${stage.color} text-white shadow-md text-xl">
+                                <i class="fa-solid ${stage.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full ${stage.badgeBg}">Phase ${index + 1} of 6</span>
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">${stage.name}</h3>
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">${stage.tagline}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="selectSdlcStage(${Math.max(0, index - 1)})" ${index === 0 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                                <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                            </button>
+                            <button onclick="selectSdlcStage(${Math.min(SDLC_STAGES.length - 1, index + 1)})" ${index === SDLC_STAGES.length - 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stage Overview Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left Column: Description & Key Activities -->
+                        <div class="lg:col-span-2 space-y-5">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Stage Objectives & Testing Overview</h4>
+                                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${stage.overview}</p>
+                            </div>
+
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">Key QA Activities & Tasks</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                    ${stage.activities.map(act => `
+                                        <div class="flex items-start space-x-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                                            <i class="fa-solid fa-check-circle text-indigo-500 text-sm mt-0.5"></i>
+                                            <span class="text-xs text-slate-700 dark:text-slate-300 font-medium">${act}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Associated Types & Tools -->
+                        <div class="space-y-5 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-xl border border-slate-100 dark:border-slate-800/60">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Applicable Testing Types</h4>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${stage.testingTypes.map(type => `
+                                        <span class="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-medium">${type}</span>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <div class="border-t border-slate-200 dark:border-slate-700/60 pt-4">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Recommended Tools</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${stage.recommendedTools.map(t => `
+                                        <span class="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold shadow-xs flex items-center gap-1.5">
+                                            <i class="fa-solid fa-wrench text-xs text-indigo-500"></i>${t}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* --------------------------------------------------------------------------
+           VIEW 2: SEARCHABLE KNOWLEDGE BASE CATALOG
+           -------------------------------------------------------------------------- */
+        function renderSubFilters() {
+            const subContainer = document.getElementById('sub-filter-container');
+            const subCategories = Array.from(new Set(CATALOG_DATA.map(item => item.subCategory)));
+            
+            subContainer.innerHTML = `
+                <span class="text-slate-400 self-center font-medium mr-1">Sub-domains:</span>
+                <button onclick="filterSubCategory('all')" class="sub-pill px-2.5 py-1 rounded-lg ${selectedSubCategoryFilter === 'all' ? 'bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}">All</button>
+                ${subCategories.map(sub => `
+                    <button onclick="filterSubCategory('${sub}')" class="sub-pill px-2.5 py-1 rounded-lg ${selectedSubCategoryFilter === sub ? 'bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-semibold' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}">${sub}</button>
+                `).join('')}
+            `;
+        }
+
+        function filterCategory(cat) {
+            selectedCategoryFilter = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-pill active px-3 py-2 rounded-xl bg-indigo-600 text-white shadow-sm';
+                } else {
+                    btn.className = 'cat-pill px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200';
+                }
+            });
+            renderCatalogGrid();
+        }
+
+        function filterSubCategory(sub) {
+            selectedSubCategoryFilter = sub;
+            renderSubFilters();
+            renderCatalogGrid();
+        }
+
+        function handleSearchFilter() {
+            const query = document.getElementById('searchInput').value.trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderCatalogGrid();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderCatalogGrid();
+        }
+
+        function resetFilters() {
+            selectedCategoryFilter = 'all';
+            selectedSubCategoryFilter = 'all';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterCategory('all');
+            renderSubFilters();
+            renderCatalogGrid();
+        }
+
+        function updateCounts() {
+            document.getElementById('count-all').innerText = CATALOG_DATA.length;
+            document.getElementById('count-approach').innerText = CATALOG_DATA.filter(i => i.category === 'approach').length;
+            document.getElementById('count-methodology').innerText = CATALOG_DATA.filter(i => i.category === 'methodology').length;
+            document.getElementById('count-tool').innerText = CATALOG_DATA.filter(i => i.category === 'tool').length;
+        }
+
+        function renderCatalogGrid() {
+            const grid = document.getElementById('catalog-grid');
+            const emptyState = document.getElementById('empty-state');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            const filtered = CATALOG_DATA.filter(item => {
+                const matchesCategory = selectedCategoryFilter === 'all' || item.category === selectedCategoryFilter;
+                const matchesSubCategory = selectedSubCategoryFilter === 'all' || item.subCategory === selectedSubCategoryFilter;
+                
+                const matchesSearch = searchQuery === '' || 
+                    item.title.toLowerCase().includes(searchQuery) ||
+                    item.summary.toLowerCase().includes(searchQuery) ||
+                    item.subCategory.toLowerCase().includes(searchQuery) ||
+                    (item.tools && item.tools.some(t => t.toLowerCase().includes(searchQuery)));
+
+                return matchesCategory && matchesSubCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(item => {
+                const badgeColor = item.category === 'approach' 
+                    ? 'bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300' 
+                    : item.category === 'methodology' 
+                    ? 'bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300' 
+                    : 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300';
+
+                return `
+                    <div onclick="openDrawer('${item.id}')" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition cursor-pointer flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${badgeColor}">
+                                    ${item.category.toUpperCase()}
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">${item.subCategory}</span>
+                            </div>
+
+                            <div class="flex items-center space-x-3 pt-1">
+                                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-lg group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid ${item.icon} ${item.iconColor}"></i>
+                                </div>
+                                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                    ${item.title}
+                                </h3>
+                            </div>
+
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                                ${item.summary}
+                            </p>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                            <span class="truncate max-w-[180px]"><i class="fa-solid fa-clock-rotate-left mr-1"></i>${item.sdlcStage}</span>
+                            <span class="text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                Inspect <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* --------------------------------------------------------------------------
+           VIEW 3: MATRIX TABLE RENDER LOGIC
+           -------------------------------------------------------------------------- */
+        function renderMatrixTable() {
+            const tbody = document.getElementById('matrix-table-body');
+            tbody.innerHTML = MATRIX_DATA.map((row, i) => `
+                <tr class="${i % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50'} hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition">
+                    <td class="p-3.5 font-bold text-slate-900 dark:text-white">${row.dimension}</td>
+                    <td class="p-3.5 max-w-xs">${row.objective}</td>
+                    <td class="p-3.5 font-medium">${row.knowledge}</td>
+                    <td class="p-3.5">
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+                            ${row.stage}
+                        </span>
+                    </td>
+                    <td class="p-3.5 font-medium">${row.automation}</td>
+                    <td class="p-3.5 font-mono text-xs text-indigo-600 dark:text-indigo-400">${row.tools}</td>
+                </tr>
+            `).join('');
+        }
+
+        /* --------------------------------------------------------------------------
+           DETAIL DRAWER / MODAL LOGIC
+           -------------------------------------------------------------------------- */
+        function openDrawer(itemId) {
+            const item = CATALOG_DATA.find(i => i.id === itemId);
+            if (!item) return;
+
+            const drawer = document.getElementById('detailDrawer');
+            const overlay = document.getElementById('drawerOverlay');
+            const drawerBody = document.getElementById('drawerBody');
+
+            // Set Header Badges
+            document.getElementById('drawerBadge').innerText = item.category.toUpperCase();
+            document.getElementById('drawerBadge').className = `px-2.5 py-1 rounded-md text-xs font-semibold ${
+                item.category === 'approach' ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300' :
+                item.category === 'methodology' ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300' :
+                'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
+            }`;
+            document.getElementById('drawerSubCategory').innerText = item.subCategory;
+
+            // Populate Body Content
+            drawerBody.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Title Header -->
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl flex-shrink-0">
+                            <i class="fa-solid ${item.icon} ${item.iconColor}"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">${item.title}</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">SDLC Phase: <span class="font-semibold text-slate-700 dark:text-slate-300">${item.sdlcStage}</span> | Visibility: <span class="font-semibold text-slate-700 dark:text-slate-300">${item.visibility}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Summary Section -->
+                    <div class="p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 text-sm text-indigo-900 dark:text-indigo-200">
+                        <h4 class="font-bold mb-1 text-xs uppercase tracking-wide opacity-80">Core Definition</h4>
+                        ${item.summary}
+                    </div>
+
+                    <!-- When to Use -->
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs text-slate-400 mb-2">When to Apply</h3>
+                        <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">${item.whenToUse}</p>
+                    </div>
+
+                    <!-- Pros & Cons Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30">
+                            <h4 class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-thumbs-up"></i> Key Advantages
+                            </h4>
+                            <ul class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
+                                ${item.pros.map(p => `<li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">•</span>${p}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30">
+                            <h4 class="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Limitations & Trade-offs
+                            </h4>
+                            <ul class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
+                                ${item.cons.map(c => `<li class="flex items-start gap-2"><span class="text-rose-500 font-bold">•</span>${c}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Best Practices -->
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs text-slate-400 mb-2">QA Best Practices</h3>
+                        <div class="space-y-2">
+                            ${item.bestPractices.map(bp => `
+                                <div class="flex items-start space-x-2.5 text-xs text-slate-700 dark:text-slate-300">
+                                    <i class="fa-solid fa-star text-amber-500 text-xs mt-0.5"></i>
+                                    <span>${bp}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Related Tools / Stack -->
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider text-xs text-slate-400 mb-2">Associated Tools & Ecosystem</h3>
+                        <div class="flex flex-wrap gap-2">
+                            ${item.tools.map(t => `
+                                <span class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-screwdriver-wrench text-indigo-500 text-xs"></i> ${t}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Open Drawer Animation
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            drawer.classList.remove('translate-x-full');
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('detailDrawer');
+            const overlay = document.getElementById('drawerOverlay');
+
+            drawer.classList.add('translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
